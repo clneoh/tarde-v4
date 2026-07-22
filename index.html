@@ -173,9 +173,9 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 <div class="footer">Trade V4 · XAU+AAPL+META+GOOGL+MSFT · 15m</div>
 
 <script>
-const STATE_URL = '/trade_v4_state.json';
-const JOURNAL_URL = '/trade_v4_journal.json';
-const POS_URL = '/trade_v4_positions.json';
+const STATE_URL = 'trade_v4_state.json';
+const JOURNAL_URL = 'trade_v4_journal.json';
+const POS_URL = 'trade_v4_positions.json';
 
 async function fetchJSON(url) {
   try { const r = await fetch(url, {cache:'no-store'}); return r.ok ? r.json() : null; }
