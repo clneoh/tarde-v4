@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T06:45:15.155595+08:00",
+  "timestamp": "2026-07-23T07:00:15.825648+08:00",
   "overall": "GO",
   "regime": "NEUTRAL",
   "signal_active": false,
   "sessions": {
     "stocks": false,
-    "gold": false,
-    "gold_time": "06:45",
+    "gold": true,
+    "gold_time": "07:00 (Tokyo)",
     "stocks_display": false
   },
   "steps": {
     "_sessions": {
       "stocks": false,
-      "gold": false,
-      "gold_time": "06:45",
+      "gold": true,
+      "gold_time": "07:00 (Tokyo)",
       "stocks_display": false
     },
     "regime": {
@@ -47,9 +47,9 @@
           "chg_5d": 2.24
         },
         "BTC": {
-          "price": 65927.69,
+          "price": 66017.99,
           "trend": "UP",
-          "chg_5d": 1.75
+          "chg_5d": 1.89
         }
       }
     },
@@ -72,15 +72,15 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4121.96,
-          "rsi": 30.9,
-          "atr": 5.25,
-          "ema": 4132.16,
+          "price": 4121.15,
+          "rsi": 28.5,
+          "atr": 5.43,
+          "ema": 4131.71,
           "sw_high": 4137.92,
           "sw_low": 4119.59,
-          "in_session": false,
+          "in_session": true,
           "session_note": "",
-          "status": "GAP",
+          "status": "PASS",
           "signal": null,
           "all_signals": [
             {
@@ -94,11 +94,11 @@
               "score_pct": 0.0,
               "passed": false,
               "details": [
-                "+1.2/10 [entry] swing_break",
+                "+0.8/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "RSI gate fail: 30.9 < 35",
+                "RSI gate fail: 28.5 < 35",
                 "Score: 0.0/40 (0%) \u00b7 threshold 60%"
               ]
             },
@@ -113,10 +113,10 @@
               "score_pct": 0.0,
               "passed": false,
               "details": [
-                "+3.3/10 [bias] ema_proximity",
+                "+3.7/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+2.0/10 [entry] rsi_range",
-                "RSI gate fail: 30.9 < 35",
+                " 0/10  [entry] rsi_range",
+                "RSI gate fail: 28.5 < 35",
                 "Score: 0.0/30 (0%) \u00b7 threshold 60%"
               ]
             }
@@ -130,7 +130,7 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (06:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -200,7 +200,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (06:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -269,7 +269,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (06:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -337,7 +337,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (06:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -403,7 +403,9 @@
     "per_asset": {
       "XAUUSD": {
         "instrument": {
-          "status": "OUTSIDE_HOURS"
+          "status": "PASS",
+          "primary": "OANDA Spot",
+          "note": "No overnight swap, short natively"
         },
         "size": {
           "status": "SKIP"
