@@ -384,7 +384,11 @@ def step_setup(cfg, tv):
                 current_time = now_et.strftime("%H:%M")
                 start = rh.get("start", "09:30")
                 end = rh.get("end", "16:00")
-                in_session = start <= current_time <= end
+                if end < start:
+                    # Wraparound session (e.g., 21:30–04:00)
+                    in_session = current_time >= start or current_time <= end
+                else:
+                    in_session = start <= current_time <= end
                 if not in_session:
                     session_note = f"Outside regular hours ({current_time} ET, session {start}-{end})"
             except ImportError:
