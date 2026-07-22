@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Trade V4</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#080816;color:#c8c8e0;font-family:-apple-system,BlinkMacSystemFont,'SF Mono','Menlo','Consolas',monospace;height:100vh;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:4px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#0c0c24;border:2px solid #404080;border-radius:8px}
+.pulse{width:12px;height:12px;border-radius:50%;animation:pulse 2s infinite}
+.pulse.go{background:#00e676}.pulse.caution{background:#ffd740}.pulse.stop{background:#ff5252}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
+.verdict{padding:6px 18px;border-radius:4px;font-size:16px;font-weight:700}
+.verdict.go{background:#003315;color:#00e676;border:1px solid #00e67633}
+.verdict.caution{background:#1a1a10;color:#ffd740;border:1px solid #ffd74033}
+
+/* PRICES */
+.prices{display:flex;gap:10px;background:#0c0c24;border:2px solid #404080;border-radius:8px;padding:8px 16px;font-size:14px;overflow-x:auto}
+.prices span{margin-right:14px;white-space:nowrap}
+.prices .sym{color:#7070aa;font-size:11px}
+.prices .val{font-weight:600}.up{color:#00e676}.dn{color:#ff5252}
+
+/* MAIN GRID */
+.main{display:grid;grid-template-columns:330px 1fr;gap:6px;flex:1;min-height:0}
+
+/* LEFT PANEL */
+.left{display:flex;flex-direction:column;gap:6px}
+.panel{background:#0c0c24;border:2px solid #404080;border-radius:8px;padding:12px 14px}
+.panel h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#6060a0;margin-bottom:10px}
+
+/* REGIME */
+.regime-big{font-size:28px;font-weight:700;text-align:center;padding:6px}
+.regime-big.risk-on{color:#00e676}.regime-big.risk-off{color:#ff5252}.regime-big.neutral{color:#ffd740}
+.regime-reasons{font-size:13px;color:#999;text-align:center}
+
+/* SESSIONS */
+.sessions{font-size:12px;color:#888;text-align:center;margin-top:6px}
+
+/* SETUPS COMPACT */
+.setup-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:14px;border-bottom:1px solid #12122a}
+.setup-row:last-child{border:none}
+.setup-name{font-weight:600;width:60px}
+.setup-score{font-size:13px;padding:3px 8px;border-radius:3px}
+.setup-score.long{background:#003315;color:#00e676}
+.setup-score.short{background:#310015;color:#ff5252}
+.setup-score.none{color:#999}
+.setup-score.closed{color:#666}
+.setup-score.premarket{color:#aaa}
+
+/* 8-STEP MINI */
+.steps-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;font-size:11px;text-align:center}
+.steps-mini div{padding:6px 3px;border-radius:3px;background:#111130}
+.steps-mini .pass{border:1px solid #00e67644;color:#00e676}
+.steps-mini .warn{border:1px solid #ffd74044;color:#ffd740}
+.steps-mini .skip{border:1px solid #333;color:#777}
+
+/* RIGHT PANEL */
+.right{display:flex;flex-direction:column;gap:6px;min-height:0}
+
+/* POSITIONS */
+.pos-grid-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px;margin-bottom:8px}
+.pos-card{background:#141428;border-radius:6px;padding:14px;border-left:3px solid #22d3ee}
+.pos-card.winner{border-left-color:#00e676}
+.pos-card.loser{border-left-color:#ff5252}
+.pos-card h4{font-size:16px;margin-bottom:8px}
+.pos-card .pnl-big{font-size:30px;font-weight:700;text-align:center;padding:6px 0}
+.pos-card .pnl-big.up{color:#00e676}.pos-card .pnl-big.dn{color:#ff5252}
+.pos-card .detail-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0}
+.pos-card .detail-row .lbl{color:#7070aa;font-size:13px}
+.pos-card .detail-row .hl{font-weight:600;color:#ffd740;font-size:13px}
+.pos-card .detail-row .gr{color:#00e676;font-size:13px}
+.pos-card .detail-row .rd{color:#ff5252;font-size:13px}
+
+/* JOURNAL TABLE */
+.journal-table{width:100%;font-size:14px;border-collapse:collapse}
+.journal-table th{text-align:left;padding:5px 10px;color:#5050a0;border-bottom:1px solid #1c1c44;font-size:13px;font-weight:500;position:sticky;top:0;background:#0c0c24}
+.journal-table td{padding:5px 10px;border-bottom:1px solid #12122a;font-variant-numeric:tabular-nums}
+.journal-table tr.open-row{background:#141430}
+.journal-table tr.closed-row{}
+.journal-empty{color:#555;font-size:15px;text-align:center;padding:24px}
+
+/* SUMMARY ROW */
+.summary{background:#0c0c24;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.summary .sr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a1a38;text-align:center}
+.summary .sr:last-child{border:none;font-weight:700}
+.summary .sr span{flex:1;text-align:center;border-right:1px solid #151530}
+.summary .sr span:last-child{border-right:none}
+.summary .sr .asset{color:#ffd740;width:60px;flex:0 0 60px;text-align:left}
+.summary .sr .val{font-variant-numeric:tabular-nums}
+.summary .sr .grn{color:#00e676}
+.summary .sr .red{color:#ff5252}
+.summary .sr .ylw{color:#ffd740}
+.summary .hdr-row{color:#6060a0;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #202050;padding-bottom:6px}
+.summary .total-row{background:#101030;border-radius:4px;border-top:2px solid #303060;margin-top:4px;padding:8px 12px!important;box-shadow:0 0 12px rgba(48,48,96,0.3)}
+
+.footer{text-align:center;font-size:11px;color:#444;padding:6px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div style="display:flex;align-items:center;gap:8px">
+    <div class="pulse go" id="pulse"></div>
+    <h1>Trade V4</h1>
+    <span style="font-size:13px;color:#777" id="timeDisp">--</span>
+  </div>
+  <div class="verdict caution" id="verdict">MONITOR</div>
+</div>
+
+<!-- PRICES -->
+<div class="prices" id="prices"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- LEFT -->
+  <div class="left">
+    <div class="panel">
+      <h3>🌍 REGIME</h3>
+      <div class="regime-big neutral" id="regimeTxt">--</div>
+      <div class="regime-reasons" id="regimeReasons"></div>
+      <div class="sessions" id="sessionInfo"></div>
+      <div id="corrWarn" style="font-size:11px;color:#ffd740;margin-top:4px"></div>
+    </div>
+
+    <div class="panel">
+      <h3>🎯 SETUPS</h3>
+      <div id="setupList"></div>
+    </div>
+
+    <div class="panel">
+      <h3>📋 PIPELINE</h3>
+      <div class="steps-mini" id="stepStatus"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="panel" style="flex:1;overflow-y:auto;min-height:0">
+      <h3>📌 POSITIONS & JOURNAL</h3>
+      <div id="posPanel"></div>
+      <div id="journalContent"><div class="journal-empty">No entries</div></div>
+    </div>
+
+    <div class="panel" style="padding:6px 10px">
+      <h3 style="margin-bottom:4px">📊 ACCOUNT</h3>
+      <div class="summary" id="summaryBar"></div>
+    </div>
+</div>
+
+<div class="footer">Trade V4 · XAU+AAPL+META+GOOGL+MSFT · 15m</div>
+
+<script>
+const STATE_URL = 'trade_v4_state.json';
+const JOURNAL_URL = 'trade_v4_journal.json';
+const POS_URL = 'trade_v4_positions.json';
+
+async function fetchJSON(url) {
+  try { const r = await fetch(url, {cache:'no-store'}); return r.ok ? r.json() : null; }
+  catch(e) { return null; }
+}
+
+function render() {
+  Promise.all([fetchJSON(STATE_URL), fetchJSON(JOURNAL_URL), fetchJSON(POS_URL)])
+    .then(([state, journal, positions]) => {
+      if (state) renderState(state);
+      if (journal || positions) renderJournal(journal, positions);
+    });
+}
+
+function renderState(s) {
+  const sum = s.summary || s;
+  const steps = s.steps || {};
+  const regime = steps.regime || {};
+  const setups = (steps.setup || {}).assets || {};
+  const sessions = s.sessions || steps._sessions || {};
+
+  // Verdict
+  const v = document.getElementById('verdict'), p = document.getElementById('pulse');
+  if (sum.signal_active) { v.textContent = '🟢 SIGNAL'; v.className = 'verdict go'; p.className = 'pulse go'; }
+  else if (sum.overall === 'GO') { v.textContent = '🟡 MONITOR'; v.className = 'verdict caution'; p.className = 'pulse caution'; }
+  else { v.textContent = '🔴 CAUTION'; v.className = 'verdict caution'; p.className = 'pulse stop'; }
+
+  document.getElementById('timeDisp').textContent = new Date(sum.timestamp).toLocaleString('en-US',{timeZone:'Asia/Singapore',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true}).replace(',','');
+
+  // Regime
+  const rt = document.getElementById('regimeTxt');
+  rt.textContent = regime.regime || '?';
+  rt.className = 'regime-big ' + (regime.regime||'').toLowerCase();
+  document.getElementById('regimeReasons').innerHTML = (regime.reasons||[]).map(r => `• ${r}`).join('<br>');
+
+  // Sessions
+  const g = sessions.gold ? '🟢' : '⚫';
+  const st = sessions.stocks ? '🟢' : (sessions.stocks_display ? '🟡' : '🔴');
+  document.getElementById('sessionInfo').innerHTML = `Gold ${g} &nbsp; Stocks ${st}`;
+
+  // Prices — regime + trading assets
+  const pdiv = document.getElementById('prices');
+  const assetPrices = {};
+  for (const [asset, data] of Object.entries(setups)) {
+    if (data.price) assetPrices[asset] = data.price;
+  }
+  let priceHTML = '';
+  if (regime.assets) {
+    priceHTML += Object.entries(regime.assets).map(([k,v]) =>
+      `<span><span class="sym">${k}</span><span class="val ${v.chg_5d>=0?'up':'dn'}">${v.price?'$'+v.price.toFixed(1):'--'}</span></span>`
+    ).join('');
+    priceHTML += '<span style="color:#444">|</span>';
+  }
+  priceHTML += Object.entries(assetPrices).map(([k,v]) =>
+    `<span><span class="sym">${k}</span><span class="val" style="color:#ffd740">$${v.toFixed(2)}</span></span>`
+  ).join('');
+  pdiv.innerHTML = priceHTML;
+
+  // Correlation warnings
+  const corr = steps.correlation || {};
+  document.getElementById('corrWarn').innerHTML = (corr.warnings||[]).map(w => `⚠️ ${w}`).join('<br>');
+
+  // Setups — compact
+  let sh = '';
+  for (const [asset, data] of Object.entries(setups)) {
+    const isClosed = data.status === 'OUTSIDE_HOURS';
+    const isPreMkt = data.status === 'PRE_MARKET' || data.status === 'GAP';
+    const sig = data.signal;
+    const maxS = data.all_signals ? Math.max(...data.all_signals.map(x=>x.score)) : 0;
+    const th = sig ? sig.threshold : (asset==='XAUUSD'?4:3);
+
+    if (isClosed) {
+      sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span class="setup-score closed">CLOSED</span></div>`;
+    } else if (isPreMkt) {
+      sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)||'--'}</span><span class="setup-score premarket">PRE</span></div>`;
+    } else if (sig && sig.passed) {
+      sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)}</span><span class="setup-score ${sig.direction}">${sig.setup} ${sig.score.toFixed(0)}</span></div>`;
+    } else {
+      // Show score / max_possible with percentage
+      const maxPossible = data.all_signals && data.all_signals[0] && data.all_signals[0].details ?
+        (() => { const d = data.all_signals[0].details.find(x => x.includes('Score:')); return d ? parseFloat(d.split('/')[1]) : null; })() : null;
+      if (maxPossible) {
+        const pct = (maxS / maxPossible * 100).toFixed(0);
+        sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)||'--'}</span><span class="setup-score none">${maxS.toFixed(0)}/${maxPossible} (${pct}%)</span></div>`;
+      } else {
+        sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)||'--'}</span><span class="setup-score none">${maxS.toFixed(0)} pts</span></div>`;
+      }
+    }
+  }
+  document.getElementById('setupList').innerHTML = sh;
+
+  // 8-step
+  document.getElementById('stepStatus').innerHTML = [
+    {n:1,l:'Regime',s:regime.status},
+    {n:2,l:'Correl',s:(steps.correlation||{}).status},
+    {n:3,l:'Setup',s:(steps.setup||{}).status},
+    {n:4,l:'Inst',s:'PASS'},
+    {n:5,l:'Size',s:sum.signal_active?'RDY':'SKIP'},
+    {n:6,l:'Entry',s:sum.signal_active?'RDY':'SKIP'},
+    {n:7,l:'S+TP',s:sum.signal_active?'RDY':'SKIP'},
+    {n:8,l:'Journal',s:'LOG'},
+  ].map(st=>`<div class="${st.s==='PASS'||st.s==='RDY'||st.s==='LOG'?'pass':st.s==='WARN'||st.s==='SIGNAL'?'warn':'skip'}">${st.n}<br>${st.l}</div>`).join('');
+}
+
+function renderJournal(journal, positions) {
+  const events = [];
+
+  // Journal scan entries
+  if (journal && journal.entries) {
+    for (const e of journal.entries) {
+      events.push({ts:e.timestamp||'',type:'scan',regime:e.regime||'?',signals:(e.signals||[]).map(s=>`${s.asset} ${s.direction}`).join(',')||'scan',events:e.events||[]});
+    }
+  }
+
+  // Positions
+  let totalTrades = 0, totalWins = 0, totalR = 0;
+  if (positions) {
+    for (const p of (positions.closed || [])) {
+      events.push({ts:p.closed_at||'',type:'close',asset:p.asset,dir:p.direction,entry:p.entry,exit:p.exit,reason:p.exit_reason,pnl_r:p.pnl_r,pnl_pct:p.pnl_pct,setup:p.setup});
+      totalTrades++;
+      if ((p.pnl_r||0) > 0) totalWins++;
+      totalR += (p.pnl_r||0);
+    }
+    for (const p of (positions.open || [])) {
+      events.push({ts:p.created_at||p.opened_at||'',type:'open',asset:p.asset,dir:p.direction,entry:p.entry,sl:p.sl,tp:p.tp,setup:p.setup,ur:p.unrealised_r,price:p.current_price,regime:p.regime});
+    }
+  }
+
+  events.sort((a,b) => b.ts.localeCompare(a.ts));
+
+  // Active positions — tiled grid
+  let posHtml = '<div class="pos-grid-container">';
+  const openPos = (positions||{}).open || [];
+  for (const p of openPos) {
+    const ur = p.unrealised_r || 0;
+    const urCls = ur >= 0 ? 'up' : 'dn';
+    // Standardise: P&L = R × R-value. 1R = 2% of allocation.
+    const margin = p.asset === 'XAUUSD' ? initGold : (initStocks / stockTickers);
+    const rVal = p.asset === 'XAUUSD' ? rValGold : rValStock;
+    const entryPx = p.entry || 1;
+    const currentPx = p.current_price || entryPx;
+    const pnlDollar = (p.unrealised_r || 0) * rVal;
+    const pnlCls = pnlDollar >= 0 ? '#00e676' : '#ff5252';
+    posHtml += `<div class="pos-card ${pnlDollar>0?'winner':(pnlDollar<0?'loser':'')}">
+      <h4>${p.asset} <span style="color:#888">${p.direction.toUpperCase()}</span> <span style="font-size:10px;color:#666">${p.setup||''}</span></h4>
+      <div class="pnl-big" style="color:${pnlCls}">${pnlDollar>=0?'+':''}$${Math.abs(pnlDollar).toFixed(0)}</div>
+      <div class="detail-row"><span class="lbl">Entry</span><span class="hl">$${(p.entry||0).toFixed(2)}</span></div>
+      <div class="detail-row"><span class="lbl">Current</span><span>$${(p.current_price||0).toFixed(2)}</span></div>
+      <div class="detail-row"><span class="lbl">Stop</span><span class="rd">$${(p.sl||0).toFixed(2)}</span></div>
+      <div class="detail-row"><span class="lbl">Target</span><span class="gr">$${(p.tp||0).toFixed(2)}</span></div>
+      <div class="detail-row"><span class="lbl">RPS</span><span>$${(p.rps||0).toFixed(2)} (${p.rps&&p.entry?((p.rps/p.entry)*100).toFixed(2):'--'}%)</span></div>
+      <div class="detail-row"><span class="lbl">Alloc</span><span>$${margin} · 1R=$${rVal.toFixed(0)}</span></div>
+      <div class="detail-row"><span class="lbl">Opened</span><span style="color:#888">${new Date(p.created_at||p.opened_at).toLocaleString('en-US',{timeZone:'Asia/Singapore',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true}).replace(',','')}</span></div>
+    </div>`;
+  }
+  posHtml += '</div>';
+  document.getElementById('posPanel').innerHTML = posHtml;
+
+  // Journal table
+  const recent = events.slice(0, 30);
+  if (!recent.length) {
+    document.getElementById('journalContent').innerHTML = '<div class="journal-empty">No entries yet</div>';
+    document.getElementById('summaryBar').innerHTML = '';
+    return;
+  }
+
+  // Constants
+  const capital = 10000;
+  const goldAllocPct = 0.10, stockAllocPct = 0.90;
+  const goldTickers = 1, stockTickers = 4;
+  const initGold = capital * goldAllocPct;
+  const initStocks = capital * stockAllocPct;
+  const rValGold = initGold * 0.02;
+  const rValStock = (initStocks / stockTickers) * 0.02;
+
+  let h = '<table class="journal-table"><tr><th>Time</th><th>Type</th><th>Asset</th><th>Setup</th><th>Entry</th><th>Exit</th><th>P&L</th></tr>';
+  for (const e of recent) {
+    const ts = new Date(e.ts).toLocaleString('en-US',{timeZone:'Asia/Singapore',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true}).replace(',','');
+    const rPerAsset = e.asset === 'XAUUSD' ? rValGold : rValStock;
+    if (e.type === 'scan') {
+      h += `<tr><td>${ts}</td><td style="color:#444">📡</td><td>—</td><td style="color:#666">${e.regime||'?'}</td><td>—</td><td>—</td><td style="color:#666">${e.signals}</td></tr>`;
+    } else if (e.type === 'open') {
+      h += `<tr class="open-row"><td>${ts}</td><td style="color:#22d3ee">OPEN</td><td style="font-weight:600">${e.asset}</td><td style="color:#888">${e.setup||''} ${e.dir}</td><td>$${(e.entry||0).toFixed(2)}</td><td style="color:#888">SL $${(e.sl||0).toFixed(1)}</td><td style="color:#888">R=$${rPerAsset.toFixed(0)}</td></tr>`;
+    } else if (e.type === 'close') {
+      const clr = (e.pnl_r||0)>=0?'#00e676':'#ff5252';
+      const actualDollar = (e.pnl_r||0) * rPerAsset;
+      const pnlPct = (e.pnl_pct||0);
+      h += `<tr class="closed-row"><td>${ts}</td><td style="color:${clr}">${e.reason==='TP'?'<span style="background:#003315;border:1px solid #00e676;color:#00e676;padding:2px 6px;border-radius:3px;font-weight:700">✅ TP</span>':'<span style="background:#310015;border:1px solid #ff5252;color:#ff5252;padding:2px 6px;border-radius:3px;font-weight:700">❌ SL</span>'}</td><td style="font-weight:600">${e.asset}</td><td style="color:#888">${e.setup||''} ${e.dir}</td><td>$${(e.entry||0).toFixed(2)}</td><td>$${(e.exit||0).toFixed(2)}</td><td style="color:${clr};font-weight:700">${actualDollar>=0?'+':''}$${Math.abs(actualDollar).toFixed(0)} (${(e.pnl_r||0)>=0?'+':''}${e.pnl_r}R, ${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%)</td></tr>`;
+    }
+  }
+  h += '</table>';
+  document.getElementById('journalContent').innerHTML = h;
+
+  // Summary bar — all in $
+  const wr = totalTrades > 0 ? (totalWins/totalTrades*100).toFixed(0) : '—';
+  // Calculate realised by asset
+  let xauRealised = 0, stockRealised = 0, xauUnrealised = 0, stockUnrealised = 0;
+  let xauTrades = 0, stockTrades = 0, xauWins = 0, stockWins = 0;
+  if (positions) {
+    for (const p of (positions.closed || [])) {
+      const rVal = p.asset === 'XAUUSD' ? rValGold : rValStock;
+      const d = (p.pnl_r||0) * rVal;
+      if (p.asset === 'XAUUSD') {
+        xauRealised += d; xauTrades++; if ((p.pnl_r||0) > 0) xauWins++;
+      } else {
+        stockRealised += d; stockTrades++; if ((p.pnl_r||0) > 0) stockWins++;
+      }
+    }
+  }
+  for (const p of openPos) {
+    const rVal = p.asset === 'XAUUSD' ? rValGold : rValStock;
+    const d = (p.unrealised_r||0) * rVal;
+    if (p.asset === 'XAUUSD') xauUnrealised += d; else stockUnrealised += d;
+  }
+  const totalRealised = xauRealised + stockRealised;
+  const totalUnrealised = xauUnrealised + stockUnrealised;
+  const equity = capital + totalRealised + totalUnrealised;
+  const eqChange = ((equity / capital - 1) * 100).toFixed(1);
+  const fmt = v => `${v>=0?'+':''}$${Math.abs(v).toFixed(0)}`;
+  const clr = v => v>=0?'grn':'red';
+  const currentAllocXau = equity * goldAllocPct;
+  const currentAllocStock = equity * stockAllocPct;
+  document.getElementById('summaryBar').innerHTML = `
+    <div class="sr hdr-row"><span class="asset">Asset</span><span>Init Capital</span><span>Alloc%</span><span>Curr Alloc</span><span>Tickers</span><span>Alloc/Ticker</span><span>Trades</span><span>Win Rate</span><span>Realised</span></div>
+    <div class="sr"><span class="asset">XAU</span><span>$${initGold}</span><span>${goldAllocPct*100}%</span><span>$${currentAllocXau.toFixed(0)}</span><span>${goldTickers}</span><span>$${initGold/goldTickers}</span><span>${xauTrades}</span><span>${xauTrades>0?(xauWins/xauTrades*100).toFixed(0):'—'}%</span><span class="${clr(xauRealised)}">${fmt(xauRealised)}</span></div>
+    <div class="sr"><span class="asset">Stocks</span><span>$${initStocks}</span><span>${stockAllocPct*100}%</span><span>$${currentAllocStock.toFixed(0)}</span><span>${stockTickers}</span><span>$${initStocks/stockTickers}</span><span>${stockTrades}</span><span>${stockTrades>0?(stockWins/stockTrades*100).toFixed(0):'—'}%</span><span class="${clr(stockRealised)}">${fmt(stockRealised)}</span></div>
+    <div class="sr total-row">
+      <span class="asset" style="font-size:15px;color:#fff">Total</span>
+      <span style="color:#aaa">$${capital.toLocaleString()}</span>
+      <span style="color:#aaa">100%</span>
+      <span style="color:#aaa">$${(currentAllocXau+currentAllocStock).toFixed(0)}</span>
+      <span>${goldTickers+stockTickers}</span>
+      <span style="color:#aaa">—</span>
+      <span>${totalTrades}</span>
+      <span>${wr}%</span>
+      <span style="font-weight:700;font-size:17px;color:${clr(totalRealised)}">${fmt(totalRealised)} <span style="font-size:12px;color:#aaa">${eqChange>=0?'↑':'↓'}${Math.abs(eqChange)}%</span></span>
+    </div>
+    <div class="sr" style="font-weight:400;color:#666;font-size:12px;border:none"><span class="asset"></span><span></span><span></span><span></span><span></span><span></span><span></span><span>${totalWins} won · ${openPos.length} active</span></div>
+  `;
+}
+
+render();
+setInterval(render, 15000);
+</script>
+</body>
+</html>

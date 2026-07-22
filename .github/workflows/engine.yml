@@ -1,0 +1,41 @@
+# Trade V4 — GitHub Pages Deployment
+# Engine runs via GitHub Actions every 15 min
+# Dashboard served via GitHub Pages
+
+name: Trade V4 Engine
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install tvDatafeed pandas numpy pytz yfinance
+
+      - name: Run Engine
+        run: python trade_v4_engine.py --json-out > /dev/null
+        env:
+          TV_USERNAME: clneohtv1jy20q
+          TV_PASSWORD: ${{ secrets.TV_PASSWORD }}
+
+      - name: Commit updated state
+        run: |
+          git config user.name "Trade V4 Bot"
+          git config user.email "bot@tradev4.local"
+          git add trade_v4_state.json trade_v4_positions.json trade_v4_journal.json trade_v4_trades.txt || true
+          git diff --staged --quiet || git commit -m "Update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push

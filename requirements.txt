@@ -1,0 +1,5 @@
+tvDatafeed
+pandas
+numpy
+pytz
+yfinance
