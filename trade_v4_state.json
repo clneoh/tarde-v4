@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T07:15:14.950916+08:00",
+  "timestamp": "2026-07-23T07:30:15.641813+08:00",
   "overall": "GO",
   "regime": "NEUTRAL",
   "signal_active": false,
   "sessions": {
     "stocks": false,
     "gold": true,
-    "gold_time": "07:15 (Tokyo)",
+    "gold_time": "07:30 (Tokyo)",
     "stocks_display": false
   },
   "steps": {
     "_sessions": {
       "stocks": false,
       "gold": true,
-      "gold_time": "07:15 (Tokyo)",
+      "gold_time": "07:30 (Tokyo)",
       "stocks_display": false
     },
     "regime": {
@@ -47,9 +47,9 @@
           "chg_5d": 2.24
         },
         "BTC": {
-          "price": 65874.38,
+          "price": 65938.94,
           "trend": "UP",
-          "chg_5d": 1.66
+          "chg_5d": 1.76
         }
       }
     },
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4123.85,
-          "rsi": 33.2,
-          "atr": 5.7,
-          "ema": 4131.51,
+          "price": 4120.1,
+          "rsi": 31.7,
+          "atr": 5.74,
+          "ema": 4130.92,
           "sw_high": 4137.92,
           "sw_low": 4119.59,
           "in_session": true,
@@ -94,11 +94,11 @@
               "score_pct": 0.0,
               "passed": false,
               "details": [
-                "+2.1/10 [entry] swing_break",
+                "+0.2/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "RSI gate fail: 33.2 < 35",
+                "RSI gate fail: 31.7 < 35",
                 "Score: 0.0/40 (0%) \u00b7 threshold 60%"
               ]
             },
@@ -113,10 +113,10 @@
               "score_pct": 0.0,
               "passed": false,
               "details": [
-                "+3.1/10 [bias] ema_proximity",
+                "+4.0/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+3.2/10 [entry] rsi_range",
-                "RSI gate fail: 33.2 < 35",
+                "+2.0/10 [entry] rsi_range",
+                "RSI gate fail: 31.7 < 35",
                 "Score: 0.0/30 (0%) \u00b7 threshold 60%"
               ]
             }
@@ -130,7 +130,7 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (07:15 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:30 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -200,7 +200,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (07:15 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:30 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -269,7 +269,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (07:15 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:30 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -337,7 +337,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (07:15 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (07:30 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
