@@ -53,7 +53,8 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 .setup-score.none{color:#999}
 .setup-score.closed{color:#666}
 .setup-score.premarket{color:#aaa}
-.setup-asset{font-weight:700;padding:5px 0 2px;font-size:13px;border-bottom:1px solid #1a1a38}
+.setup-asset{font-weight:700;padding:5px 0 2px;font-size:13px;border-bottom:1px solid #1a1a38;cursor:pointer}
+.setup-asset:hover{color:#ffd740}
 .setup-sub{display:flex;align-items:center;padding:2px 0;font-size:11px}
 .scard{background:#0e0e20;border-radius:4px;padding:5px 8px;margin:3px 0}
 .scard-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:14px}
@@ -270,7 +271,7 @@ function renderState(s) {
     const n = allSigs.length;
     const uid = 's_' + asset;
     sh += `<div class="setup-asset" onclick="var d=document.getElementById('${uid}');d.style.display=d.style.display==='none'?'block':'none'" style="cursor:pointer;user-select:none">
-      <span>${asset}</span>
+      <span>▶ ${asset}</span>
       <span style="color:${clr};font-weight:700;float:right;margin-left:8px">${bestPct.toFixed(0)}%</span>
       <span style="color:#ffd740;float:right">$${data.price?.toFixed(1)||'--'}</span>
     </div>`;
