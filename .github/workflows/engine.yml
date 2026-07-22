@@ -24,7 +24,10 @@ jobs:
           python-version: '3.11'
 
       - name: Install deps
-        run: pip install tvDatafeed pandas numpy pytz yfinance
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy pytz yfinance
+          pip install git+https://github.com/rongardF/tvdatafeed.git
 
       - name: Run Engine
         run: python trade_v4_engine.py --json-out > /dev/null
