@@ -270,7 +270,7 @@ function renderState(s) {
     const clr = bestPct >= 60 ? '#00e676' : (bestPct >= 40 ? '#ffd740' : '#ff5252');
     const n = allSigs.length;
     const uid = 's_' + asset;
-    sh += `<div class="setup-asset" onclick="var d=document.getElementById('${uid}');d.style.display=d.style.display==='none'?'block':'none'" style="cursor:pointer;user-select:none">
+    sh += `<div class="setup-asset" onclick="var d=document.getElementById('${uid}');d.style.display=d.style.display==='none'?'block':'none';window._collapsed=window._collapsed||{};window._collapsed['${uid}']=d.style.display==='none'" style="cursor:pointer;user-select:none">
       <span>▶ ${asset}</span>
       <span style="color:${clr};font-weight:700;float:right;margin-left:8px">${bestPct.toFixed(0)}%</span>
       <span style="color:#ffd740;float:right">$${data.price?.toFixed(1)||'--'}</span>
@@ -331,6 +331,13 @@ function renderState(s) {
     }
   }
   document.getElementById('setupList').innerHTML = sh;
+  // Restore collapsed state
+  if (window._collapsed) {
+    for (const [id, state] of Object.entries(window._collapsed)) {
+      const el = document.getElementById(id);
+      if (el && state) el.style.display = 'none';
+    }
+  }
 
   // 8-step
   document.getElementById('stepStatus').innerHTML = [
