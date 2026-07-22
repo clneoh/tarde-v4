@@ -20,12 +20,12 @@ import pytz
 LOCAL_TZ = pytz.timezone("Asia/Singapore")
 
 # ── Config ──────────────────────────────────────────────────
-CONFIG_FILE = "/tmp/trade_v4_config.json"
-STATE_FILE  = "/tmp/trade_v4_state.json"
-JOURNAL_FILE = "/tmp/trade_v4_journal.json"
-TRADE_LOG    = "/tmp/trade_v4_trades.txt"
+CONFIG_FILE = "trade_v4_config.json"
+STATE_FILE  = "trade_v4_state.json"
+JOURNAL_FILE = "trade_v4_journal.json"
+POSITIONS_FILE = "trade_v4_positions.json"
+TRADES_LOG = "trade_v4_trades.txt"
 VENV_PY      = "/Users/clneoh/.hermes/hermes-agent/venv/bin/python3"
-
 # Compounded capital — persists in state, starts from config
 def load_capital(cfg=None):
     """Load compounded capital from state, fallback to config sizing.capital."""
