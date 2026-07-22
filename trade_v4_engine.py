@@ -67,6 +67,11 @@ TV_MAP = {
 # ── TV Connection ───────────────────────────────────────────
 def connect_tv():
     import tvDatafeed as tv
+    import os
+    u = os.environ.get("TV_USERNAME", "")
+    p = os.environ.get("TV_PASSWORD", "")
+    if u and p:
+        return tv.TvDatafeed(username=u, password=p)
     return tv.TvDatafeed()
 
 
