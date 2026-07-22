@@ -186,7 +186,7 @@ function render() {
   Promise.all([fetchJSON(STATE_URL), fetchJSON(JOURNAL_URL), fetchJSON(POS_URL)])
     .then(([state, journal, positions]) => {
       if (state) renderState(state);
-      if (journal || positions) renderJournal(journal, positions, state);
+      renderJournal(journal, positions, state);
     });
 }
 
