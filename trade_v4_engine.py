@@ -20,11 +20,34 @@ import pytz
 LOCAL_TZ = pytz.timezone("Asia/Singapore")
 
 # ── Config ──────────────────────────────────────────────────
-CONFIG_FILE = "trade_v4_config.json"
-STATE_FILE = "trade_v4_state.json"
-JOURNAL_FILE = "trade_v4_journal.json"
-POSITIONS_FILE = "trade_v4_positions.json"
-TRADES_LOG = "trade_v4_trades.txt"
+CONFIG_FILE = "/tmp/trade_v4_config.json"
+STATE_FILE  = "/tmp/trade_v4_state.json"
+JOURNAL_FILE = "/tmp/trade_v4_journal.json"
+TRADE_LOG    = "/tmp/trade_v4_trades.txt"
+VENV_PY      = "/Users/clneoh/.hermes/hermes-agent/venv/bin/python3"
+
+# Compounded capital — persists in state, starts from config
+def load_capital(cfg=None):
+    """Load compounded capital from state, fallback to config sizing.capital."""
+    if os.path.exists(STATE_FILE):
+        with open(STATE_FILE) as f:
+            state = json.load(f)
+        cap = state.get("compounded_capital")
+        if cap and cap > 0:
+            return cap
+    if cfg:
+        return cfg["sizing"]["capital"]
+    return 10000
+
+def save_capital_in_state(capital):
+    """Update state file with new compounded capital, preserving other fields."""
+    state = {}
+    if os.path.exists(STATE_FILE):
+        with open(STATE_FILE) as f:
+            state = json.load(f)
+    state["compounded_capital"] = round(capital, 2)
+    with open(STATE_FILE, "w") as f:
+        json.dump(state, f, indent=2, default=str)
 
 # TV symbol mapping from config asset names
 TV_MAP = {
@@ -694,12 +717,13 @@ def step_instrument(cfg, asset):
 
 
 # ── Step 5: SIZE ────────────────────────────────────────────
-def step_size(cfg, asset, signal_data):
+def step_size(cfg, asset, signal_data, capital=None):
     sizing = cfg["sizing"]
     if not signal_data or not signal_data.get("signal"):
         return {"status": "SKIP"}
 
-    capital = sizing["capital"]
+    if capital is None:
+        capital = sizing["capital"]
     risk_pct = sizing["risk_per_trade_pct"] / 100
     risk_amount = capital * risk_pct
 
@@ -872,13 +896,15 @@ def _append_log(entry):
     ts = entry["timestamp"][:19].replace("T", " ")
     regime = entry.get("regime", "?")
     signals = entry.get("signals", [])
-    with open(TRADES_LOG, "a") as f:
+    with open(TRADE_LOG, "a") as f:
         f.write(f"[{ts}] {regime:8s} | {len(signals)} signals\n")
         for s in signals:
             f.write(f"  {s['asset']:6s} {s['setup']:15s} {s['direction']:5s} score={s['score']} @ ${s['price']:.2f}\n")
 
 
-# ── Position tracking helpers ─────────────────────────────
+POSITIONS_FILE = "/tmp/trade_v4_positions.json"
+
+
 # ── Position Tracking (Paper) ───────────────────────────────
 def load_positions():
     if os.path.exists(POSITIONS_FILE):
@@ -892,10 +918,14 @@ def save_positions(p):
         json.dump(p, f, indent=2, default=str)
 
 
-def track_positions(setups, per_asset, tv=None):
-    """Open/update/close paper positions. Limit orders fill on touch, not close."""
+def track_positions(setups, per_asset, tv=None, current_capital=None, cfg=None):
+    """Open/update/close paper positions. Limit orders fill on touch, not close.
+    Returns (positions_dict, events_list, capital_events_list).
+    On position close, compounds capital by dollar P&L."""
     pos = load_positions()
     events = []
+    capital_events = []  # Capital changes to log
+    new_capital = current_capital or 10000
 
     # Fetch entry-TF data for limit fill detection on pending entries
     pending_ohlc = _fetch_pending_ohlc(pos, tv)
@@ -943,37 +973,61 @@ def track_positions(setups, per_asset, tv=None):
         if direction == "long" and price <= sl:
             pnl = (sl - entry) / abs(p["rps"]) if p.get("rps") else (sl - entry) / entry * 100
             pnl_pct = (sl / entry - 1) * 100
+            risk_amount = p.get("risk_amount", new_capital * 0.01)
+            dollar_pnl = -risk_amount  # -1R
+            new_capital += dollar_pnl
             p["exit"] = sl; p["exit_reason"] = "SL"; p["pnl_r"] = -1.0
-            p["pnl_pct"] = round(pnl_pct, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            p["pnl_pct"] = round(pnl_pct, 2); p["pnl_r_dollar"] = round(dollar_pnl, 2)
+            p["capital_after"] = round(new_capital, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            capital_events.append({"asset": asset, "reason": "SL", "pnl_r": -1.0, "dollar": round(dollar_pnl, 2),
+                                    "capital": round(new_capital, 2)})
             pos["closed"].append(p)
             pos["open"].remove(p)
-            events.append(f"❌ {asset} {direction} STOPPED OUT @ ${sl:.2f} | -1R ({pnl_pct:+.2f}%)")
+            events.append(f"❌ {asset} {direction} STOPPED OUT @ ${sl:.2f} | -1R ({pnl_pct:+.2f}%) | Capital: ${new_capital:,.0f}")
         elif direction == "short" and price >= sl:
             pnl_pct = (entry / sl - 1) * 100
+            risk_amount = p.get("risk_amount", new_capital * 0.01)
+            dollar_pnl = -risk_amount
+            new_capital += dollar_pnl
             p["exit"] = sl; p["exit_reason"] = "SL"; p["pnl_r"] = -1.0
-            p["pnl_pct"] = round(pnl_pct, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            p["pnl_pct"] = round(pnl_pct, 2); p["pnl_r_dollar"] = round(dollar_pnl, 2)
+            p["capital_after"] = round(new_capital, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            capital_events.append({"asset": asset, "reason": "SL", "pnl_r": -1.0, "dollar": round(dollar_pnl, 2),
+                                    "capital": round(new_capital, 2)})
             pos["closed"].append(p)
             pos["open"].remove(p)
-            events.append(f"❌ {asset} {direction} STOPPED OUT @ ${sl:.2f} | -1R ({pnl_pct:+.2f}%)")
+            events.append(f"❌ {asset} {direction} STOPPED OUT @ ${sl:.2f} | -1R ({pnl_pct:+.2f}%) | Capital: ${new_capital:,.0f}")
         # Check TP hit
         elif direction == "long" and price >= tp:
             rps = p.get("rps", abs(entry - sl))
             pnl_r = round((tp - entry) / rps, 1) if rps else 2.0
             pnl_pct = (tp / entry - 1) * 100
+            risk_amount = p.get("risk_amount", new_capital * 0.01)
+            dollar_pnl = risk_amount * pnl_r
+            new_capital += dollar_pnl
             p["exit"] = tp; p["exit_reason"] = "TP"; p["pnl_r"] = pnl_r
-            p["pnl_pct"] = round(pnl_pct, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            p["pnl_pct"] = round(pnl_pct, 2); p["pnl_r_dollar"] = round(dollar_pnl, 2)
+            p["capital_after"] = round(new_capital, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            capital_events.append({"asset": asset, "reason": "TP", "pnl_r": pnl_r, "dollar": round(dollar_pnl, 2),
+                                    "capital": round(new_capital, 2)})
             pos["closed"].append(p)
             pos["open"].remove(p)
-            events.append(f"✅ {asset} {direction} TP HIT @ ${tp:.2f} | +{pnl_r}R ({pnl_pct:+.2f}%)")
+            events.append(f"✅ {asset} {direction} TP HIT @ ${tp:.2f} | +{pnl_r}R ({pnl_pct:+.2f}%) | Capital: ${new_capital:,.0f}")
         elif direction == "short" and price <= tp:
             rps = p.get("rps", abs(sl - entry))
             pnl_r = round((entry - tp) / rps, 1) if rps else 2.0
             pnl_pct = (entry / tp - 1) * 100
+            risk_amount = p.get("risk_amount", new_capital * 0.01)
+            dollar_pnl = risk_amount * pnl_r
+            new_capital += dollar_pnl
             p["exit"] = tp; p["exit_reason"] = "TP"; p["pnl_r"] = pnl_r
-            p["pnl_pct"] = round(pnl_pct, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            p["pnl_pct"] = round(pnl_pct, 2); p["pnl_r_dollar"] = round(dollar_pnl, 2)
+            p["capital_after"] = round(new_capital, 2); p["closed_at"] = datetime.now(LOCAL_TZ).isoformat()
+            capital_events.append({"asset": asset, "reason": "TP", "pnl_r": pnl_r, "dollar": round(dollar_pnl, 2),
+                                    "capital": round(new_capital, 2)})
             pos["closed"].append(p)
             pos["open"].remove(p)
-            events.append(f"✅ {asset} {direction} TP HIT @ ${tp:.2f} | +{pnl_r}R ({pnl_pct:+.2f}%)")
+            events.append(f"✅ {asset} {direction} TP HIT @ ${tp:.2f} | +{pnl_r}R ({pnl_pct:+.2f}%) | Capital: ${new_capital:,.0f}")
         else:
             # Update current P&L
             if direction == "long":
@@ -1005,6 +1059,8 @@ def track_positions(setups, per_asset, tv=None):
         sl = st["sl"]
         tp = st["tp"]
         rps = st.get("rps", abs(entry_price - sl))
+        sizing_info = per_asset.get(asset, {}).get("size", {})
+        risk_amount = sizing_info.get("risk_amount", new_capital * 0.01)
 
         new_pending = {
             "asset": asset,
@@ -1016,6 +1072,8 @@ def track_positions(setups, per_asset, tv=None):
             "tp": round(tp, 2),
             "rps": round(rps, 2),
             "rr": st.get("rr", 2.0),
+            "risk_amount": round(risk_amount, 2),
+            "capital_at_entry": round(new_capital, 2),
             "created_at": datetime.now(LOCAL_TZ).isoformat(),
             "regime": "",
             "bars_waiting": 0,
@@ -1024,7 +1082,7 @@ def track_positions(setups, per_asset, tv=None):
         events.append(f"📝 {asset} {signal['direction']} LIMIT PLACED @ ${entry_price:.2f} (waiting for touch) | SL ${sl:.2f} | TP ${tp:.2f}")
 
     save_positions(pos)
-    return pos, events
+    return pos, events, capital_events
 
 
 def _fetch_pending_ohlc(pos, tv):
@@ -1127,6 +1185,7 @@ def run_pipeline(cfg, tv=None):
     # Steps 4-7 per asset
     asset_steps = {}
     setup_data = steps["setup"].get("assets", {})
+    current_capital = load_capital(cfg)
     for asset in cfg["assets"]:
         # Skip out-of-session assets
         sf = session_filter.get(asset, "anytime")
@@ -1156,7 +1215,7 @@ def run_pipeline(cfg, tv=None):
         asset_data = setup_data.get(asset, {})
         asset_steps[asset] = {
             "instrument": step_instrument(cfg, asset),
-            "size": step_size(cfg, asset, asset_data),
+            "size": step_size(cfg, asset, asset_data, current_capital),
             "entry": step_entry(cfg, asset, asset_data),
             "stop_target": step_stop_target(cfg, asset, asset_data, tv),
         }
@@ -1164,7 +1223,17 @@ def run_pipeline(cfg, tv=None):
 
     # ── Position tracking ──
     regime = steps["regime"]["regime"]
-    positions, pos_events = track_positions(steps["setup"], asset_steps, tv)
+    current_capital = load_capital(cfg)
+    positions, pos_events, capital_events = track_positions(steps["setup"], asset_steps, tv, current_capital, cfg)
+    # Save compounded capital if positions closed
+    if capital_events:
+        latest = capital_events[-1]
+        save_capital_in_state(latest["capital"])
+        steps["capital"] = latest["capital"]
+        steps["capital_events"] = capital_events
+    else:
+        steps["capital"] = current_capital
+        steps["capital_events"] = []
     # Tag new positions with regime
     for p in positions["open"]:
         if not p.get("regime"):
@@ -1207,6 +1276,7 @@ def save_state(state):
         "sessions": state["steps"].get("_sessions", {}),
         "steps": state["steps"],
         "positions": state["steps"].get("positions", {"open": [], "closed": []}),
+        "compounded_capital": state["steps"].get("capital"),
     }
     with open(STATE_FILE, "w") as f:
         json.dump(simple, f, indent=2, default=str)
@@ -1237,7 +1307,7 @@ def _format_compact(result):
             pos_line = " | " + " · ".join(parts)
         return f"🔒 MARKET CLOSED{pos_line}"
 
-    lines = [f"📊 V4 · {s['overall']} · {s['regime']} · {s['timestamp'][:19].replace('T',' ')}", ""]
+    lines = [f"📊 V4 · {s['overall']} · {s['regime']} · {s['timestamp'][:19].replace('T',' ')} (SGT)", ""]
 
     # Regime
     regime = steps["regime"]
@@ -1273,8 +1343,33 @@ def _format_compact(result):
         elif status_text == "GAP":
             lines.append(f"⚫ {asset}: ${data['price']:.2f} RSI {data.get('rsi','?')} · session gap")
         else:
-            top_score = max((s["score"] for s in data.get("all_signals", [])), default=0)
-            lines.append(f"   {asset}: ${data['price']:.2f} RSI {data.get('rsi','?')} · no signal (max score {top_score})")
+            # Show all setups with scores for in-session assets
+            all_sigs = data.get("all_signals", [])
+            best = max((s["score"] for s in all_sigs), default=0)
+            best_max = max((s.get("max_possible", 0) for s in all_sigs), default=0)
+
+            if best_max > 0:
+                pct = best / best_max * 100
+                bar = "█" * max(1, int(pct/10)) + "░" * max(0, 10 - int(pct/10))
+                gap = 60 - pct
+
+                # Build compact score card
+                lines.append(f"{'🟡' if gap <= 10 else '  '} {asset} ${data['price']:.2f} [{bar}] {pct:.0f}%")
+                for s in all_sigs:
+                    if s["score"] <= 0: continue
+                    mp = s.get("max_possible", 1)
+                    sp = s["score"] / mp * 100
+                    sb = "▓" * max(1, int(sp/20)) + "░" * max(0, 5 - int(sp/20))
+                    lines.append(f"   {sp:.0f}% {sb} {s['setup']} {s['direction']} ({s['score']:.0f}/{mp})")
+                    # Show top 3 criteria
+                    crits = [d for d in s.get("details", []) if "/" in d][:3]
+                    for c in crits:
+                        sign = "+" if c.startswith("+") else " "
+                        m = __import__('re').search(r'\] (\S+)', c)
+                        name = m.group(1) if m else c.split('] ')[-1][:20]
+                        lines.append(f"      {sign} {name}")
+            else:
+                lines.append(f"   {asset}: ${data['price']:.2f} · no signal")
 
     # Stop/target for active signals
     per_asset = steps.get("per_asset", {})
@@ -1298,13 +1393,21 @@ def _format_compact(result):
             ur_emoji = "🟢" if ur > 0 else ("🔴" if ur < 0 else "⚪")
             lines.append(f"📌 {p['asset']} {p['direction']} @ ${p['entry']:.2f} → ${p['current_price']:.2f} {ur_emoji} {ur:+.1f}R | SL ${p['sl']:.2f} TP ${p['tp']:.2f}")
 
-    lines.append(f"\n📝 Journal: {steps['journal']['entry_count']} entries")
+    lines.append(f"\n💰 Capital: ${steps.get('capital', 10000):,.0f} | Journal: {steps['journal']['entry_count']} entries")
+    # Recent closed trades
+    capital_events = steps.get("capital_events", [])
+    closed_pos = pos.get("closed", [])
+    recent_closes = closed_pos[-3:] if closed_pos else []
+    if capital_events or recent_closes:
+        for ce in capital_events[-3:]:
+            sign = "+" if ce["pnl_r"] >= 0 else ""
+            lines.append(f"   {ce['asset']} {ce['reason']}: {sign}{ce['pnl_r']}R (${ce['dollar']:+,.0f}) → Capital: ${ce['capital']:,.0f}")
     try:
-        with open("tunnel_url.txt") as f:
+        with open("/tmp/trade_v4_tunnel_url.txt") as f:
             url = f.read().strip()
         if url:
-            lines.append(f"\n🖥️ https://{url}/trade_v4_dashboard.html")
-    except:
+            lines.append(f"🖥️ {url}/trade_v4_dashboard.html")
+    except Exception:
         pass
     return "\n".join(lines)
 

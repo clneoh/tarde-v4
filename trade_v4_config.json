@@ -58,9 +58,9 @@
           "name": "structure_break", "type": "breakout", "direction": "both",
           "criteria": [
             { "rule": "close beyond prior swing", "max": 10, "scaling": "swing_break" },
-            { "rule": "volume", "max": 8, "scaling": "volume" },
-            { "rule": "ATR expansion", "max": 8, "scaling": "atr_expand" },
-            { "rule": "touches at level", "max": 6, "scaling": "touches" }
+            { "rule": "volume", "max": 10, "scaling": "volume" },
+            { "rule": "ATR expansion", "max": 10, "scaling": "atr_expand" },
+            { "rule": "touches at level", "max": 10, "scaling": "touches" }
           ]
         },
         {
@@ -68,7 +68,7 @@
           "criteria": [
             { "rule": "price proximity to 50EMA", "max": 10, "scaling": "ema_proximity" },
             { "rule": "engulfing candle", "max": 10, "scaling": "engulfing" },
-            { "rule": "RSI", "max": 8, "scaling": "rsi_range" }
+            { "rule": "RSI", "max": 10, "scaling": "rsi_range" }
           ]
         }
       ]
@@ -80,18 +80,18 @@
           "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
           "criteria": [
             { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 8, "scaling": "rsi_range" },
+            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
             { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 6, "scaling": "volume" }
+            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
           ]
         },
         {
           "name": "momentum_break", "type": "momentum", "direction": "long",
           "criteria": [
             { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 8, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 8, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 6, "scaling": "atr_expand" }
+            { "rule": "volume", "max": 10, "scaling": "volume" },
+            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
+            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
           ]
         },
         {
@@ -100,7 +100,7 @@
             { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
             { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
             { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 6, "scaling": "volume" }
+            { "rule": "volume", "max": 10, "scaling": "volume" }
           ]
         }
       ]
@@ -111,17 +111,17 @@
         { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
           "criteria": [
             { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 8, "scaling": "rsi_range" },
+            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
             { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 6, "scaling": "volume" }
+            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
           ]
         },
         { "name": "momentum_break", "type": "momentum", "direction": "long",
           "criteria": [
             { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 8, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 8, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 6, "scaling": "atr_expand" }
+            { "rule": "volume", "max": 10, "scaling": "volume" },
+            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
+            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
           ]
         },
         { "name": "earnings_drift", "type": "earnings", "direction": "both",
@@ -129,7 +129,7 @@
             { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
             { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
             { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 6, "scaling": "volume" }
+            { "rule": "volume", "max": 10, "scaling": "volume" }
           ]
         }
       ]
@@ -140,17 +140,17 @@
         { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
           "criteria": [
             { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 8, "scaling": "rsi_range" },
+            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
             { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 6, "scaling": "volume" }
+            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
           ]
         },
         { "name": "momentum_break", "type": "momentum", "direction": "long",
           "criteria": [
             { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 8, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 8, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 6, "scaling": "atr_expand" }
+            { "rule": "volume", "max": 10, "scaling": "volume" },
+            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
+            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
           ]
         },
         { "name": "earnings_drift", "type": "earnings", "direction": "both",
@@ -158,7 +158,7 @@
             { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
             { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
             { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 6, "scaling": "volume" }
+            { "rule": "volume", "max": 10, "scaling": "volume" }
           ]
         }
       ]
@@ -169,17 +169,17 @@
         { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
           "criteria": [
             { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 8, "scaling": "rsi_range" },
+            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
             { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 6, "scaling": "volume" }
+            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
           ]
         },
         { "name": "momentum_break", "type": "momentum", "direction": "long",
           "criteria": [
             { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 8, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 8, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 6, "scaling": "atr_expand" }
+            { "rule": "volume", "max": 10, "scaling": "volume" },
+            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
+            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
           ]
         },
         { "name": "earnings_drift", "type": "earnings", "direction": "both",
@@ -187,7 +187,7 @@
             { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
             { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
             { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 6, "scaling": "volume" }
+            { "rule": "volume", "max": 10, "scaling": "volume" }
           ]
         }
       ]

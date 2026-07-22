@@ -7,7 +7,7 @@
 <title>Trade V4</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#080816;color:#c8c8e0;font-family:-apple-system,BlinkMacSystemFont,'SF Mono','Menlo','Consolas',monospace;height:100vh;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:4px}
+body{background:#080816;color:#c8c8e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;height:100vh;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:4px;min-width:1200px}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
 
@@ -53,6 +53,15 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 .setup-score.none{color:#999}
 .setup-score.closed{color:#666}
 .setup-score.premarket{color:#aaa}
+.setup-asset{font-weight:700;padding:5px 0 2px;font-size:13px;border-bottom:1px solid #1a1a38}
+.setup-sub{display:flex;align-items:center;padding:2px 0;font-size:11px}
+.scard{background:#0e0e20;border-radius:4px;padding:5px 8px;margin:3px 0}
+.scard-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:14px}
+.scard-bar{height:6px;background:#111130;border-radius:2px;margin:4px 0;overflow:hidden;position:relative}
+.scard-bar span{display:block;height:100%;border-radius:2px;transition:width 0.5s}
+.scard-crit{font-size:13px;color:#777;padding:2px 0;display:flex;align-items:center}
+.scard-crit.grn{color:#55aa55}
+.scard-gap{font-size:13px;color:#999;text-align:right;margin-bottom:3px}
 
 /* 8-STEP MINI */
 .steps-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;font-size:11px;text-align:center}
@@ -88,11 +97,11 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 
 /* SUMMARY ROW */
 .summary{background:#0c0c24;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;font-size:14px}
-.summary .sr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a1a38;text-align:center}
+.summary .sr{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding:4px 0;border-bottom:1px solid #1a1a38;text-align:center;align-items:center;gap:2px;font-size:13px}
 .summary .sr:last-child{border:none;font-weight:700}
-.summary .sr span{flex:1;text-align:center;border-right:1px solid #151530}
-.summary .sr span:last-child{border-right:none}
-.summary .sr .asset{color:#ffd740;width:60px;flex:0 0 60px;text-align:left}
+.summary .sr .asset{color:#ffd740;text-align:left}
+.summary .sr>*{border-right:1px solid #151530;padding:0 3px}
+.summary .sr>*:last-child{border-right:none}
 .summary .sr .val{font-variant-numeric:tabular-nums}
 .summary .sr .grn{color:#00e676}
 .summary .sr .red{color:#ff5252}
@@ -112,7 +121,10 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
     <h1>Trade V4</h1>
     <span style="font-size:13px;color:#777" id="timeDisp">--</span>
   </div>
-  <div class="verdict caution" id="verdict">MONITOR</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:13px;font-weight:700;color:#ffd740" id="capDisp">$10,000</span>
+    <div class="verdict caution" id="verdict">MONITOR</div>
+  </div>
 </div>
 
 <!-- PRICES -->
@@ -130,7 +142,7 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
       <div id="corrWarn" style="font-size:11px;color:#ffd740;margin-top:4px"></div>
     </div>
 
-    <div class="panel">
+    <div class="panel" style="flex:1;overflow-y:auto;min-height:0">
       <h3>🎯 SETUPS</h3>
       <div id="setupList"></div>
     </div>
@@ -144,8 +156,11 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
   <!-- RIGHT -->
   <div class="right">
     <div class="panel" style="flex:1;overflow-y:auto;min-height:0">
-      <h3>📌 POSITIONS & JOURNAL</h3>
+      <h3>📌 POSITIONS</h3>
       <div id="posPanel"></div>
+    </div>
+    <div class="panel" style="flex:1;overflow-y:auto;min-height:0">
+      <h3>📝 JOURNAL</h3>
       <div id="journalContent"><div class="journal-empty">No entries</div></div>
     </div>
 
@@ -158,9 +173,9 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 <div class="footer">Trade V4 · XAU+AAPL+META+GOOGL+MSFT · 15m</div>
 
 <script>
-const STATE_URL = 'trade_v4_state.json';
-const JOURNAL_URL = 'trade_v4_journal.json';
-const POS_URL = 'trade_v4_positions.json';
+const STATE_URL = '/trade_v4_state.json';
+const JOURNAL_URL = '/trade_v4_journal.json';
+const POS_URL = '/trade_v4_positions.json';
 
 async function fetchJSON(url) {
   try { const r = await fetch(url, {cache:'no-store'}); return r.ok ? r.json() : null; }
@@ -171,7 +186,7 @@ function render() {
   Promise.all([fetchJSON(STATE_URL), fetchJSON(JOURNAL_URL), fetchJSON(POS_URL)])
     .then(([state, journal, positions]) => {
       if (state) renderState(state);
-      if (journal || positions) renderJournal(journal, positions);
+      if (journal || positions) renderJournal(journal, positions, state);
     });
 }
 
@@ -187,6 +202,14 @@ function renderState(s) {
   if (sum.signal_active) { v.textContent = '🟢 SIGNAL'; v.className = 'verdict go'; p.className = 'pulse go'; }
   else if (sum.overall === 'GO') { v.textContent = '🟡 MONITOR'; v.className = 'verdict caution'; p.className = 'pulse caution'; }
   else { v.textContent = '🔴 CAUTION'; v.className = 'verdict caution'; p.className = 'pulse stop'; }
+
+  // Capital
+  const cap = s.compounded_capital || steps.capital || 10000;
+  const capEl = document.getElementById('capDisp');
+  capEl.textContent = '$' + cap.toLocaleString('en-US', {maximumFractionDigits: 0});
+  const initialCap = 10000;
+  const capChange = cap - initialCap;
+  capEl.style.color = capChange >= 0 ? '#00e676' : '#ff5252';
 
   document.getElementById('timeDisp').textContent = new Date(sum.timestamp).toLocaleString('en-US',{timeZone:'Asia/Singapore',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true}).replace(',','');
 
@@ -223,31 +246,65 @@ function renderState(s) {
   const corr = steps.correlation || {};
   document.getElementById('corrWarn').innerHTML = (corr.warnings||[]).map(w => `⚠️ ${w}`).join('<br>');
 
-  // Setups — compact
+  // Setups — score cards with criteria breakdown
   let sh = '';
   for (const [asset, data] of Object.entries(setups)) {
     const isClosed = data.status === 'OUTSIDE_HOURS';
     const isPreMkt = data.status === 'PRE_MARKET' || data.status === 'GAP';
-    const sig = data.signal;
-    const maxS = data.all_signals ? Math.max(...data.all_signals.map(x=>x.score)) : 0;
-    const th = sig ? sig.threshold : (asset==='XAUUSD'?4:3);
+    const allSigs = data.all_signals || [];
 
     if (isClosed) {
       sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span class="setup-score closed">CLOSED</span></div>`;
-    } else if (isPreMkt) {
+      continue;
+    }
+    if (isPreMkt) {
       sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)||'--'}</span><span class="setup-score premarket">PRE</span></div>`;
-    } else if (sig && sig.passed) {
-      sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)}</span><span class="setup-score ${sig.direction}">${sig.setup} ${sig.score.toFixed(0)}</span></div>`;
-    } else {
-      // Show score / max_possible with percentage
-      const maxPossible = data.all_signals && data.all_signals[0] && data.all_signals[0].details ?
-        (() => { const d = data.all_signals[0].details.find(x => x.includes('Score:')); return d ? parseFloat(d.split('/')[1]) : null; })() : null;
-      if (maxPossible) {
-        const pct = (maxS / maxPossible * 100).toFixed(0);
-        sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)||'--'}</span><span class="setup-score none">${maxS.toFixed(0)}/${maxPossible} (${pct}%)</span></div>`;
-      } else {
-        sh += `<div class="setup-row"><span class="setup-name">${asset}</span><span>$${data.price?.toFixed(1)||'--'}</span><span class="setup-score none">${maxS.toFixed(0)} pts</span></div>`;
+      continue;
+    }
+
+    sh += `<div class="setup-asset">${asset} <span style="color:#ffd740">$${data.price?.toFixed(1)||'--'}</span></div>`;
+
+    for (const si of allSigs) {
+      const mp = si.max_possible || 1;
+      const pct = (si.score / mp * 100);
+      const barClr = pct >= 60 ? '#00e676' : (pct >= 40 ? '#ffd740' : '#ff5252');
+      const isSig = si.passed;
+      const details = si.details || [];
+
+      // Score card — full criteria breakdown
+      sh += `<div class="scard" style="border-left:3px solid ${barClr}">
+        <div class="scard-hdr">
+          <span style="font-weight:600;font-size:14px">${si.setup.replace(/_/g,' ')}</span>
+          <span style="font-size:12px;color:#888">${si.direction||'—'}</span>
+          <span style="font-weight:700;font-size:${isSig?'20':'18'}px;color:${isSig?'#00e676':barClr}">${pct.toFixed(0)}<span style="font-size:12px">%</span></span>
+          <span style="font-size:12px;color:#777">${si.score.toFixed(0)}/${mp}</span>
+        </div>
+        <div class="scard-bar">
+          <span style="width:${Math.min(100,pct)}%;background:${barClr}"></span>
+          <span style="position:absolute;left:60%;width:1px;height:4px;background:#fff3;top:0"></span>
+        </div>
+        <div class="scard-gap" style="font-size:9px;color:#888;text-align:right">${pct>=60?'✅':'Need '+(60-pct).toFixed(0)+'% more'}</div>`;
+
+      // Individual criteria bars
+      const critLines = details.filter(d => d.includes('/'));
+      for (const d of critLines) {
+        const green = d.startsWith('+');
+        const m = d.match(/([\d.]+)\/([\d.]+)/);
+        if (m) {
+          const sc = parseFloat(m[1]), mx = parseFloat(m[2]);
+          const cp = mx>0 ? sc/mx*100 : 0;
+          const label = d.split('[')[1]?.split(']')[0] || '';
+          const name = d.split('] ')[1] || '';
+          sh += `<div class="scard-crit ${green?'grn':''}">
+            <span style="width:70px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block">${name}</span>
+            <span style="flex:1;margin:0 8px;height:5px;background:#111130;border-radius:2px;display:inline-block;vertical-align:middle;position:relative">
+              <span style="display:block;height:100%;width:${cp}%;background:${green?'#55aa55':'#444'};border-radius:2px"></span>
+            </span>
+            <span style="font-size:12px;color:${green?'#88aa88':'#666'}">${sc.toFixed(1)}/${mx}</span>
+          </div>`;
+        }
       }
+      sh += `</div>`;
     }
   }
   document.getElementById('setupList').innerHTML = sh;
@@ -265,7 +322,7 @@ function renderState(s) {
   ].map(st=>`<div class="${st.s==='PASS'||st.s==='RDY'||st.s==='LOG'?'pass':st.s==='WARN'||st.s==='SIGNAL'?'warn':'skip'}">${st.n}<br>${st.l}</div>`).join('');
 }
 
-function renderJournal(journal, positions) {
+function renderJournal(journal, positions, s) {
   const events = [];
 
   // Journal scan entries
@@ -328,7 +385,7 @@ function renderJournal(journal, positions) {
   }
 
   // Constants
-  const capital = 10000;
+  const capital = s.compounded_capital || s.steps?.capital || 10000;
   const goldAllocPct = 0.10, stockAllocPct = 0.90;
   const goldTickers = 1, stockTickers = 4;
   const initGold = capital * goldAllocPct;
@@ -346,9 +403,10 @@ function renderJournal(journal, positions) {
       h += `<tr class="open-row"><td>${ts}</td><td style="color:#22d3ee">OPEN</td><td style="font-weight:600">${e.asset}</td><td style="color:#888">${e.setup||''} ${e.dir}</td><td>$${(e.entry||0).toFixed(2)}</td><td style="color:#888">SL $${(e.sl||0).toFixed(1)}</td><td style="color:#888">R=$${rPerAsset.toFixed(0)}</td></tr>`;
     } else if (e.type === 'close') {
       const clr = (e.pnl_r||0)>=0?'#00e676':'#ff5252';
-      const actualDollar = (e.pnl_r||0) * rPerAsset;
+      const actualDollar = e.pnl_r_dollar || ((e.pnl_r||0) * rPerAsset);
       const pnlPct = (e.pnl_pct||0);
-      h += `<tr class="closed-row"><td>${ts}</td><td style="color:${clr}">${e.reason==='TP'?'<span style="background:#003315;border:1px solid #00e676;color:#00e676;padding:2px 6px;border-radius:3px;font-weight:700">✅ TP</span>':'<span style="background:#310015;border:1px solid #ff5252;color:#ff5252;padding:2px 6px;border-radius:3px;font-weight:700">❌ SL</span>'}</td><td style="font-weight:600">${e.asset}</td><td style="color:#888">${e.setup||''} ${e.dir}</td><td>$${(e.entry||0).toFixed(2)}</td><td>$${(e.exit||0).toFixed(2)}</td><td style="color:${clr};font-weight:700">${actualDollar>=0?'+':''}$${Math.abs(actualDollar).toFixed(0)} (${(e.pnl_r||0)>=0?'+':''}${e.pnl_r}R, ${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%)</td></tr>`;
+      const capAfter = e.capital_after ? ' → $'+e.capital_after.toLocaleString('en-US',{maximumFractionDigits:0}) : '';
+      h += `<tr class="closed-row"><td>${ts}</td><td style="color:${clr}">${e.reason==='TP'?'<span style="background:#003315;border:1px solid #00e676;color:#00e676;padding:2px 6px;border-radius:3px;font-weight:700">✅ TP</span>':'<span style="background:#310015;border:1px solid #ff5252;color:#ff5252;padding:2px 6px;border-radius:3px;font-weight:700">❌ SL</span>'}</td><td style="font-weight:600">${e.asset}</td><td style="color:#888">${e.setup||''} ${e.dir}</td><td>$${(e.entry||0).toFixed(2)}</td><td>$${(e.exit||0).toFixed(2)}</td><td style="color:${clr};font-weight:700">${actualDollar>=0?'+':''}$${Math.abs(actualDollar).toFixed(0)} (${(e.pnl_r||0)>=0?'+':''}${e.pnl_r}R, ${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%)${capAfter}</td></tr>`;
     }
   }
   h += '</table>';
@@ -361,8 +419,7 @@ function renderJournal(journal, positions) {
   let xauTrades = 0, stockTrades = 0, xauWins = 0, stockWins = 0;
   if (positions) {
     for (const p of (positions.closed || [])) {
-      const rVal = p.asset === 'XAUUSD' ? rValGold : rValStock;
-      const d = (p.pnl_r||0) * rVal;
+      const d = p.pnl_r_dollar || ((p.pnl_r||0) * (p.asset==='XAUUSD'?rValGold:rValStock));
       if (p.asset === 'XAUUSD') {
         xauRealised += d; xauTrades++; if ((p.pnl_r||0) > 0) xauWins++;
       } else {
@@ -377,7 +434,7 @@ function renderJournal(journal, positions) {
   }
   const totalRealised = xauRealised + stockRealised;
   const totalUnrealised = xauUnrealised + stockUnrealised;
-  const equity = capital + totalRealised + totalUnrealised;
+  const equity = capital + totalUnrealised;  // capital already includes realised
   const eqChange = ((equity / capital - 1) * 100).toFixed(1);
   const fmt = v => `${v>=0?'+':''}$${Math.abs(v).toFixed(0)}`;
   const clr = v => v>=0?'grn':'red';
