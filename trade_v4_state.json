@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T02:15:14.557337+08:00",
+  "timestamp": "2026-07-23T02:30:16.008334+08:00",
   "overall": "GO",
   "regime": "NEUTRAL",
   "signal_active": false,
   "sessions": {
     "stocks": true,
     "gold": true,
-    "gold_time": "02:15 (NY)",
+    "gold_time": "02:30 (NY)",
     "stocks_display": true
   },
   "steps": {
     "_sessions": {
       "stocks": true,
       "gold": true,
-      "gold_time": "02:15 (NY)",
+      "gold_time": "02:30 (NY)",
       "stocks_display": true
     },
     "regime": {
@@ -27,41 +27,41 @@
       ],
       "assets": {
         "DXY": {
-          "price": 101.15,
+          "price": 101.13,
           "trend": "UP",
-          "chg_5d": 0.44
+          "chg_5d": 0.42
         },
         "VIX": {
-          "price": 17.01,
-          "trend": "UP",
-          "chg_5d": 1.73
+          "price": 16.94,
+          "trend": "DOWN",
+          "chg_5d": 1.32
         },
         "SPX": {
-          "price": 7509.63,
+          "price": 7508.07,
           "trend": "UP",
-          "chg_5d": -0.32
+          "chg_5d": -0.34
         },
         "US10Y": {
-          "price": 4.66,
+          "price": 4.65,
           "trend": "UP",
-          "chg_5d": 2.24
+          "chg_5d": 2.13
         },
         "BTC": {
-          "price": 65955.81,
+          "price": 65834.45,
           "trend": "UP",
-          "chg_5d": 1.79
+          "chg_5d": 1.6
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.44,
-        "spx_5d": -0.32,
+        "dxy_5d": 0.42,
+        "spx_5d": -0.34,
         "stock_chgs": {
           "AAPL": -2.81,
-          "META": -5.79,
-          "GOOGL": -2.21
+          "META": -5.73,
+          "GOOGL": -2.27
         }
       },
       "warnings": [
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4137.88,
-          "rsi": 36.3,
-          "atr": 6.05,
-          "ema": 4133.56,
+          "price": 4135.55,
+          "rsi": 16.5,
+          "atr": 5.69,
+          "ema": 4133.54,
           "sw_high": 4166.13,
           "sw_low": 4144.16,
           "in_session": true,
@@ -87,44 +87,45 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "short",
-              "score": 13.0,
+              "score": 14.2,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 40,
-              "score_pct": 32.5,
+              "score_pct": 35.5,
               "passed": false,
               "details": [
-                "+3.0/10 [entry] swing_break",
+                "+4.2/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 13.0/40 (32%) \u00b7 threshold 60%"
+                "Score: 14.2/40 (36%) \u00b7 threshold 60%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "long",
-              "score": 6.3,
+              "score": 0,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 30,
-              "score_pct": 21.0,
+              "score_pct": 0.0,
               "passed": false,
               "details": [
                 " 0/10  [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+6.3/10 [entry] rsi_range",
-                "Score: 6.3/30 (21%) \u00b7 threshold 60%"
+                " 0/10  [entry] rsi_range",
+                "RSI gate fail: 16.5 < 35",
+                "Score: 0.0/30 (0%) \u00b7 threshold 60%"
               ]
             }
           ]
         },
         "AAPL": {
-          "price": 323.91,
-          "rsi": 43.8,
-          "atr": 2.27,
-          "ema": 324.55,
+          "price": 323.92,
+          "rsi": 31.5,
+          "atr": 2.0,
+          "ema": 324.53,
           "sw_high": 328.93,
           "sw_low": 322.23,
           "in_session": true,
@@ -136,20 +137,20 @@
               "setup": "dip_to_ema",
               "type": "mean_reversion",
               "direction": "long",
-              "score": 8.2,
+              "score": 4,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 40,
-              "score_pct": 20.5,
+              "score_pct": 10.0,
               "passed": false,
               "details": [
                 " 0/10  [bias] ema_proximity",
-                "+6.2/10 [entry] rsi_range",
+                "+2.0/10 [entry] rsi_range",
                 " 0/10  [entry] engulfing",
                 " 0/10  [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: low data \u2192 stocks\u2191",
                 "+1 FUNDAMENTALS: Buy (2.02128) \u2192 +1",
-                "Score: 8.2/40 (20%) \u00b7 threshold 60%"
+                "Score: 4.0/40 (10%) \u00b7 threshold 60%"
               ]
             },
             {
@@ -172,29 +173,28 @@
             {
               "setup": "earnings_drift",
               "type": "earnings",
-              "direction": "long",
-              "score": 12.2,
+              "direction": "short",
+              "score": 11,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 30,
-              "score_pct": 40.666666666666664,
+              "score_pct": 36.666666666666664,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for AAPL",
-                "+0.2/10 [entry] gap_size",
+                " 0/10  [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume",
-                "+1 CALENDAR: Initial Jobless Claims: low data \u2192 stocks\u2191",
-                "+1 FUNDAMENTALS: Buy (2.02128) \u2192 +1"
+                "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193"
               ]
             }
           ]
         },
         "META": {
-          "price": 626.0,
-          "rsi": 16.4,
-          "atr": 5.8,
-          "ema": 644.72,
+          "price": 626.49,
+          "rsi": 15.8,
+          "atr": 5.54,
+          "ema": 644.03,
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": true,
@@ -213,7 +213,7 @@
               "score_pct": 2.5,
               "passed": false,
               "details": [
-                "+8.4/10 [bias] ema_proximity",
+                "+9.1/10 [bias] ema_proximity",
                 " 0/10  [entry] rsi_range",
                 " 0/10  [entry] engulfing",
                 " 0/10  [entry] volume",
@@ -242,15 +242,15 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 11.7,
+              "score": 11,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 30,
-              "score_pct": 38.99999999999999,
+              "score_pct": 36.666666666666664,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for META",
-                "+0.7/10 [entry] gap_size",
+                " 0/10  [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193"
@@ -259,10 +259,10 @@
           ]
         },
         "GOOGL": {
-          "price": 346.61,
-          "rsi": 31.0,
-          "atr": 2.05,
-          "ema": 353.65,
+          "price": 346.46,
+          "rsi": 29.4,
+          "atr": 1.96,
+          "ema": 353.36,
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": true,
@@ -282,74 +282,6 @@
               "passed": false,
               "details": [
                 " 0/10  [bias] ema_proximity",
-                "+2.0/10 [entry] rsi_range",
-                " 0/10  [entry] engulfing",
-                " 0/10  [entry] volume",
-                "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193",
-                "Score: 1.0/40 (2%) \u00b7 threshold 60%"
-              ]
-            },
-            {
-              "setup": "momentum_break",
-              "type": "momentum",
-              "direction": null,
-              "score": 0,
-              "threshold": 4,
-              "threshold_pct": 60,
-              "max_possible": 40,
-              "score_pct": 0.0,
-              "passed": false,
-              "details": [
-                " 0/10  [bias] new_high",
-                " 0/10  [entry] volume",
-                " 0/10  [entry] rsi_momentum",
-                " 0/10  [entry] atr_expand"
-              ]
-            },
-            {
-              "setup": "earnings_drift",
-              "type": "earnings",
-              "direction": "short",
-              "score": 11.8,
-              "threshold": 4,
-              "threshold_pct": 60,
-              "max_possible": 30,
-              "score_pct": 39.333333333333336,
-              "passed": false,
-              "details": [
-                "GATE SKIP: earnings check for GOOGL",
-                "+0.8/10 [entry] gap_size",
-                "+10.0/10 [entry] drift_confirm",
-                " 0/10  [entry] volume",
-                "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193"
-              ]
-            }
-          ]
-        },
-        "MSFT": {
-          "price": 387.38,
-          "rsi": 16.2,
-          "atr": 3.07,
-          "ema": 393.94,
-          "sw_high": 401.0,
-          "sw_low": 396.33,
-          "in_session": true,
-          "session_note": "",
-          "status": "PASS",
-          "signal": null,
-          "all_signals": [
-            {
-              "setup": "dip_to_ema",
-              "type": "mean_reversion",
-              "direction": "short",
-              "score": 1,
-              "threshold": 4,
-              "threshold_pct": 60,
-              "max_possible": 40,
-              "score_pct": 2.5,
-              "passed": false,
-              "details": [
-                "+1.4/10 [bias] ema_proximity",
                 " 0/10  [entry] rsi_range",
                 " 0/10  [entry] engulfing",
                 " 0/10  [entry] volume",
@@ -378,15 +310,83 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 11.2,
+              "score": 11,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 30,
-              "score_pct": 37.33333333333333,
+              "score_pct": 36.666666666666664,
+              "passed": false,
+              "details": [
+                "GATE SKIP: earnings check for GOOGL",
+                " 0/10  [entry] gap_size",
+                "+10.0/10 [entry] drift_confirm",
+                " 0/10  [entry] volume",
+                "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193"
+              ]
+            }
+          ]
+        },
+        "MSFT": {
+          "price": 388.48,
+          "rsi": 20.0,
+          "atr": 2.95,
+          "ema": 393.77,
+          "sw_high": 401.0,
+          "sw_low": 396.33,
+          "in_session": true,
+          "session_note": "",
+          "status": "PASS",
+          "signal": null,
+          "all_signals": [
+            {
+              "setup": "dip_to_ema",
+              "type": "mean_reversion",
+              "direction": "short",
+              "score": 1,
+              "threshold": 4,
+              "threshold_pct": 60,
+              "max_possible": 40,
+              "score_pct": 2.5,
+              "passed": false,
+              "details": [
+                "+3.9/10 [bias] ema_proximity",
+                " 0/10  [entry] rsi_range",
+                " 0/10  [entry] engulfing",
+                " 0/10  [entry] volume",
+                "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193",
+                "Score: 1.0/40 (2%) \u00b7 threshold 60%"
+              ]
+            },
+            {
+              "setup": "momentum_break",
+              "type": "momentum",
+              "direction": null,
+              "score": 0,
+              "threshold": 4,
+              "threshold_pct": 60,
+              "max_possible": 40,
+              "score_pct": 0.0,
+              "passed": false,
+              "details": [
+                " 0/10  [bias] new_high",
+                " 0/10  [entry] volume",
+                " 0/10  [entry] rsi_momentum",
+                " 0/10  [entry] atr_expand"
+              ]
+            },
+            {
+              "setup": "earnings_drift",
+              "type": "earnings",
+              "direction": "short",
+              "score": 11.1,
+              "threshold": 4,
+              "threshold_pct": 60,
+              "max_possible": 30,
+              "score_pct": 37.0,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for MSFT",
-                "+0.2/10 [entry] gap_size",
+                "+0.1/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193"
