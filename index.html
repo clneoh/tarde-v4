@@ -299,7 +299,7 @@ function renderState(s) {
           sh += `<div class="scard-crit ${green?'grn':''}">
             <span style="width:70px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block">${name}</span>
             <span style="flex:1;margin:0 8px;height:5px;background:#111130;border-radius:2px;display:inline-block;vertical-align:middle;position:relative">
-              <span style="display:block;height:100%;width:${cp}%;background:${green?'#55aa55':'#444'};border-radius:2px"></span>
+              <span style="display:block;height:100%;width:${Math.max(2,cp)}%;background:${green?'#55aa55':'#333'};border-radius:2px"></span>
             </span>
             <span style="font-size:12px;color:${green?'#88aa88':'#666'}">${sc.toFixed(1)}/${mx}</span>
           </div>`;
