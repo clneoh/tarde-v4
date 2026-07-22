@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T05:00:16.412899+08:00",
+  "timestamp": "2026-07-23T05:15:14.851108+08:00",
   "overall": "GO",
   "regime": "NEUTRAL",
   "signal_active": false,
   "sessions": {
     "stocks": false,
-    "gold": true,
-    "gold_time": "05:00 (NY)",
+    "gold": false,
+    "gold_time": "05:15",
     "stocks_display": false
   },
   "steps": {
     "_sessions": {
       "stocks": false,
-      "gold": true,
-      "gold_time": "05:00 (NY)",
+      "gold": false,
+      "gold_time": "05:15",
       "stocks_display": false
     },
     "regime": {
@@ -27,9 +27,9 @@
       ],
       "assets": {
         "DXY": {
-          "price": 101.12,
+          "price": 101.13,
           "trend": "UP",
-          "chg_5d": 0.41
+          "chg_5d": 0.42
         },
         "VIX": {
           "price": 16.64,
@@ -47,16 +47,16 @@
           "chg_5d": 2.24
         },
         "BTC": {
-          "price": 65891.16,
+          "price": 65901.05,
           "trend": "UP",
-          "chg_5d": 1.69
+          "chg_5d": 1.7
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.41,
+        "dxy_5d": 0.42,
         "spx_5d": -0.46,
         "stock_chgs": {
           "AAPL": -2.21,
@@ -78,9 +78,9 @@
           "ema": 4133.54,
           "sw_high": 4166.13,
           "sw_low": 4129.02,
-          "in_session": true,
+          "in_session": false,
           "session_note": "",
-          "status": "PASS",
+          "status": "GAP",
           "signal": null,
           "all_signals": [
             {
@@ -130,7 +130,7 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (05:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (05:15 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -200,7 +200,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (05:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (05:15 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -269,7 +269,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (05:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (05:15 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -337,7 +337,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (05:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (05:15 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -403,9 +403,7 @@
     "per_asset": {
       "XAUUSD": {
         "instrument": {
-          "status": "PASS",
-          "primary": "OANDA Spot",
-          "note": "No overnight swap, short natively"
+          "status": "OUTSIDE_HOURS"
         },
         "size": {
           "status": "SKIP"
