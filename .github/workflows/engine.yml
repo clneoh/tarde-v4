@@ -33,6 +33,9 @@ jobs:
         run: |
           python trade_v4_engine.py --compact 2>&1
           echo "EXIT: $?"
+          echo "=== Files ==="
+          ls -la trade_v4_*.json 2>&1 || echo "NO JSON FILES"
+          head -1 trade_v4_state.json 2>/dev/null || echo "NO STATE"
         env:
           TV_USERNAME: clneohtv1jy20q
           TV_PASSWORD: ${{ secrets.TV_PASSWORD }}
