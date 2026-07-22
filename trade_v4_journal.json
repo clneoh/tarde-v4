@@ -7,6 +7,22 @@
       "events": [
         "\u274c XAUUSD long STOPPED OUT @ $4117.39 | -1R (-0.26%)"
       ]
+    },
+    {
+      "timestamp": "2026-07-22T13:41:45.886294+00:00",
+      "regime": "NEUTRAL",
+      "signals": [],
+      "events": [
+        "\ud83d\udcdd XAUUSD long LIMIT PLACED @ $4142.86 (waiting for touch) | SL $4132.22 | TP $4164.15"
+      ]
+    },
+    {
+      "timestamp": "2026-07-22T13:57:26.029040+00:00",
+      "regime": "NEUTRAL",
+      "signals": [],
+      "events": [
+        "\ud83d\udd35 XAUUSD long FILLED @ $4142.86 (limit touch) | SL $4132.22 | TP $4164.15"
+      ]
     }
   ]
 }
