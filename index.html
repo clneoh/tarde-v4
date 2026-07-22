@@ -263,9 +263,25 @@ function renderState(s) {
       continue;
     }
 
-    sh += `<div class="setup-asset">${asset} <span style="color:#ffd740">$${data.price?.toFixed(1)||'--'}</span></div>`;
+    // Collapsible asset header
+    const best = allSigs.reduce((a,b) => (a.score||0) >= (b.score||0) ? a : b, {score:0, max_possible:1});
+    const bestPct = best.max_possible > 0 ? (best.score / best.max_possible * 100) : 0;
+    const clr = bestPct >= 60 ? '#00e676' : (bestPct >= 40 ? '#ffd740' : '#ff5252');
+    const n = allSigs.length;
+    const uid = 's_' + asset;
+    sh += `<div class="setup-asset" onclick="var d=document.getElementById('${uid}');d.style.display=d.style.display==='none'?'block':'none'" style="cursor:pointer;user-select:none">
+      <span>${asset}</span>
+      <span style="color:${clr};font-weight:700;float:right;margin-left:8px">${bestPct.toFixed(0)}%</span>
+      <span style="color:#ffd740;float:right">$${data.price?.toFixed(1)||'--'}</span>
+    </div>`;
+    sh += `<div id="${uid}" style="display:block">`;
 
-    for (const si of allSigs) {
+    // Only show best setup by default
+    const shown = allSigs.filter(s => s === best || (s.score||0) > 0);
+    const hidden = allSigs.filter(s => s !== best && (s.score||0) <= 0);
+    const showAll = allSigs.length <= 1 || bestPct >= 50; // Expand if close or few
+
+    for (const si of (showAll ? allSigs : shown)) {
       const mp = si.max_possible || 1;
       const pct = (si.score / mp * 100);
       const barClr = pct >= 60 ? '#00e676' : (pct >= 40 ? '#ffd740' : '#ff5252');
@@ -306,6 +322,11 @@ function renderState(s) {
         }
       }
       sh += `</div>`;
+    }
+    // Close collapsible wrapper
+    sh += `</div>`;
+    if (hidden.length > 0) {
+      sh += `<div style="text-align:center;font-size:10px;color:#555;padding:2px 0;cursor:pointer" onclick="var c=document.getElementById('${uid}');c.style.display='block';c.querySelectorAll('.scard').forEach(function(x){x.style.display=''});this.style.display='none'">+${hidden.length} more</div>`;
     }
   }
   document.getElementById('setupList').innerHTML = sh;
