@@ -46,6 +46,11 @@ a{color:#ffd740;font-size:12px}
 
 <div class="stats" id="stats">Loading...</div>
 
+<div id="biasCard" style="background:#0c0c20;border:1px solid #303060;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:13px;display:none">
+  <span style="color:#ffd740;font-weight:600">Bias Policy:</span> <span id="biasRule"></span><br>
+  <span style="color:#606080;font-size:12px" id="biasDesc"></span>
+</div>
+
 <table>
 <thead>
 <tr><th>Asset</th><th>Exchange</th><th>Type</th><th>Session</th><th>Bias TFs</th><th>Exec TF</th><th style="text-align:center">V4</th><th style="text-align:center">PAM</th><th></th></tr>
@@ -78,6 +83,13 @@ async function load() {
     if (!r.ok) throw new Error(r.status);
     const data = await r.json();
     assetList = data.asset_list || {};
+    // Show bias model
+    const bm = data.bias_model || {};
+    if (bm.rule) {
+      document.getElementById('biasCard').style.display = 'block';
+      document.getElementById('biasRule').textContent = bm.rule + ' · EMA' + (bm.ema_period||20) + ' · tie → ' + (bm.tie_result||'neutral');
+      document.getElementById('biasDesc').textContent = bm.description || '';
+    }
     render();
   } catch(e) {
     document.getElementById('stats').textContent = 'Failed to load shared.json';

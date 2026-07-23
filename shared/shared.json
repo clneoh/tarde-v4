@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-23T20:58:02.413338+08:00",
+  "timestamp": "2026-07-23T21:04:20.813484+08:00",
   "regime": "NEUTRAL",
   "score": 2,
   "reasons": [
@@ -9,11 +9,11 @@
   "assets": {
     "DXY": {
       "price": 101.4,
-      "chg_5d": 0.6
+      "chg_5d": 0.7
     },
     "VIX": {
-      "price": 18.9,
-      "chg_5d": 13.2
+      "price": 19.0,
+      "chg_5d": 13.6
     },
     "SPX": {
       "price": 7499.0,
@@ -21,11 +21,11 @@
     },
     "US10Y": {
       "price": 4.7,
-      "chg_5d": 3.3
+      "chg_5d": 3.4
     },
     "BTC": {
-      "price": 65175.3,
-      "chg_5d": 0.6
+      "price": 65130.9,
+      "chg_5d": 0.5
     }
   },
   "horizon_matrix": {
@@ -132,5 +132,12 @@
       "enabled_v4": true,
       "enabled_pam": true
     }
+  },
+  "bias_model": {
+    "rule": "majority_vote",
+    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie \u2192 neutral.",
+    "ema_period": 20,
+    "tie_result": "neutral",
+    "note": "User-configurable \u2014 add/remove TFs per asset in 'assets' section"
   }
 }
