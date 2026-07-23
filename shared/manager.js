@@ -181,15 +181,6 @@ function applyConfig() {
     });
 }
 
-function unfreeze() {
-  document.body.style.pointerEvents = '';
-  document.body.style.opacity = '1';
-  document.getElementById('applyBtn').textContent = 'Apply Changes';
-  document.getElementById('applyBtn').disabled = false;
-  fetch(RAW_URL + '?t=' + Date.now())
-    .then(function(r){ return r.json(); })
-    .then(function(d){ assetList = d.asset_list || {}; render(); })
-    .catch(function(){});
-}
+function unfreeze() { location.reload(true); }
 
 load();
