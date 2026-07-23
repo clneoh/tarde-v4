@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-24T02:07:22.537446+08:00",
+  "timestamp": "2026-07-24T02:07:47.995119+08:00",
   "overall": "GO",
   "regime": "RISK-OFF",
   "signal_active": false,
@@ -32,24 +32,24 @@
           "chg_5d": 0.71
         },
         "VIX": {
-          "price": 19.62,
+          "price": 19.66,
           "trend": "UP",
-          "chg_5d": 4.58
+          "chg_5d": 4.8
         },
         "SPX": {
-          "price": 7398.12,
+          "price": 7397.43,
           "trend": "DOWN",
-          "chg_5d": -0.8
+          "chg_5d": -0.81
         },
         "US10Y": {
-          "price": 4.7,
+          "price": 4.71,
           "trend": "UP",
-          "chg_5d": 3.39
+          "chg_5d": 3.43
         },
         "BTC": {
-          "price": 64688.05,
+          "price": 64676.38,
           "trend": "UP",
-          "chg_5d": 0.01
+          "chg_5d": -0.01
         }
       }
     },
@@ -57,11 +57,11 @@
       "status": "WARN",
       "checks": {
         "dxy_5d": 0.71,
-        "spx_5d": -0.8,
+        "spx_5d": -0.81,
         "stock_chgs": {
           "AAPL": -4.03,
-          "META": -6.11,
-          "GOOGL": -7.8
+          "META": -6.1,
+          "GOOGL": -7.78
         }
       },
       "warnings": [
@@ -73,8 +73,8 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4043.42,
-          "rsi": 25.7,
+          "price": 4043.27,
+          "rsi": 25.3,
           "atr": 6.09,
           "ema": 4071.81,
           "sw_high": 4054.58,
@@ -95,11 +95,11 @@
               "score_pct": 0.0,
               "passed": false,
               "details": [
-                "+0.5/10 [entry] swing_break",
+                "+0.4/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "RSI gate fail: 25.7 < 35",
+                "RSI gate fail: 25.3 < 35",
                 "Score: 0.0/40 (0%) \u00b7 threshold 55%"
               ]
             },
@@ -123,10 +123,10 @@
           ]
         },
         "AAPL": {
-          "price": 320.25,
-          "rsi": 28.7,
+          "price": 320.33,
+          "rsi": 28.9,
           "atr": 2.03,
-          "ema": 323.91,
+          "ema": 323.92,
           "sw_high": 326.89,
           "sw_low": 319.36,
           "in_session": true,
@@ -174,15 +174,15 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 10.4,
+              "score": 10.3,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 34.66666666666667,
+              "score_pct": 34.333333333333336,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for AAPL",
-                "+0.4/10 [entry] gap_size",
+                "+0.3/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume"
               ]
@@ -190,8 +190,8 @@
           ]
         },
         "META": {
-          "price": 606.44,
-          "rsi": 16.0,
+          "price": 606.51,
+          "rsi": 16.1,
           "atr": 7.14,
           "ema": 636.4,
           "sw_high": 655.76,
@@ -257,10 +257,10 @@
           ]
         },
         "GOOGL": {
-          "price": 319.7,
-          "rsi": 15.7,
+          "price": 319.83,
+          "rsi": 15.8,
           "atr": 4.22,
-          "ema": 346.79,
+          "ema": 346.8,
           "sw_high": 349.9,
           "sw_low": 314.9,
           "in_session": true,
@@ -323,7 +323,7 @@
           ]
         },
         "MSFT": {
-          "price": 381.06,
+          "price": 381.08,
           "rsi": 20.4,
           "atr": 3.55,
           "ema": 391.37,
@@ -391,55 +391,7 @@
       }
     },
     "per_asset": {
-      "XAUUSD": {
-        "instrument": {
-          "status": "PASS",
-          "primary": "OANDA Spot",
-          "note": "No overnight swap, short natively"
-        },
-        "size": {
-          "status": "SKIP"
-        },
-        "entry": {
-          "status": "SKIP"
-        },
-        "stop_target": {
-          "status": "SKIP"
-        }
-      },
-      "AAPL": {
-        "instrument": {
-          "status": "PASS",
-          "primary": "Cash Equity",
-          "note": "Long=buy, Short=sell (margin+borrow)"
-        },
-        "size": {
-          "status": "SKIP"
-        },
-        "entry": {
-          "status": "SKIP"
-        },
-        "stop_target": {
-          "status": "SKIP"
-        }
-      },
-      "GOOGL": {
-        "instrument": {
-          "status": "PASS",
-          "primary": "Cash Equity",
-          "note": "Long=buy, Short=sell (margin+borrow)"
-        },
-        "size": {
-          "status": "SKIP"
-        },
-        "entry": {
-          "status": "SKIP"
-        },
-        "stop_target": {
-          "status": "SKIP"
-        }
-      },
-      "NFLX": {
+      "TEST123": {
         "instrument": {
           "status": "PASS",
           "primary": "?",
