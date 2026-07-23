@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-23T18:40:17.752945+08:00",
+  "timestamp": "2026-07-23T18:41:34.876237+08:00",
   "regime": "NEUTRAL",
   "score": 4,
   "reasons": [
@@ -14,7 +14,7 @@
     },
     "VIX": {
       "price": 17.5,
-      "chg_5d": 4.9
+      "chg_5d": 4.7
     },
     "SPX": {
       "price": 7499.0,
@@ -25,7 +25,7 @@
       "chg_5d": 2.6
     },
     "BTC": {
-      "price": 65746.7,
+      "price": 65748.1,
       "chg_5d": 1.5
     }
   },
@@ -66,5 +66,42 @@
   },
   "news": [
     "\ud83d\udcc5 Initial Jobless Claims"
-  ]
+  ],
+  "asset_list": {
+    "XAUUSD": {
+      "exchange": "OANDA",
+      "type": "commodity",
+      "session": "24h",
+      "enabled_v4": true,
+      "enabled_pam": true
+    },
+    "AAPL": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "enabled_v4": true,
+      "enabled_pam": true
+    },
+    "META": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "enabled_v4": true,
+      "enabled_pam": true
+    },
+    "GOOGL": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "enabled_v4": true,
+      "enabled_pam": true
+    },
+    "MSFT": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "enabled_v4": true,
+      "enabled_pam": true
+    }
+  }
 }
