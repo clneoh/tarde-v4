@@ -145,44 +145,46 @@ function applyConfig() {
   var token = document.getElementById('ghToken').value.trim();
   if (token) { try { localStorage.setItem('gh_pat', token); } catch(e) {} }
   if (!token) { setStatus('Enter GitHub PAT first', false); return; }
-  
   var btn = document.getElementById('applyBtn');
   btn.textContent = 'Applying...'; btn.disabled = true;
   document.body.style.pointerEvents = 'none';
   document.body.style.opacity = '0.6';
   
-  setStatus('Applying... 0s', true);
+  setStatus('Applying... 0s (pushed, waiting for pipeline)', true);
   var elapsed = 0;
   var timer = setInterval(function() {
     elapsed++;
-    if (elapsed < 15) setStatus('Applying... ' + elapsed + 's', true);
-    else if (elapsed < 45) setStatus('Applying... ' + elapsed + 's (syncing)', true);
-    else if (elapsed < 65) setStatus('Applying... ' + elapsed + 's (done)', true);
+    if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (pipeline running)', true);
+    else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (almost done)', true);
     else { clearInterval(timer); unfreeze(); }
   }, 1000);
-  setTimeout(function() { clearInterval(timer); unfreeze(); }, 70000);
+  setTimeout(function() { clearInterval(timer); unfreeze(); }, 65000);
   
-  // Form POST bypasses CORS
+  var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
+  var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
   var cfg = buildConfig();
-  var f = document.createElement('form');
-  f.method = 'POST';
-  f.action = 'http://54.254.254.195:8765/push';
-  f.target = 'pushFrame'; if(!document.getElementById('pushFrame')){var ifr=document.createElement('iframe');ifr.id='pushFrame';ifr.name='pushFrame';ifr.style.display='none';document.body.appendChild(ifr);}
-  f.style.display = 'none';
   
-  var i1 = document.createElement('textarea');
-  i1.name = 'assets'; i1.value = JSON.stringify(cfg.assets);
-  f.appendChild(i1);
-  
-  var i2 = document.createElement('input');
-  i2.name = 'token'; i2.value = token;
-  f.appendChild(i2);
-  
-  document.body.appendChild(f);
-  f.submit();
-  setTimeout(function() { document.body.removeChild(f); }, 100);
+  fetch(api, { headers: headers, cache: 'no-store' })
+    .then(function(r) { if (!r.ok) throw new Error('Fetch fail: ' + r.status); return r.json(); })
+    .then(function(file) {
+      var full = JSON.parse(atob(file.content));
+      full.assets = cfg.assets;
+      var body = JSON.stringify({
+        message: 'manager update',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(full, null, 2)))),
+        sha: file.sha
+      });
+      return fetch(api, { method: 'PUT', headers: headers, body: body });
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('Push fail: ' + r.status);
+      console.log('Config pushed to GitHub');
+    })
+    .catch(function(e) {
+      console.error('Apply error:', e);
+      setStatus('Error: ' + e.message, false);
+    });
 }
-
 function unfreeze() {
   document.body.style.pointerEvents = '';
   document.body.style.opacity = '1';
