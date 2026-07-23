@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-24T01:15:49.754334+08:00",
+  "timestamp": "2026-07-24T01:27:33.367820+08:00",
   "regime": "RISK-OFF",
   "score": 4,
   "reasons": [
@@ -12,20 +12,20 @@
       "chg_5d": 0.7
     },
     "VIX": {
-      "price": 19.4,
-      "chg_5d": 16.1
+      "price": 19.2,
+      "chg_5d": 15.0
     },
     "SPX": {
-      "price": 7403.9,
-      "chg_5d": -1.7
+      "price": 7411.9,
+      "chg_5d": -1.6
     },
     "US10Y": {
       "price": 4.7,
-      "chg_5d": 3.2
+      "chg_5d": 3.1
     },
     "BTC": {
-      "price": 64721.7,
-      "chg_5d": -0.1
+      "price": 64783.3,
+      "chg_5d": -0.0
     }
   },
   "horizon_matrix": {
@@ -143,22 +143,11 @@
       "exec_tf": "H1",
       "enabled_v4": true,
       "enabled_pam": true
-    },
-    "SOFI": {
-      "exchange": "NASDAQ",
-      "type": "stock",
-      "session": "US",
-      "bias_tf": [
-        "D2"
-      ],
-      "exec_tf": "H1",
-      "enabled_v4": true,
-      "enabled_pam": true
     }
   },
   "bias_model": {
     "rule": "majority_vote",
-    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie \u2192 neutral.",
+    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie \u00c3\u00a2\u00c2\u0086\u00c2\u0092 neutral.",
     "ema_period": 20,
     "tie_result": "neutral",
     "fetch_policy": "only_fetch_required",
