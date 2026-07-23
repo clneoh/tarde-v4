@@ -527,7 +527,7 @@ function renderJournal(journal, positions, s) {
 
 
 // === PAM TAB (JS-built, no HTML restructuring) ===
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   const PAM_URL = '/tarde-v4/pam/pam_state.json';
   const TH = 55;
   let currentTab = 'v4';
@@ -615,7 +615,7 @@ function renderJournal(journal, positions, s) {
   }
 
   fetchPAM();
-})();
+});
 
 
 render();
