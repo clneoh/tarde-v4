@@ -457,7 +457,7 @@ function renderJournal(journal, positions, s) {
   let xauTrades = 0, stockTrades = 0, xauWins = 0, stockWins = 0;
   if (positions) {
     for (const p of (positions.closed || [])) {
-      const d = p.pnl_r_dollar || ((p.pnl_r||0) * (p.asset==='XAUUSD'?rValGold:rValStock));
+      const d = (p.pnl_r||0) * (p.asset==='XAUUSD'?rValGold:rValStock);
       if (p.asset === 'XAUUSD') {
         xauRealised += d; xauTrades++; if ((p.pnl_r||0) > 0) xauWins++;
       } else {
@@ -502,5 +502,3 @@ setInterval(render, 15000);
 </script>
 </body>
 </html>
- 
- 
