@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAM — Portfolio Analysis Monitor</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #080816; color: #c0c0d0; min-width: 900px;
+  padding: 16px;
+}
+h1 { font-size: 20px; color: #ffd740; margin-bottom: 12px; }
+h3 { font-size: 14px; color: #8080c0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+.panel {
+  background: #0c0c20; border: 2px solid #404080; border-radius: 8px;
+  padding: 12px; margin-bottom: 12px;
+}
+
+/* ── Header ── */
+.header { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.header .ts { font-size: 12px; color: #606080; }
+.header .verdict { font-size: 14px; padding: 3px 10px; border-radius: 4px; font-weight: 700; }
+.verdict.go { background:#003315; color:#00e676; border:1px solid #00e676; }
+.verdict.caution { background:#312000; color:#ffc107; border:1px solid #ffc107; }
+
+/* ── Regime ── */
+.regime-badge {
+  display: inline-block; font-size: 14px; font-weight: 700;
+  padding: 3px 10px; border-radius: 4px; margin-right: 8px;
+}
+.regime-badge.risk-on { background:#003315; color:#00e676; border:1px solid #00e676; }
+.regime-badge.risk-off { background:#310015; color:#ff5252; border:1px solid #ff5252; }
+.regime-badge.neutral { background:#151530; color:#8080c0; border:1px solid #6060a0; }
+.regime-reasons { font-size: 12px; color: #8080a0; margin-top: 4px; }
+
+/* ── Correlation warnings ── */
+.warning { font-size: 12px; color: #ffc107; margin: 2px 0; }
+
+/* ── Price Strip ── */
+.price-strip { display:flex; gap:12px; flex-wrap:wrap; font-size:13px; }
+.price-strip .asset-price { padding:4px 8px; background:#101028; border-radius:4px; }
+.price-strip .asset-name { color:#8080c0; }
+.price-strip .asset-val { color:#e0e0f0; font-weight:600; }
+.price-strip .signal-tag { font-size:11px; padding:2px 6px; border-radius:3px; }
+.signal-tag.fire { background:#003315; color:#00e676; border:1px solid #00e676; }
+.signal-tag.monitor { background:#151530; color:#8080c0; }
+.signal-tag.closed { background:#101020; color:#404060; }
+
+/* ── Setup Cards ── */
+.setups-grid { display:flex; flex-direction:column; gap:8px; }
+.setup-card {
+  background:#0e0e20; border-radius:6px; padding:10px 12px;
+  border-left:3px solid #404080; cursor:pointer;
+}
+.setup-card:hover { border-left-color:#ffd740; }
+.setup-card.fire { border-left-color:#00e676; }
+.setup-card.monitor { border-left-color:#ffc107; }
+.setup-card.closed { border-left-color:#404080; }
+.setup-header { display:flex; justify-content:space-between; align-items:center; }
+.setup-header .name { font-size:14px; color:#c0c0e0; }
+.setup-header .dir { font-size:12px; color:#8080c0; }
+.setup-header .score-pct { font-size:18px; font-weight:700; }
+.setup-header .score-frac { font-size:11px; color:#606080; }
+.setup-bar { height:6px; background:#101030; border-radius:3px; margin:8px 0; position:relative; }
+.setup-bar-fill { height:6px; border-radius:3px; transition:width 0.3s; }
+.setup-bar-threshold { position:absolute; top:-1px; height:8px; width:2px; background:#ffd740; opacity:0.6; }
+.criteria-list { display:none; margin-top:4px; }
+.criteria-list.open { display:block; }
+.criterion { display:flex; align-items:center; gap:6px; margin:3px 0; font-size:12px; }
+.criterion .cname { flex:1; color:#8080a0; }
+.criterion .cbar { width:60px; height:4px; background:#101030; border-radius:2px; overflow:hidden; }
+.criterion .cbar-fill { height:4px; border-radius:2px; min-width:2%; }
+.criterion .cscore { width:36px; text-align:right; font-size:11px; color:#606080; }
+.criterion .csign { width:12px; color:#00e676; }
+
+/* ── Bonus ── */
+.bonus-strip { font-size:12px; color:#ffd740; margin-top:6px; }
+
+/* ── Refresh ── */
+.refresh-bar { font-size:10px; color:#404060; text-align:center; margin-top:8px; }
+</style>
+</head>
+<body>
+
+<h1>📊 PAM — Portfolio Analysis Monitor</h1>
+
+<div class="header">
+  <div>
+    <span id="regimeBadge" class="regime-badge neutral">--</span>
+    <span id="verdictBadge" class="verdict go">--</span>
+  </div>
+  <div class="ts" id="timestamp">--</div>
+</div>
+
+<div class="panel" id="regimePanel">
+  <h3>🌍 REGIME</h3>
+  <div class="regime-reasons" id="regimeReasons"></div>
+  <div id="corrWarnings"></div>
+</div>
+
+<div class="panel">
+  <div class="price-strip" id="priceStrip"></div>
+</div>
+
+<div class="panel">
+  <h3>🎯 SETUPS</h3>
+  <div class="setups-grid" id="setupsGrid"></div>
+  <div id="bonusStrip" class="bonus-strip"></div>
+</div>
+
+<div class="refresh-bar" id="refreshBar">loading...</div>
+
+<script>
+const STATE_URL = '/pam/pam_state.json';
+const THRESHOLD = 55; // from config scoring.threshold_pct
+
+async function fetchJSON(url) {
+  try {
+    const r = await fetch(url, {cache:'no-store'});
+    if (!r.ok) throw new Error(r.status);
+    return await r.json();
+  } catch(e) {
+    return null;
+  }
+}
+
+function render(state) {
+  if (!state) return;
+
+  // Timestamp
+  const ts = new Date(state.timestamp);
+  document.getElementById('timestamp').textContent =
+    ts.toLocaleString('en-US', {timeZone:'Asia/Singapore', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', hour12:true});
+
+  // Verdict
+  const verdict = state.overall || '--';
+  const vBadge = document.getElementById('verdictBadge');
+  vBadge.textContent = verdict;
+  vBadge.className = 'verdict ' + (verdict === 'GO' ? 'go' : 'caution');
+
+  // Regime
+  const regime = state.regime || 'NEUTRAL';
+  const rBadge = document.getElementById('regimeBadge');
+  rBadge.textContent = regime;
+  rBadge.className = 'regime-badge ' + regime.toLowerCase().replace(' ','-');
+
+  // Regime reasons
+  const corr = state.correlation || {};
+  const reasons = (corr.warnings || []).slice(0, 3);
+  document.getElementById('regimeReasons').innerHTML = reasons.map(r => `<div>${r}</div>`).join('');
+
+  // Correlation warnings
+  const cw = document.getElementById('corrWarnings');
+  cw.innerHTML = '';
+
+  // Price strip + setup cards
+  const setups = state.setups || {};
+  const priceHTML = [];
+  const cardsHTML = [];
+
+  for (const [asset, data] of Object.entries(setups)) {
+    const price = data.price?.toFixed(2) || '--';
+    const status = data.status || 'PASS';
+    const signal = data.signal;
+    const allSignals = data.all_signals || [];
+    const inSession = data.in_session !== false;
+
+    // Price strip
+    let tagCls = 'monitor', tagText = 'scan';
+    if (status === 'SIGNAL' && signal) {
+      tagCls = 'fire'; tagText = `🎯 ${signal.setup} ${signal.direction.toUpperCase()} ${signal.score_pct}%`;
+    } else if (status === 'OUTSIDE_HOURS') {
+      tagCls = 'closed'; tagText = '🔴 CLOSED';
+    } else if (status === 'PRE_MARKET') {
+      tagCls = 'monitor'; tagText = '🟡 PRE';
+    } else if (status === 'GAP') {
+      tagCls = 'closed'; tagText = '⚫ GAP';
+    }
+
+    priceHTML.push(`<div class="asset-price">
+      <span class="asset-name">${asset}</span>
+      <span class="asset-val">$${price}</span>
+      <span class="signal-tag ${tagCls}">${tagText}</span>
+    </div>`);
+
+    // Setup cards
+    if (status === 'OUTSIDE_HOURS' || status === 'PRE_MARKET' || status === 'GAP') continue;
+
+    // Show all signals with score > 0
+    for (const s of allSignals) {
+      if (s.score <= 0 && allSignals.length > 1) continue;
+      const sp = s.score_pct || 0;
+      const mp = s.max_possible || 1;
+      const uid = `${asset}_${s.setup}_${s.direction}`;
+      const isFire = signal && signal.setup === s.setup && signal.direction === s.direction;
+      const cardCls = isFire ? 'fire' : (sp >= THRESHOLD - 10 ? 'monitor' : '');
+
+      // Bar color
+      let barColor = '#404080';
+      if (sp >= THRESHOLD) barColor = '#00e676';
+      else if (sp >= THRESHOLD - 10) barColor = '#ffc107';
+
+      // Criteria bars
+      const crits = (s.details || []).filter(d => d.includes('/'));
+      const critHTML = crits.map(c => {
+        const m = c.match(/\[(\d+(?:\.\d+)?)\/(\d+)\]\s*(.+)/);
+        if (!m) return '';
+        const scored = parseFloat(m[1]), max = parseFloat(m[2]), name = m[3];
+        const cp = Math.max(2, (scored / max) * 100);
+        const active = scored > 0;
+        const ccolor = active ? '#00e676' : '#303040';
+        return `<div class="criterion">
+          <span class="csign">${active ? '+' : ' '}</span>
+          <span class="cname">${name}</span>
+          <span class="cbar"><div class="cbar-fill" style="width:${cp}%;background:${ccolor}"></div></span>
+          <span class="cscore">${scored}/${max}</span>
+        </div>`;
+      }).join('');
+
+      cardsHTML.push(`<div class="setup-card ${cardCls}" onclick="toggleCard('${uid}')" id="card_${uid}">
+        <div class="setup-header">
+          <div>
+            <span class="name">${asset} · ${s.setup}</span>
+            <span class="dir">${s.direction.toUpperCase()}</span>
+          </div>
+          <div style="text-align:right">
+            <div class="score-pct" style="color:${barColor}">${sp.toFixed(0)}%</div>
+            <div class="score-frac">(${s.score.toFixed(0)}/${mp})</div>
+          </div>
+        </div>
+        <div class="setup-bar">
+          <div class="setup-bar-fill" style="width:${Math.min(100, sp)}%;background:${barColor}"></div>
+          <div class="setup-bar-threshold" style="left:${THRESHOLD}%"></div>
+        </div>
+        <div class="criteria-list" id="criteria_${uid}">${critHTML}</div>
+      </div>`);
+    }
+  }
+
+  document.getElementById('priceStrip').innerHTML = priceHTML.join('');
+  document.getElementById('setupsGrid').innerHTML = cardsHTML.join('');
+
+  // Restore collapse state
+  if (window._collapsed) {
+    for (const [uid, collapsed] of Object.entries(window._collapsed)) {
+      const el = document.getElementById('criteria_' + uid);
+      if (el) {
+        if (collapsed) el.classList.add('open');
+        else el.classList.remove('open');
+      }
+    }
+  }
+}
+
+function toggleCard(uid) {
+  const el = document.getElementById('criteria_' + uid);
+  if (!el) return;
+  el.classList.toggle('open');
+  window._collapsed = window._collapsed || {};
+  window._collapsed[uid] = el.classList.contains('open');
+}
+
+async function refresh() {
+  const state = await fetchJSON(STATE_URL);
+  render(state);
+  const now = new Date();
+  document.getElementById('refreshBar').textContent =
+    `refreshed ${now.toLocaleTimeString('en-US', {timeZone:'Asia/Singapore', hour:'2-digit', minute:'2-digit', second:'2-digit'})}`;
+}
+
+refresh();
+setInterval(refresh, 15000);
+</script>
+</body>
+</html>
