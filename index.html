@@ -680,7 +680,14 @@ function renderJournal(journal, positions, s) {
         sl+='<div class="pam-signal-card'+(fire?' fire':'')+'" onclick="var ce=document.getElementById(\''+uid+'\');ce.style.display=ce.style.display===\'none\'?\'block\':\'none\'"><div class="ps-hdr"><div><span style="font-weight:600;color:#ffd740">'+asset+'</span> <span style="font-size:12px;color:#8080c0">'+s.setup+'</span> <span style="font-size:12px;color:#888">'+s.direction.toUpperCase()+'</span></div><div style="text-align:right"><div style="font-size:20px;font-weight:700;color:'+bc+'">'+sp.toFixed(0)+'<span style="font-size:12px">%</span></div><div style="font-size:11px;color:#606080">('+s.score.toFixed(0)+'/'+mp+')</div></div></div><div class="ps-bar"><div class="ps-bar-f" style="width:'+Math.min(100,sp)+'%;background:'+bc+'"></div><div class="ps-thresh" style="left:'+TH+'%"></div></div><div id="'+uid+'" style="display:none">'+ch+'</div></div>';
       }
     }
+    var rp = '';
+    for (var rk in (d.regimeAssets||{})) {
+      var rv = d.regimeAssets[rk];
+      rp += '<div class="pam-asset-row"><span class="aname">' + rk + '</span><span class="aprice" style="color:' + ((rv.chg_5d||0)>=0?'#00e676':'#ff5252') + '">' + (rv.price?'$'+rv.price.toFixed(1):'--') + '</span><span class="atag monitor">idx</span></div>';
+    }
+    ph = rp + '<div style="border-top:1px solid #202040;margin:4px 0"></div>' + ph;
     document.getElementById('pPriceStrip').innerHTML=ph||'<div class="pam-no-signals">No price data</div>';
+
     document.getElementById('pSetupList').innerHTML=sl||'<div class="pam-no-signals">No setups scored</div>';
     const bu=[]; for(let k=0;k<ba.length;k++){if(bu.indexOf(ba[k])<0)bu.push(ba[k]);}
     document.getElementById('pBonusStrip').innerHTML=bu.length?bu.join(' | '):'';
