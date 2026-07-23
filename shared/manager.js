@@ -204,6 +204,8 @@ function applyConfig() {
         _applied = true;
     })
     .catch(function(e) {
+      console.error('Apply failed:', e.message);
+      alert('Apply failed: ' + e.message + '\n\nGet PAT at https://github.com/settings/tokens\nScope: repo');
       btn.textContent = 'Apply Changes'; btn.disabled = false;
       setStatus(e.message, false);
     });
