@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-24T01:37:24.120671+08:00",
+  "timestamp": "2026-07-24T01:44:27.323219+08:00",
   "overall": "GO",
   "regime": "RISK-OFF",
   "signal_active": false,
   "sessions": {
     "stocks": true,
     "gold": true,
-    "gold_time": "01:37 (NY)",
+    "gold_time": "01:44 (NY)",
     "stocks_display": true
   },
   "steps": {
     "_sessions": {
       "stocks": true,
       "gold": true,
-      "gold_time": "01:37 (NY)",
+      "gold_time": "01:44 (NY)",
       "stocks_display": true
     },
     "regime": {
@@ -22,50 +22,50 @@
       "score": -1,
       "reasons": [
         "DXY\u2191 (USD strength)",
-        "VIX 20 (low vol)",
+        "VIX 19 (low vol)",
         "SPX\u2193 (risk-off)"
       ],
       "assets": {
         "DXY": {
-          "price": 101.45,
+          "price": 101.46,
           "trend": "UP",
-          "chg_5d": 0.69
+          "chg_5d": 0.7
         },
         "VIX": {
-          "price": 19.55,
+          "price": 19.49,
           "trend": "UP",
-          "chg_5d": 4.21
+          "chg_5d": 3.89
         },
         "SPX": {
-          "price": 7414.89,
+          "price": 7407.19,
           "trend": "DOWN",
-          "chg_5d": -0.57
+          "chg_5d": -0.68
         },
         "US10Y": {
           "price": 4.7,
           "trend": "UP",
-          "chg_5d": 3.39
+          "chg_5d": 3.34
         },
         "BTC": {
-          "price": 64741.31,
+          "price": 64768.72,
           "trend": "UP",
-          "chg_5d": 0.09
+          "chg_5d": 0.13
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.69,
-        "spx_5d": -0.57,
+        "dxy_5d": 0.7,
+        "spx_5d": -0.68,
         "stock_chgs": {
-          "AAPL": -3.96,
-          "META": -6.25,
-          "GOOGL": -7.85
+          "AAPL": -3.92,
+          "META": -6.04,
+          "GOOGL": -7.83
         }
       },
       "warnings": [
-        "DXY +0.69% but gold also up \u2014 divergence",
+        "DXY +0.70% but gold also up \u2014 divergence",
         "All 3 tech stocks down \u2014 single sector risk"
       ]
     },
@@ -73,10 +73,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4045.3,
-          "rsi": 45.9,
-          "atr": 7.15,
-          "ema": 4074.33,
+          "price": 4043.76,
+          "rsi": 43.8,
+          "atr": 7.34,
+          "ema": 4074.27,
           "sw_high": 4061.8,
           "sw_low": 4042.41,
           "in_session": true,
@@ -88,44 +88,44 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 11.4,
+              "score": 10.7,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 28.500000000000004,
+              "score_pct": 26.749999999999996,
               "passed": false,
               "details": [
-                "+1.4/10 [entry] swing_break",
+                "+0.7/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 11.4/40 (29%) \u00b7 threshold 55%"
+                "Score: 10.7/40 (27%) \u00b7 threshold 55%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "short",
-              "score": 4.1,
+              "score": 6.2,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 13.666666666666666,
+              "score_pct": 20.666666666666668,
               "passed": false,
               "details": [
                 " 0/10  [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+4.1/10 [entry] rsi_range",
-                "Score: 4.1/30 (14%) \u00b7 threshold 55%"
+                "+6.2/10 [entry] rsi_range",
+                "Score: 6.2/30 (21%) \u00b7 threshold 55%"
               ]
             }
           ]
         },
         "AAPL": {
-          "price": 320.53,
-          "rsi": 29.2,
+          "price": 320.65,
+          "rsi": 29.5,
           "atr": 1.99,
-          "ema": 323.92,
+          "ema": 323.93,
           "sw_high": 326.89,
           "sw_low": 319.36,
           "in_session": true,
@@ -173,15 +173,15 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 10.2,
+              "score": 10.1,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 34.0,
+              "score_pct": 33.666666666666664,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for AAPL",
-                "+0.2/10 [entry] gap_size",
+                "+0.1/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume"
               ]
@@ -189,10 +189,10 @@
           ]
         },
         "META": {
-          "price": 605.64,
-          "rsi": 15.2,
-          "atr": 7.02,
-          "ema": 636.37,
+          "price": 606.9,
+          "rsi": 16.7,
+          "atr": 7.08,
+          "ema": 636.42,
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": true,
@@ -238,18 +238,19 @@
             {
               "setup": "earnings_drift",
               "type": "earnings",
-              "direction": "short",
-              "score": 10.1,
+              "direction": "long",
+              "score": 11.3,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 33.666666666666664,
+              "score_pct": 37.66666666666667,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for META",
-                "+0.1/10 [entry] gap_size",
+                "+0.3/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
-                " 0/10  [entry] volume"
+                " 0/10  [entry] volume",
+                "+1 FUNDAMENTALS: Target +36% upside \u2192 +1; Strong Buy (1.34921) \u2192 +1"
               ]
             }
           ]
@@ -257,7 +258,7 @@
         "GOOGL": {
           "price": 319.63,
           "rsi": 15.7,
-          "atr": 4.2,
+          "atr": 4.21,
           "ema": 346.79,
           "sw_high": 349.9,
           "sw_low": 314.9,
@@ -321,10 +322,10 @@
           ]
         },
         "MSFT": {
-          "price": 381.23,
-          "rsi": 20.5,
-          "atr": 3.53,
-          "ema": 391.38,
+          "price": 381.01,
+          "rsi": 20.4,
+          "atr": 3.55,
+          "ema": 391.37,
           "sw_high": 391.73,
           "sw_low": 377.39,
           "in_session": true,
@@ -371,15 +372,15 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 10.1,
+              "score": 10.2,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 33.666666666666664,
+              "score_pct": 34.0,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for MSFT",
-                "+0.1/10 [entry] gap_size",
+                "+0.2/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume"
               ]
@@ -421,22 +422,6 @@
           "status": "SKIP"
         }
       },
-      "META": {
-        "instrument": {
-          "status": "PASS",
-          "primary": "Cash Equity",
-          "note": "Long=buy, Short=sell (margin+borrow)"
-        },
-        "size": {
-          "status": "SKIP"
-        },
-        "entry": {
-          "status": "SKIP"
-        },
-        "stop_target": {
-          "status": "SKIP"
-        }
-      },
       "GOOGL": {
         "instrument": {
           "status": "PASS",
@@ -453,11 +438,11 @@
           "status": "SKIP"
         }
       },
-      "MSFT": {
+      "NFLX": {
         "instrument": {
           "status": "PASS",
-          "primary": "Cash Equity",
-          "note": "Long=buy, Short=sell (margin+borrow)"
+          "primary": "?",
+          "note": ""
         },
         "size": {
           "status": "SKIP"
