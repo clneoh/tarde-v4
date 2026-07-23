@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asset Manager — Shared Service</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#080816;color:#c8c8e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px;min-width:700px}
+h1{font-size:20px;color:#ffd740;margin-bottom:4px}
+.sub{font-size:12px;color:#606080;margin-bottom:20px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:16px}
+th{text-align:left;padding:8px 12px;color:#6060a0;border-bottom:2px solid #202050;font-size:12px;text-transform:uppercase}
+td{padding:8px 12px;border-bottom:1px solid #12122a}
+tr:hover{background:#0e0e24}
+.toggle{cursor:pointer;font-size:18px;user-select:none}
+.toggle.on{color:#00e676}.toggle.off{color:#404060}
+.btn{padding:6px 16px;border-radius:4px;border:none;cursor:pointer;font-size:13px;font-weight:600;margin-right:8px}
+.btn-add{background:#003315;color:#00e676;border:1px solid #00e676}
+.btn-rm{background:#310015;color:#ff5252;border:1px solid #ff5252;padding:2px 8px;font-size:11px}
+.btn-save{background:#1a1a40;color:#ffd740;border:1px solid #ffd740}
+input,select{background:#0c0c20;border:1px solid #404080;color:#c8c8e0;padding:6px 10px;border-radius:4px;font-size:13px;margin-right:6px}
+input:focus,select:focus{outline:none;border-color:#ffd740}
+.add-row{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+.output{background:#0c0c20;border:1px solid #303060;border-radius:6px;padding:14px;font-family:monospace;font-size:12px;white-space:pre-wrap;max-height:300px;overflow:auto;margin-top:12px}
+.stats{font-size:12px;color:#606080;margin-bottom:12px}
+a{color:#ffd740;font-size:12px}
+</style>
+</head>
+<body>
+
+<h1>Asset Manager</h1>
+<div class="sub">Shared Service · Edit once, applies to V4 & PAM</div>
+
+<div class="stats" id="stats">Loading...</div>
+
+<table>
+<thead>
+<tr><th>Asset</th><th>Exchange</th><th>Type</th><th>Session</th><th style="text-align:center">V4</th><th style="text-align:center">PAM</th><th></th></tr>
+</thead>
+<tbody id="assetTable"></tbody>
+</table>
+
+<div class="add-row">
+  <input id="newTicker" placeholder="TICKER" style="width:100px" maxlength="10">
+  <input id="newExchange" placeholder="Exchange (e.g. NASDAQ)" style="width:160px">
+  <select id="newType"><option value="stock">Stock</option><option value="commodity">Commodity</option><option value="crypto">Crypto</option><option value="forex">Forex</option></select>
+  <select id="newSession"><option value="US">US</option><option value="24h">24h</option><option value="Asia">Asia</option></select>
+  <button class="btn btn-add" onclick="addAsset()">+ Add</button>
+</div>
+
+<button class="btn btn-save" onclick="showOutput()">Generate Config JSON</button>
+<a href="/tarde-v4/shared/shared.json" target="_blank" style="margin-left:12px">View shared.json →</a>
+
+<div class="output" id="output" style="display:none"></div>
+
+<script>
+const SHARED_URL = '/tarde-v4/shared/shared.json';
+let assetList = {};
+
+async function load() {
+  try {
+    const r = await fetch(SHARED_URL, {cache:'no-store'});
+    if (!r.ok) throw new Error(r.status);
+    const data = await r.json();
+    assetList = data.asset_list || {};
+    render();
+  } catch(e) {
+    document.getElementById('stats').textContent = 'Failed to load shared.json';
+  }
+}
+
+function render() {
+  const keys = Object.keys(assetList);
+  document.getElementById('stats').innerHTML = 
+    `${keys.length} assets · V4: ${keys.filter(k=>assetList[k].enabled_v4).length} · PAM: ${keys.filter(k=>assetList[k].enabled_pam).length}`;
+
+  let html = '';
+  for (const ticker of keys) {
+    const a = assetList[ticker];
+    html += `<tr>
+      <td style="font-weight:700;color:#ffd740">${ticker}</td>
+      <td>${a.exchange||'?'}</td>
+      <td>${a.type||'?'}</td>
+      <td>${a.session||'?'}</td>
+      <td style="text-align:center"><span class="toggle ${a.enabled_v4?'on':'off'}" onclick="toggle('${ticker}','enabled_v4')">${a.enabled_v4?'●':'○'}</span></td>
+      <td style="text-align:center"><span class="toggle ${a.enabled_pam?'on':'off'}" onclick="toggle('${ticker}','enabled_pam')">${a.enabled_pam?'●':'○'}</span></td>
+      <td><button class="btn btn-rm" onclick="removeAsset('${ticker}')">✕</button></td>
+    </tr>`;
+  }
+  document.getElementById('assetTable').innerHTML = html || '<tr><td colspan="7" style="color:#555;text-align:center;padding:20px">No assets</td></tr>';
+}
+
+function toggle(ticker, field) {
+  assetList[ticker][field] = !assetList[ticker][field];
+  render();
+}
+
+function addAsset() {
+  const t = document.getElementById('newTicker').value.toUpperCase().trim();
+  const ex = document.getElementById('newExchange').value.trim();
+  const ty = document.getElementById('newType').value;
+  const se = document.getElementById('newSession').value;
+  if (!t) return;
+  assetList[t] = { exchange: ex, type: ty, session: se, enabled_v4: true, enabled_pam: true };
+  document.getElementById('newTicker').value = '';
+  document.getElementById('newExchange').value = '';
+  render();
+}
+
+function removeAsset(ticker) {
+  if (confirm('Remove ' + ticker + '?')) {
+    delete assetList[ticker];
+    render();
+  }
+}
+
+function showOutput() {
+  const out = { assets: assetList };
+  document.getElementById('output').style.display = 'block';
+  document.getElementById('output').textContent = 
+    '// Copy this into shared_config.json → "assets" section:\n' +
+    JSON.stringify(out, null, 2);
+}
+
+load();
+</script>
+</body>
+</html>
