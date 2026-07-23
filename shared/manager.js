@@ -145,6 +145,12 @@ function setStatus(msg, ok) {
 }
 
 function unfreeze() {
+  // Reload fresh data after pipeline
+  fetch(SHARED_URL + '?t=' + Date.now(), {cache:'no-store'})
+    .then(function(r){ return r.json(); })
+    .then(function(d){ assetList = d.asset_list || {}; render(); })
+    .catch(function(){});
+
   document.body.style.pointerEvents = '';
   document.body.style.opacity = '1';
   document.getElementById('applyBtn').textContent = 'Apply Changes';
