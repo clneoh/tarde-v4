@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-23T21:04:20.813484+08:00",
+  "timestamp": "2026-07-23T21:10:16.809106+08:00",
   "regime": "NEUTRAL",
   "score": 2,
   "reasons": [
@@ -12,8 +12,8 @@
       "chg_5d": 0.7
     },
     "VIX": {
-      "price": 19.0,
-      "chg_5d": 13.6
+      "price": 19.3,
+      "chg_5d": 15.3
     },
     "SPX": {
       "price": 7499.0,
@@ -24,8 +24,8 @@
       "chg_5d": 3.4
     },
     "BTC": {
-      "price": 65130.9,
-      "chg_5d": 0.5
+      "price": 64996.8,
+      "chg_5d": 0.3
     }
   },
   "horizon_matrix": {
@@ -138,6 +138,8 @@
     "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie \u2192 neutral.",
     "ema_period": 20,
     "tie_result": "neutral",
-    "note": "User-configurable \u2014 add/remove TFs per asset in 'assets' section"
+    "fetch_policy": "only_fetch_required",
+    "fetch_note": "Engines read bias_tf + exec_tf per asset. Do NOT fetch data for TFs not listed for that asset.",
+    "user_note": "Add/remove TFs per asset in 'assets' section"
   }
 }
