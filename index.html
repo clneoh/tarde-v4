@@ -386,13 +386,14 @@ function renderJournal(journal, positions, s) {
   events.sort((a,b) => b.ts.localeCompare(a.ts));
 
   // Constants (must be before position tile rendering)
-  const capital = (s && (s.compounded_capital || (s.steps && s.steps.capital))) || 10000;
+  const INIT_CAPITAL = 10000;
   const goldAllocPct = 0.10, stockAllocPct = 0.90;
   const goldTickers = 1, stockTickers = 4;
-  const initGold = capital * goldAllocPct;
-  const initStocks = capital * stockAllocPct;
+  const initGold = INIT_CAPITAL * goldAllocPct;
+  const initStocks = INIT_CAPITAL * stockAllocPct;
   const rValGold = initGold * 0.02;
   const rValStock = (initStocks / stockTickers) * 0.02;
+  const capital = (s && (s.compounded_capital || (s.steps && s.steps.capital))) || INIT_CAPITAL;
 
   // Active positions — tiled grid
   let posHtml = '<div class="pos-grid-container">';
