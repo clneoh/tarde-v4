@@ -75,6 +75,7 @@ a{color:#ffd740;font-size:12px}
 <script>
 const SHARED_URL = '/tarde-v4/shared/shared.json';
 const ALL_TF = ['M1','W1','D1','D2','H4','H1','m15'];
+const TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 let assetList = {};
 
 async function load() {
@@ -117,9 +118,11 @@ function render() {
 
     // Bias TF tags
     let biasHTML = '';
+    const execRank = TF_RANK[a.exec_tf] ?? 99;
     for (const tf of ALL_TF) {
       const on = bias.includes(tf);
-      biasHTML += `<span class="tf-tag ${on?'on':'off'}" onclick="toggleBias('${ticker}','${tf}')">${tf}</span>`;
+      const disabled = (TF_RANK[tf] ?? 99) >= execRank && tf !== a.exec_tf;
+      biasHTML += `<span class="tf-tag ${on?'on':'off'}" onclick="${disabled?'':'toggleBias(\\'${ticker}\\',\\'${tf}\\')'}" style="${disabled?'opacity:0.3;cursor:not-allowed':''}">${tf}</span>`;
     }
 
     // Exec TF tags
@@ -145,15 +148,25 @@ function render() {
 }
 
 function toggleBias(ticker, tf) {
-  const bias = assetList[ticker].bias_tf || [];
+  const a = assetList[ticker];
+  const execRank = TF_RANK[a.exec_tf] ?? 99;
+  const tfRank = TF_RANK[tf] ?? 99;
+  if (tfRank >= execRank) return; // disallow same or lower than exec
+  const bias = a.bias_tf || [];
   const idx = bias.indexOf(tf);
   if (idx >= 0) bias.splice(idx, 1); else bias.push(tf);
-  assetList[ticker].bias_tf = bias;
+  a.bias_tf = bias;
   render();
 }
 
 function setExec(ticker, tf) {
-  assetList[ticker].exec_tf = assetList[ticker].exec_tf === tf ? '' : tf;
+  const a = assetList[ticker];
+  a.exec_tf = a.exec_tf === tf ? '' : tf;
+  // Remove bias TFs that are now same or lower than new exec
+  if (a.exec_tf) {
+    const execRank = TF_RANK[a.exec_tf] ?? 99;
+    a.bias_tf = (a.bias_tf || []).filter(function(btf) { return (TF_RANK[btf] ?? 99) < execRank; });
+  }
   render();
 }
 
