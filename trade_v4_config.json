@@ -4,79 +4,179 @@
     "method": "linear_scaled",
     "max_per_criteria": 10,
     "threshold_pct": 60,
-    "note": "Each criteria 0-10 scaled by intensity. Pass if total ≥ 60% of max possible."
+    "note": "Each criteria 0-10 scaled by intensity. Pass if total \u2265 60% of max possible."
   },
   "assets": {
     "XAUUSD": {
-      "exchange": "OANDA", "type": "commodity",
+      "exchange": "OANDA",
+      "type": "commodity",
       "session": "24h",
-      "timeframes": { "bias": "1h", "entry": "15m" }
+      "timeframes": {
+        "bias": "1h",
+        "entry": "15m"
+      }
     },
     "AAPL": {
-      "exchange": "NASDAQ", "type": "stock",
+      "exchange": "NASDAQ",
+      "type": "stock",
       "session": "US equity (14:30-21:00 UTC)",
-      "timeframes": { "bias": "1d", "entry": "1h" }
+      "timeframes": {
+        "bias": "1d",
+        "entry": "1h"
+      }
     },
     "META": {
-      "exchange": "NASDAQ", "type": "stock",
+      "exchange": "NASDAQ",
+      "type": "stock",
       "session": "US equity (14:30-21:00 UTC)",
-      "timeframes": { "bias": "1d", "entry": "1h" }
+      "timeframes": {
+        "bias": "1d",
+        "entry": "1h"
+      }
     },
     "GOOGL": {
-      "exchange": "NASDAQ", "type": "stock",
+      "exchange": "NASDAQ",
+      "type": "stock",
       "session": "US equity (14:30-21:00 UTC)",
-      "timeframes": { "bias": "1d", "entry": "1h" }
+      "timeframes": {
+        "bias": "1d",
+        "entry": "1h"
+      }
     },
     "MSFT": {
-      "exchange": "NASDAQ", "type": "stock",
+      "exchange": "NASDAQ",
+      "type": "stock",
       "session": "US equity (14:30-21:00 UTC)",
-      "timeframes": { "bias": "1d", "entry": "1h" }
+      "timeframes": {
+        "bias": "1d",
+        "entry": "1h"
+      }
     }
   },
   "regime": {
-    "indicators": ["DXY", "VIX", "SPX", "US10Y", "BTC"],
+    "indicators": [
+      "DXY",
+      "VIX",
+      "SPX",
+      "US10Y",
+      "BTC"
+    ],
     "horizon_matrix": {
-      "W1":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
-      "D1":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
-      "D2":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
-      "H4":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
-      "H1":  { "risk-on": "free",  "neutral": "free", "risk-off": "free"  },
-      "M15": { "risk-on": "free",  "neutral": "free", "risk-off": "free"  }
+      "W1": {
+        "risk-on": "LONG",
+        "neutral": "free",
+        "risk-off": "SHORT"
+      },
+      "D1": {
+        "risk-on": "LONG",
+        "neutral": "free",
+        "risk-off": "SHORT"
+      },
+      "D2": {
+        "risk-on": "LONG",
+        "neutral": "free",
+        "risk-off": "SHORT"
+      },
+      "H4": {
+        "risk-on": "LONG",
+        "neutral": "free",
+        "risk-off": "SHORT"
+      },
+      "H1": {
+        "risk-on": "free",
+        "neutral": "free",
+        "risk-off": "free"
+      },
+      "M15": {
+        "risk-on": "free",
+        "neutral": "free",
+        "risk-off": "free"
+      }
     },
     "horizon_rules": {
       "short": "free",
-      "long": "risk-on → LONG bias | risk-off → SHORT bias | neutral → free"
+      "long": "risk-on \u2192 LONG bias | risk-off \u2192 SHORT bias | neutral \u2192 free"
     },
     "gold_override": "gold direction NOT gated by regime"
   },
   "correlation": {
     "checks": {
-      "xau_vs_dxy":    { "enabled": true, "lookback_days": 5,  "action": "warn" },
-      "stocks_vs_spx": { "enabled": true, "lookback_days": 5,  "action": "warn" },
-      "cross_stock_overlap": { "enabled": true, "action": "warn" },
-      "gold_vs_stocks": { "enabled": true, "lookback_days": 20, "action": "warn" }
+      "xau_vs_dxy": {
+        "enabled": true,
+        "lookback_days": 5,
+        "action": "warn"
+      },
+      "stocks_vs_spx": {
+        "enabled": true,
+        "lookback_days": 5,
+        "action": "warn"
+      },
+      "cross_stock_overlap": {
+        "enabled": true,
+        "action": "warn"
+      },
+      "gold_vs_stocks": {
+        "enabled": true,
+        "lookback_days": 20,
+        "action": "warn"
+      }
     }
   },
   "setups": {
     "XAUUSD": {
       "scoring_threshold_pct": 55,
-      "rsi_gate": { "long_min": 35, "short_max": 65 },
+      "rsi_gate": {
+        "long_min": 35,
+        "short_max": 65
+      },
       "signals": [
         {
-          "name": "structure_break", "type": "breakout", "direction": "both",
+          "name": "structure_break",
+          "type": "breakout",
+          "direction": "both",
           "criteria": [
-            { "rule": "close beyond prior swing", "max": 10, "scaling": "swing_break" },
-            { "rule": "volume", "max": 10, "scaling": "volume" },
-            { "rule": "ATR expansion", "max": 10, "scaling": "atr_expand" },
-            { "rule": "touches at level", "max": 10, "scaling": "touches" }
+            {
+              "rule": "close beyond prior swing",
+              "max": 10,
+              "scaling": "swing_break"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            },
+            {
+              "rule": "ATR expansion",
+              "max": 10,
+              "scaling": "atr_expand"
+            },
+            {
+              "rule": "touches at level",
+              "max": 10,
+              "scaling": "touches"
+            }
           ]
         },
         {
-          "name": "ema_bounce", "type": "mean_reversion", "direction": "both",
+          "name": "ema_bounce",
+          "type": "mean_reversion",
+          "direction": "both",
           "criteria": [
-            { "rule": "price proximity to 50EMA", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "engulfing candle", "max": 10, "scaling": "engulfing" },
-            { "rule": "RSI", "max": 10, "scaling": "rsi_range" }
+            {
+              "rule": "price proximity to 50EMA",
+              "max": 10,
+              "scaling": "ema_proximity"
+            },
+            {
+              "rule": "engulfing candle",
+              "max": 10,
+              "scaling": "engulfing"
+            },
+            {
+              "rule": "RSI",
+              "max": 10,
+              "scaling": "rsi_range"
+            }
           ]
         }
       ]
@@ -85,30 +185,84 @@
       "scoring_threshold_pct": 55,
       "signals": [
         {
-          "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
+          "name": "dip_to_ema",
+          "type": "mean_reversion",
+          "direction": "long",
           "criteria": [
-            { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
-            { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
+            {
+              "rule": "price proximity to 20EMA daily",
+              "max": 10,
+              "scaling": "ema_proximity"
+            },
+            {
+              "rule": "RSI dip",
+              "max": 10,
+              "scaling": "rsi_range"
+            },
+            {
+              "rule": "engulfing or hammer on 1h",
+              "max": 10,
+              "scaling": "engulfing"
+            },
+            {
+              "rule": "volume at dip",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         },
         {
-          "name": "momentum_break", "type": "momentum", "direction": "long",
+          "name": "momentum_break",
+          "type": "momentum",
+          "direction": "long",
           "criteria": [
-            { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 10, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
+            {
+              "rule": "new 20-day high",
+              "max": 10,
+              "scaling": "new_high"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            },
+            {
+              "rule": "RSI momentum",
+              "max": 10,
+              "scaling": "rsi_momentum"
+            },
+            {
+              "rule": "ATR expanding",
+              "max": 10,
+              "scaling": "atr_expand"
+            }
           ]
         },
         {
-          "name": "earnings_drift", "type": "earnings", "direction": "both",
+          "name": "earnings_drift",
+          "type": "earnings",
+          "direction": "both",
           "criteria": [
-            { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
-            { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
-            { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 10, "scaling": "volume" }
+            {
+              "rule": "earnings within 24h",
+              "max": 0,
+              "scaling": "gate"
+            },
+            {
+              "rule": "post-earnings gap",
+              "max": 10,
+              "scaling": "gap_size"
+            },
+            {
+              "rule": "gap direction confirmed",
+              "max": 10,
+              "scaling": "drift_confirm"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         }
       ]
@@ -116,28 +270,85 @@
     "META": {
       "scoring_threshold_pct": 55,
       "signals": [
-        { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
+        {
+          "name": "dip_to_ema",
+          "type": "mean_reversion",
+          "direction": "long",
           "criteria": [
-            { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
-            { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
+            {
+              "rule": "price proximity to 20EMA daily",
+              "max": 10,
+              "scaling": "ema_proximity"
+            },
+            {
+              "rule": "RSI dip",
+              "max": 10,
+              "scaling": "rsi_range"
+            },
+            {
+              "rule": "engulfing or hammer on 1h",
+              "max": 10,
+              "scaling": "engulfing"
+            },
+            {
+              "rule": "volume at dip",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         },
-        { "name": "momentum_break", "type": "momentum", "direction": "long",
+        {
+          "name": "momentum_break",
+          "type": "momentum",
+          "direction": "long",
           "criteria": [
-            { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 10, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
+            {
+              "rule": "new 20-day high",
+              "max": 10,
+              "scaling": "new_high"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            },
+            {
+              "rule": "RSI momentum",
+              "max": 10,
+              "scaling": "rsi_momentum"
+            },
+            {
+              "rule": "ATR expanding",
+              "max": 10,
+              "scaling": "atr_expand"
+            }
           ]
         },
-        { "name": "earnings_drift", "type": "earnings", "direction": "both",
+        {
+          "name": "earnings_drift",
+          "type": "earnings",
+          "direction": "both",
           "criteria": [
-            { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
-            { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
-            { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 10, "scaling": "volume" }
+            {
+              "rule": "earnings within 24h",
+              "max": 0,
+              "scaling": "gate"
+            },
+            {
+              "rule": "post-earnings gap",
+              "max": 10,
+              "scaling": "gap_size"
+            },
+            {
+              "rule": "gap direction confirmed",
+              "max": 10,
+              "scaling": "drift_confirm"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         }
       ]
@@ -145,28 +356,85 @@
     "GOOGL": {
       "scoring_threshold_pct": 55,
       "signals": [
-        { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
+        {
+          "name": "dip_to_ema",
+          "type": "mean_reversion",
+          "direction": "long",
           "criteria": [
-            { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
-            { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
+            {
+              "rule": "price proximity to 20EMA daily",
+              "max": 10,
+              "scaling": "ema_proximity"
+            },
+            {
+              "rule": "RSI dip",
+              "max": 10,
+              "scaling": "rsi_range"
+            },
+            {
+              "rule": "engulfing or hammer on 1h",
+              "max": 10,
+              "scaling": "engulfing"
+            },
+            {
+              "rule": "volume at dip",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         },
-        { "name": "momentum_break", "type": "momentum", "direction": "long",
+        {
+          "name": "momentum_break",
+          "type": "momentum",
+          "direction": "long",
           "criteria": [
-            { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 10, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
+            {
+              "rule": "new 20-day high",
+              "max": 10,
+              "scaling": "new_high"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            },
+            {
+              "rule": "RSI momentum",
+              "max": 10,
+              "scaling": "rsi_momentum"
+            },
+            {
+              "rule": "ATR expanding",
+              "max": 10,
+              "scaling": "atr_expand"
+            }
           ]
         },
-        { "name": "earnings_drift", "type": "earnings", "direction": "both",
+        {
+          "name": "earnings_drift",
+          "type": "earnings",
+          "direction": "both",
           "criteria": [
-            { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
-            { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
-            { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 10, "scaling": "volume" }
+            {
+              "rule": "earnings within 24h",
+              "max": 0,
+              "scaling": "gate"
+            },
+            {
+              "rule": "post-earnings gap",
+              "max": 10,
+              "scaling": "gap_size"
+            },
+            {
+              "rule": "gap direction confirmed",
+              "max": 10,
+              "scaling": "drift_confirm"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         }
       ]
@@ -174,39 +442,111 @@
     "MSFT": {
       "scoring_threshold_pct": 55,
       "signals": [
-        { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
+        {
+          "name": "dip_to_ema",
+          "type": "mean_reversion",
+          "direction": "long",
           "criteria": [
-            { "rule": "price proximity to 20EMA daily", "max": 10, "scaling": "ema_proximity" },
-            { "rule": "RSI dip", "max": 10, "scaling": "rsi_range" },
-            { "rule": "engulfing or hammer on 1h", "max": 10, "scaling": "engulfing" },
-            { "rule": "volume at dip", "max": 10, "scaling": "volume" }
+            {
+              "rule": "price proximity to 20EMA daily",
+              "max": 10,
+              "scaling": "ema_proximity"
+            },
+            {
+              "rule": "RSI dip",
+              "max": 10,
+              "scaling": "rsi_range"
+            },
+            {
+              "rule": "engulfing or hammer on 1h",
+              "max": 10,
+              "scaling": "engulfing"
+            },
+            {
+              "rule": "volume at dip",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         },
-        { "name": "momentum_break", "type": "momentum", "direction": "long",
+        {
+          "name": "momentum_break",
+          "type": "momentum",
+          "direction": "long",
           "criteria": [
-            { "rule": "new 20-day high", "max": 10, "scaling": "new_high" },
-            { "rule": "volume", "max": 10, "scaling": "volume" },
-            { "rule": "RSI momentum", "max": 10, "scaling": "rsi_momentum" },
-            { "rule": "ATR expanding", "max": 10, "scaling": "atr_expand" }
+            {
+              "rule": "new 20-day high",
+              "max": 10,
+              "scaling": "new_high"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            },
+            {
+              "rule": "RSI momentum",
+              "max": 10,
+              "scaling": "rsi_momentum"
+            },
+            {
+              "rule": "ATR expanding",
+              "max": 10,
+              "scaling": "atr_expand"
+            }
           ]
         },
-        { "name": "earnings_drift", "type": "earnings", "direction": "both",
+        {
+          "name": "earnings_drift",
+          "type": "earnings",
+          "direction": "both",
           "criteria": [
-            { "rule": "earnings within 24h", "max": 0, "scaling": "gate" },
-            { "rule": "post-earnings gap", "max": 10, "scaling": "gap_size" },
-            { "rule": "gap direction confirmed", "max": 10, "scaling": "drift_confirm" },
-            { "rule": "volume", "max": 10, "scaling": "volume" }
+            {
+              "rule": "earnings within 24h",
+              "max": 0,
+              "scaling": "gate"
+            },
+            {
+              "rule": "post-earnings gap",
+              "max": 10,
+              "scaling": "gap_size"
+            },
+            {
+              "rule": "gap direction confirmed",
+              "max": 10,
+              "scaling": "drift_confirm"
+            },
+            {
+              "rule": "volume",
+              "max": 10,
+              "scaling": "volume"
+            }
           ]
         }
       ]
     }
   },
   "instrument": {
-    "XAUUSD": { "primary": "OANDA Spot", "note": "No overnight swap, short natively" },
-    "AAPL":   { "primary": "Cash Equity", "note": "Long=buy, Short=sell (margin+borrow)" },
-    "META":   { "primary": "Cash Equity", "note": "Long=buy, Short=sell (margin+borrow)" },
-    "GOOGL":  { "primary": "Cash Equity", "note": "Long=buy, Short=sell (margin+borrow)" },
-    "MSFT":   { "primary": "Cash Equity", "note": "Long=buy, Short=sell (margin+borrow)" }
+    "XAUUSD": {
+      "primary": "OANDA Spot",
+      "note": "No overnight swap, short natively"
+    },
+    "AAPL": {
+      "primary": "Cash Equity",
+      "note": "Long=buy, Short=sell (margin+borrow)"
+    },
+    "META": {
+      "primary": "Cash Equity",
+      "note": "Long=buy, Short=sell (margin+borrow)"
+    },
+    "GOOGL": {
+      "primary": "Cash Equity",
+      "note": "Long=buy, Short=sell (margin+borrow)"
+    },
+    "MSFT": {
+      "primary": "Cash Equity",
+      "note": "Long=buy, Short=sell (margin+borrow)"
+    }
   },
   "entry": {
     "type": "limit",
@@ -216,20 +556,44 @@
       "no market orders"
     ],
     "session_filter": {
-      "XAUUSD": "gold_session", "AAPL": "regular_only",
-      "META": "regular_only", "GOOGL": "regular_only", "MSFT": "regular_only"
+      "XAUUSD": "gold_session",
+      "AAPL": "regular_only",
+      "META": "regular_only",
+      "GOOGL": "regular_only",
+      "MSFT": "regular_only"
     },
-    "regular_hours": { "timezone": "Asia/Singapore", "start": "21:30", "end": "04:00" },
-    "pre_market_start": { "timezone": "Asia/Singapore", "start": "16:00" },
+    "regular_hours": {
+      "timezone": "Asia/Singapore",
+      "start": "21:30",
+      "end": "04:00"
+    },
+    "pre_market_start": {
+      "timezone": "Asia/Singapore",
+      "start": "16:00"
+    },
     "gold_hours": {
       "timezone": "Asia/Singapore",
       "sessions": [
-        { "name": "Tokyo",  "start": "07:00", "end": "16:00" },
-        { "name": "London", "start": "15:00", "end": "00:00" },
-        { "name": "NY",     "start": "20:00", "end": "05:00" }
+        {
+          "name": "Tokyo",
+          "start": "07:00",
+          "end": "16:00"
+        },
+        {
+          "name": "London",
+          "start": "15:00",
+          "end": "00:00"
+        },
+        {
+          "name": "NY",
+          "start": "20:00",
+          "end": "05:00"
+        }
       ]
     },
-    "structure_reference": { "pre_market_included": true }
+    "structure_reference": {
+      "pre_market_included": true
+    }
   },
   "sizing": {
     "capital": 10000,
@@ -244,22 +608,78 @@
   },
   "stops_and_targets": {
     "sl_method": "tighter_of",
-    "sl_structural": { "type": "swing_high_low", "buffer_pct": 0.1, "timeframe": "entry_tf" },
-    "sl_atr": { "method": "multiplier", "multiplier": 1.2, "period": 14, "timeframe": "entry_tf" },
-    "sl_hard_caps": { "stock_max_pct": 5.0, "gold_rps_max_pct": 2.0 },
-    "tp_rr_minimum": 1.5, "tp_rr_default": 2.0, "tp_structure_cap": 0.95,
+    "sl_structural": {
+      "type": "swing_high_low",
+      "buffer_pct": 0.1,
+      "timeframe": "entry_tf"
+    },
+    "sl_atr": {
+      "method": "multiplier",
+      "multiplier": 1.2,
+      "period": 14,
+      "timeframe": "entry_tf"
+    },
+    "sl_hard_caps": {
+      "stock_max_pct": 5.0,
+      "gold_rps_max_pct": 2.0
+    },
+    "tp_rr_minimum": 1.5,
+    "tp_rr_default": 2.0,
+    "tp_structure_cap": 0.95,
     "breakeven_rule": "move SL to entry at +1R",
     "trailing_activation_r": 1.5
   },
   "journal": {
     "log_path": "/tmp/trade_v4_journal.json",
     "text_log": "/tmp/trade_v4_trades.txt",
-    "auto_tag": ["asset", "setup_type", "regime", "direction", "horizon"],
-    "weekly_review_fields": ["win_rate_by_setup", "win_rate_by_asset", "win_rate_by_regime", "avg_rr", "max_drawdown"]
+    "auto_tag": [
+      "asset",
+      "setup_type",
+      "regime",
+      "direction",
+      "horizon"
+    ],
+    "weekly_review_fields": [
+      "win_rate_by_setup",
+      "win_rate_by_asset",
+      "win_rate_by_regime",
+      "avg_rr",
+      "max_drawdown"
+    ]
   },
   "bonuses": {
-    "calendar": { "enabled": true, "points": 10, "note": "Economic event aligns with direction" },
-    "fedwatch": { "enabled": true, "points_weak": 10, "points_strong": 20, "note": "CME rate probabilities" },
-    "fundamentals": { "enabled": true, "points": 10, "note": "Analyst targets/ratings/short%" }
+    "calendar": {
+      "enabled": true,
+      "points": 10,
+      "note": "Economic event aligns with direction"
+    },
+    "fedwatch": {
+      "enabled": true,
+      "points_weak": 10,
+      "points_strong": 20,
+      "note": "CME rate probabilities"
+    },
+    "fundamentals": {
+      "enabled": true,
+      "points": 10,
+      "note": "Analyst targets/ratings/short%"
+    }
+  },
+  "shared_data": {
+    "description": "Fields PAM inherits from V4 state \u2014 single source of truth",
+    "fields": [
+      "regime",
+      "regimeReasons",
+      "correlation",
+      "horizon_matrix",
+      "news",
+      "regimeAssets"
+    ],
+    "v4_source": "trade_v4_state.json",
+    "pam_own": [
+      "setups",
+      "instruments",
+      "sessions"
+    ]
   }
 }
