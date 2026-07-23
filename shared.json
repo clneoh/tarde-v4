@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-07-23T18:15:27.105957+08:00",
+  "regime": "NEUTRAL",
+  "horizon_matrix": {
+    "W1": {
+      "risk-on": "LONG",
+      "neutral": "free",
+      "risk-off": "SHORT"
+    },
+    "D1": {
+      "risk-on": "LONG",
+      "neutral": "free",
+      "risk-off": "SHORT"
+    },
+    "D2": {
+      "risk-on": "LONG",
+      "neutral": "free",
+      "risk-off": "SHORT"
+    },
+    "H4": {
+      "risk-on": "LONG",
+      "neutral": "free",
+      "risk-off": "SHORT"
+    },
+    "H1": {
+      "risk-on": "free",
+      "neutral": "free",
+      "risk-off": "free"
+    },
+    "M15": {
+      "risk-on": "free",
+      "neutral": "free",
+      "risk-off": "free"
+    }
+  },
+  "news": [
+    "\ud83d\udcc5 Initial Jobless Claims"
+  ],
+  "regime_assets": {
+    "DXY": {
+      "price": 101.16,
+      "trend": "UP",
+      "chg_5d": 0.4
+    },
+    "VIX": {
+      "price": 17.77,
+      "trend": "UP",
+      "chg_5d": -5.28
+    },
+    "SPX": {
+      "price": 7498.96,
+      "trend": "UP",
+      "chg_5d": -0.46
+    },
+    "US10Y": {
+      "price": 4.68,
+      "trend": "UP",
+      "chg_5d": 2.86
+    },
+    "BTC": {
+      "price": 65685.79,
+      "trend": "UP",
+      "chg_5d": 1.55
+    }
+  },
+  "correlation": {
+    "status": "WARN",
+    "checks": {
+      "dxy_5d": 0.4,
+      "spx_5d": -0.46,
+      "stock_chgs": {
+        "AAPL": -2.21,
+        "META": -5.62,
+        "GOOGL": -3.49
+      }
+    },
+    "warnings": [
+      "All 3 tech stocks down \u2014 single sector risk"
+    ]
+  }
+}

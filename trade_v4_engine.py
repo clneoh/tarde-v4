@@ -46,6 +46,18 @@ def save_capital_in_state(capital):
         with open(STATE_FILE) as f:
             state = json.load(f)
     state["compounded_capital"] = round(capital, 2)
+        # Write shared.json for PAM (single source of truth)
+    shared = {
+        "timestamp": simple["timestamp"],
+        "regime": simple["regime"],
+        "horizon_matrix": simple.get("horizon_matrix", {}),
+        "news": simple.get("news", []),
+        "regime_assets": (state.get("steps", {}).get("regime", {}) or {}).get("assets", {}),
+        "correlation": (state.get("steps", {}) or {}).get("correlation", {}),
+    }
+    with open("shared.json", "w") as sf:
+        json.dump(shared, sf, indent=2, default=str)
+
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=2, default=str)
 
@@ -1304,6 +1316,18 @@ def save_state(state):
         "shared_data": cfg.get("shared_data", {}),
         "horizon_matrix": horizon_matrix,
     }
+        # Write shared.json for PAM (single source of truth)
+    shared = {
+        "timestamp": simple["timestamp"],
+        "regime": simple["regime"],
+        "horizon_matrix": simple.get("horizon_matrix", {}),
+        "news": simple.get("news", []),
+        "regime_assets": (state.get("steps", {}).get("regime", {}) or {}).get("assets", {}),
+        "correlation": (state.get("steps", {}) or {}).get("correlation", {}),
+    }
+    with open("shared.json", "w") as sf:
+        json.dump(shared, sf, indent=2, default=str)
+
     with open(STATE_FILE, "w") as f:
         json.dump(simple, f, indent=2, default=str)
 

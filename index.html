@@ -566,7 +566,8 @@ function renderJournal(journal, positions, s) {
 
 // === PAM TAB (JS-built, no HTML restructuring) ===
 (function(){
-  const PAM_URL = '/tarde-v4/pam/pam_state.json';
+  const SHARED_URL = '/tarde-v4/shared.json';
+const PAM_URL = '/tarde-v4/pam/pam_state.json';
   const TH = 55;
   let currentTab = 'v4';
 
@@ -595,20 +596,18 @@ function renderJournal(journal, positions, s) {
     try {
       const [pr, vr] = await Promise.all([
         fetch(PAM_URL, {cache:'no-store'}),
-        fetch(STATE_URL, {cache:'no-store'})
+        fetch(SHARED_URL, {cache:'no-store'})
       ]);
       if (!pr.ok) return;
       const pamData = await pr.json();
       if (vr.ok) {
-        const v4Data = await vr.json();
-        // Bulk inherit shared fields from V4 (single source of truth)
-        const shared = (v4Data.shared_data?.fields) || ['regime','correlation','horizon_matrix','news'];
-        for (const f of shared) {
-          if (v4Data[f] !== undefined) pamData[f] = v4Data[f];
-        }
-        // Regime-specific sub-fields
-        pamData.regimeReasons = (v4Data.steps?.regime?.reasons || []);
-        pamData.regimeAssets = (v4Data.steps?.regime?.assets) || {};
+        const shared = await vr.json();
+        pamData.regime = shared.regime;
+        pamData.horizon_matrix = shared.horizon_matrix;
+        pamData.news = shared.news;
+        pamData.correlation = shared.correlation;
+        pamData.regimeAssets = shared.regime_assets;
+        pamData.regimeReasons = (shared.correlation?.warnings || []);
       }
       renderPAM(pamData);
     } catch(e) {}
