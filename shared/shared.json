@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-24T01:53:55.605423+08:00",
+  "timestamp": "2026-07-24T02:06:17.709898+08:00",
   "regime": "RISK-OFF",
   "score": 4,
   "reasons": [
@@ -8,15 +8,15 @@
   ],
   "assets": {
     "DXY": {
-      "price": 101.4,
-      "chg_5d": 0.7
+      "price": 101.5,
+      "chg_5d": 0.8
     },
     "VIX": {
-      "price": 19.4,
-      "chg_5d": 16.0
+      "price": 19.7,
+      "chg_5d": 17.6
     },
     "SPX": {
-      "price": 7401.7,
+      "price": 7398.7,
       "chg_5d": -1.8
     },
     "US10Y": {
@@ -24,8 +24,8 @@
       "chg_5d": 3.2
     },
     "BTC": {
-      "price": 64770.2,
-      "chg_5d": -0.0
+      "price": 64658.1,
+      "chg_5d": -0.2
     }
   },
   "horizon_matrix": {
@@ -140,6 +140,17 @@
       "exec_tf": "H1",
       "enabled_v4": false,
       "enabled_pam": true
+    },
+    "SOFI": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "bias_tf": [
+        "D2"
+      ],
+      "exec_tf": "H1",
+      "enabled_v4": false,
+      "enabled_pam": false
     }
   },
   "bias_model": {
