@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-24T06:16:03.278402+08:00",
+  "timestamp": "2026-07-24T06:18:03.668381+08:00",
   "regime": "RISK-OFF",
   "score": 4,
   "reasons": [
@@ -24,8 +24,8 @@
       "chg_5d": 3.1
     },
     "BTC": {
-      "price": 65046.6,
-      "chg_5d": 0.4
+      "price": 64981.8,
+      "chg_5d": 0.3
     }
   },
   "horizon_matrix": {
