@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-24T01:43:24.988301+08:00",
+  "timestamp": "2026-07-24T01:53:55.605423+08:00",
   "regime": "RISK-OFF",
   "score": 4,
   "reasons": [
@@ -8,23 +8,23 @@
   ],
   "assets": {
     "DXY": {
-      "price": 101.5,
+      "price": 101.4,
       "chg_5d": 0.7
     },
     "VIX": {
-      "price": 19.5,
-      "chg_5d": 16.7
+      "price": 19.4,
+      "chg_5d": 16.0
     },
     "SPX": {
-      "price": 7407.2,
-      "chg_5d": -1.7
+      "price": 7401.7,
+      "chg_5d": -1.8
     },
     "US10Y": {
       "price": 4.7,
       "chg_5d": 3.2
     },
     "BTC": {
-      "price": 64769.4,
+      "price": 64770.2,
       "chg_5d": -0.0
     }
   },
@@ -102,7 +102,6 @@
       "session": "US",
       "bias_tf": [
         "W1",
-        "D1",
         "D2"
       ],
       "exec_tf": "H1",
@@ -114,8 +113,6 @@
       "type": "stock",
       "session": "US",
       "bias_tf": [
-        "W1",
-        "D1",
         "D2"
       ],
       "exec_tf": "H1",
@@ -143,20 +140,11 @@
       "exec_tf": "H1",
       "enabled_v4": false,
       "enabled_pam": true
-    },
-    "SOFI": {
-      "exchange": "NASDAQ",
-      "type": "stock",
-      "session": "US",
-      "bias_tf": [],
-      "exec_tf": "",
-      "enabled_v4": false,
-      "enabled_pam": true
     }
   },
   "bias_model": {
     "rule": "majority_vote",
-    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie \u00c3\u00a2\u00c2\u0086\u00c2\u0092 neutral.",
+    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie \u00c3\u0083\u00c2\u0083\u00c3\u0082\u00c2\u00a2\u00c3\u0083\u00c2\u0082\u00c3\u0082\u00c2\u0086\u00c3\u0083\u00c2\u0082\u00c3\u0082\u00c2\u0092 neutral.",
     "ema_period": 20,
     "tie_result": "neutral",
     "fetch_policy": "only_fetch_required",
