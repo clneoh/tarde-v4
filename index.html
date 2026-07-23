@@ -575,6 +575,8 @@ function renderJournal(journal, positions, s) {
         const v4Data = await vr.json();
         pamData.regime = v4Data.regime;
         pamData.correlation = v4Data.steps?.correlation || pamData.correlation;
+        pamData.regimeReasons = (v4Data.steps?.regime?.reasons || []);
+        pamData.news = v4Data.news || pamData.news || [];
       }
       renderPAM(pamData);
     } catch(e) {}
@@ -586,7 +588,7 @@ function renderJournal(journal, positions, s) {
     const rt = document.getElementById('pRegime');
     rt.textContent = regime;
     rt.className = 'regime-big ' + regime.toLowerCase().replace(' ','-');
-    document.getElementById('pReasons').innerHTML = ((d.correlation||{}).warnings||[]).slice(0,2).join('<br>');
+    document.getElementById('pReasons').innerHTML = (d.regimeReasons||(d.correlation||{}).warnings||[]).slice(0,2).map(function(r){return '• '+r}).join('<br>');
     var pd = document.getElementById('pCorrWarn');
     pd.innerHTML = (d.news||[]).join('<br>');
     pd.style.color = '#ffd740';
