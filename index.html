@@ -8,8 +8,6 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#080816;color:#c8c8e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;height:100vh;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:4px;min-width:1200px}
-#pamContent{flex:1;min-height:0}
-#pamContent .main{height:100%}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
 
@@ -29,8 +27,9 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 .tab{padding:8px 24px;font-size:13px;font-weight:600;border:2px solid #404080;border-bottom:2px solid #0c0c24;border-radius:8px 8px 0 0;cursor:pointer;background:#06061a;color:#6060a0;letter-spacing:0.5px;transition:all 0.2s}
 .tab.active{background:#0c0c24;color:#ffd740;border-color:#ffd74040 #404080 #0c0c24}
 .tab:hover:not(.active){color:#9090c0;border-color:#6060a0}
+#pamContent{flex:1;min-height:0}
+#pamContent .main{height:100%}
 /* PAM tab specific */
-.pam-header{margin-bottom:10px}
 .pam-asset-row{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-bottom:1px solid #12122a;font-size:14px}
 .pam-asset-row .aname{font-weight:700;color:#ffd740;min-width:80px}
 .pam-asset-row .aprice{font-size:14px;color:#e0e0f0}
@@ -208,11 +207,11 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
       <div class="summary" id="summaryBar"></div>
     </div>
 </div>
-
+</div>
 </div>
 
 <!-- PAM CONTENT -->
-<div id="pamContent" style="display:none;flex:1;min-height:0">
+<div id="pamContent" style="display:none">
   <div class="main">
     <div class="left">
       <div class="panel">
@@ -235,6 +234,8 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
     </div>
   </div>
 </div>
+
+
 
 <div class="footer">Trade V4 · XAU+AAPL+META+GOOGL+MSFT · 15m</div>
 
@@ -587,48 +588,34 @@ async function fetchPAM() {
 
 function renderPAM(data) {
   if (!data) return;
-
-  // Regime
   const regime = data.regime || 'NEUTRAL';
   const rt = document.getElementById('pamRegimeTxt');
   rt.textContent = regime;
   rt.className = 'regime-big ' + regime.toLowerCase().replace(' ','-');
-
-  // Regime reasons from correlation
   const corr = data.correlation || {};
   const reasons = (corr.warnings || []).slice(0, 2);
-  document.getElementById('pamRegimeReasons').innerHTML = reasons.map(r => '• ' + r).join('<br>');
+  document.getElementById('pamRegimeReasons').innerHTML = reasons.map(function(r){return '\u2022 ' + r}).join('<br>');
   document.getElementById('pamCorrWarn').innerHTML = '';
-
-  // Setups
   const setups = data.setups || {};
   let ph = '', sl = '', bonusAll = [];
-
   for (const [asset, adata] of Object.entries(setups)) {
     const price = adata.price?.toFixed(2) || '--';
     const status = adata.status || 'PASS';
     const signal = adata.signal;
     const allSignals = adata.all_signals || [];
-
-    // Price strip
     let tagCls = 'monitor', tagText = 'scan';
     if (status === 'SIGNAL' && signal) {
-      tagCls = 'fire'; tagText = '🎯 ' + signal.setup + ' ' + signal.direction.toUpperCase() + ' ' + signal.score_pct + '%';
+      tagCls = 'fire'; tagText = '\u{1F3AF} ' + signal.setup + ' ' + signal.direction.toUpperCase() + ' ' + signal.score_pct + '%';
     } else if (status === 'OUTSIDE_HOURS') {
-      tagCls = 'closed'; tagText = '🔴 CLOSED';
+      tagCls = 'closed'; tagText = '\u{1F534} CLOSED';
     } else if (status === 'PRE_MARKET') {
-      tagCls = 'monitor'; tagText = '🟡 PRE';
+      tagCls = 'monitor'; tagText = '\u{1F7E1} PRE';
     } else if (status === 'GAP') {
-      tagCls = 'closed'; tagText = '⚫ GAP';
+      tagCls = 'closed'; tagText = '\u26AB GAP';
     }
     ph += '<div class="pam-asset-row"><span class="aname">' + asset + '</span><span class="aprice">$' + price + '</span><span class="atag ' + tagCls + '">' + tagText + '</span></div>';
-
-    // Bonus
     if (adata.bonus_details) bonusAll.push(...adata.bonus_details);
-
-    // Setup cards
     if (status === 'OUTSIDE_HOURS' || status === 'PRE_MARKET' || status === 'GAP') continue;
-
     for (const s of allSignals) {
       if (s.score <= 0 && allSignals.length > 1) continue;
       const sp = s.score_pct || 0;
@@ -639,8 +626,6 @@ function renderPAM(data) {
       let barColor = '#404080';
       if (sp >= PAM_THRESHOLD) barColor = '#00e676';
       else if (sp >= PAM_THRESHOLD - 10) barColor = '#ffc107';
-
-      // Criteria
       let ch = '';
       const crits = (s.details || []).filter(function(d) { return d.includes('/'); });
       for (const c of crits) {
@@ -652,21 +637,17 @@ function renderPAM(data) {
         const ccolor = active ? '#00e676' : '#303040';
         ch += '<div class="ps-crit"><span style="width:8px;color:' + (active?'#00e676':'#444') + '">' + (active?'+':' ') + '</span><span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + name + '</span><span class="pcbar"><div class="pcbar-f" style="width:' + cp + '%;background:' + ccolor + '"></div></span><span style="font-size:11px;color:#606080;width:32px;text-align:right">' + scored + '/' + max + '</span></div>';
       }
-
-      sl += '<div class="pam-signal-card ' + cardCls + '" onclick="var ce=document.getElementById(\'' + uid + '\');ce.style.display=ce.style.display===\'none\'?\'block\':\'none\'"><div class="ps-hdr"><div><span style="font-weight:600;color:#ffd740">' + asset + '</span> <span style="font-size:12px;color:#8080c0">· ' + s.setup + '</span> <span style="font-size:12px;color:#888">' + s.direction.toUpperCase() + '</span></div><div style="text-align:right"><div style="font-size:20px;font-weight:700;color:' + barColor + '">' + sp.toFixed(0) + '<span style="font-size:12px">%</span></div><div style="font-size:11px;color:#606080">(' + s.score.toFixed(0) + '/' + mp + ')</div></div></div><div class="ps-bar"><div class="ps-bar-f" style="width:' + Math.min(100, sp) + '%;background:' + barColor + '"></div><div class="ps-thresh" style="left:' + PAM_THRESHOLD + '%"></div></div><div id="' + uid + '" style="display:none">' + ch + '</div></div>';
+      sl += '<div class="pam-signal-card ' + cardCls + '" onclick="var ce=document.getElementById(\'' + uid + '\');ce.style.display=ce.style.display===\'none\'?\'block\':\'none\'"><div class="ps-hdr"><div><span style="font-weight:600;color:#ffd740">' + asset + '</span> <span style="font-size:12px;color:#8080c0">\u00b7 ' + s.setup + '</span> <span style="font-size:12px;color:#888">' + s.direction.toUpperCase() + '</span></div><div style="text-align:right"><div style="font-size:20px;font-weight:700;color:' + barColor + '">' + sp.toFixed(0) + '<span style="font-size:12px">%</span></div><div style="font-size:11px;color:#606080">(' + s.score.toFixed(0) + '/' + mp + ')</div></div></div><div class="ps-bar"><div class="ps-bar-f" style="width:' + Math.min(100, sp) + '%;background:' + barColor + '"></div><div class="ps-thresh" style="left:' + PAM_THRESHOLD + '%"></div></div><div id="' + uid + '" style="display:none">' + ch + '</div></div>';
     }
   }
-
   document.getElementById('pamPriceStrip').innerHTML = ph || '<div class="pam-no-signals">No price data</div>';
   document.getElementById('pamSetupList').innerHTML = sl || '<div class="pam-no-signals">No setups scored</div>';
-
-  // Bonus
   const bonusUnique = [...new Set(bonusAll)];
-  document.getElementById('pamBonusStrip').innerHTML = bonusUnique.length ? '⭐ ' + bonusUnique.join(' · ') : '';
+  document.getElementById('pamBonusStrip').innerHTML = bonusUnique.length ? '\u2B50 ' + bonusUnique.join(' \u00b7 ') : '';
 }
 
-// Auto-fetch PAM on load (will render when tab is switched)
 fetchPAM();
+
 
 render();
 setInterval(render, 15000);
