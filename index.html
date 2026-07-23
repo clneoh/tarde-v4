@@ -611,17 +611,27 @@ function renderJournal(journal, positions, s) {
     document.getElementById('pReasons').innerHTML = (d.regimeReasons||(d.correlation||{}).warnings||[]).slice(0,2).map(function(r){return '• '+r}).join('<br>');
     var hm = document.getElementById('phorizonMatrix');
     if (hm && d.horizon_matrix) {
-      var reg2 = (d.regime || '').toLowerCase().replace(' ','-');
+      var curReg2 = (d.regime || '').toLowerCase().replace(' ','-');
       var hzns = Object.keys(d.horizon_matrix);
-      var mh = '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:2px"><tr style="color:#6060a0"><td style="padding:2px 4px">HZN</td>';
+      var rows2 = ['risk-on','neutral','risk-off'];
+      var labels2 = {'risk-on':'RISK-ON','neutral':'NEUTRAL','risk-off':'RISK-OFF'};
+      var mh = '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:4px"><tr style="color:#6060a0"><td style="padding:2px 4px"></td>';
       for (var hi=0; hi<hzns.length; hi++) mh += '<td style="padding:2px 4px;text-align:center">' + hzns[hi] + '</td>';
-      mh += '</tr><tr><td style="padding:2px 4px;color:#ffd740;font-weight:600">' + (d.regime||'?') + '</td>';
-      for (var hj=0; hj<hzns.length; hj++) {
-        var bias = (d.horizon_matrix[hzns[hj]]||{})[reg2] || 'free';
-        var clr = bias === 'LONG' ? '#00e676' : (bias === 'SHORT' ? '#ff5252' : '#8080c0');
-        mh += '<td style="padding:2px 4px;text-align:center;color:' + clr + ';font-weight:600">' + bias + '</td>';
+      mh += '</tr>';
+      for (var ri=0; ri<rows2.length; ri++) {
+        var r = rows2[ri];
+        var isCur = r === curReg2;
+        var rclr = r === 'risk-on' ? '#003315' : (r === 'risk-off' ? '#310015' : '#151530');
+        var rbd = isCur ? 'border-left:3px solid #ffd740;' : '';
+        mh += '<tr style="background:' + rclr + ';' + rbd + '"><td style="padding:2px 4px;color:' + (isCur?'#ffd740':'#8080c0') + ';font-weight:' + (isCur?'700':'400') + '">' + labels2[r] + '</td>';
+        for (var hj=0; hj<hzns.length; hj++) {
+          var bias = (d.horizon_matrix[hzns[hj]]||{})[r] || 'free';
+          var clr = bias === 'LONG' ? '#00e676' : (bias === 'SHORT' ? '#ff5252' : '#6060a0');
+          mh += '<td style="padding:2px 4px;text-align:center;color:' + clr + ';font-weight:600;font-size:12px">' + bias + '</td>';
+        }
+        mh += '</tr>';
       }
-      mh += '</tr></table>';
+      mh += '</table>';
       hm.innerHTML = mh;
     }
     var pd = document.getElementById('pCorrWarn');
