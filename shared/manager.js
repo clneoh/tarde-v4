@@ -7,9 +7,7 @@ var assetList = {};
 function load() {
   try { var saved = localStorage.getItem('gh_pat'); if (saved) document.getElementById('ghToken').value = saved; } catch(e) {}
   fetch(SHARED_URL + '?t=' + Date.now(), {cache:'no-store'})
-    .then(function(r) {
-      // Trigger pipeline via image pixel (no CORS)
-      new Image().src = 'http://54.254.254.195:8765/trigger?t=' + Date.now(); return r.json(); })
+    .then(function(r) { return r.json(); })
     .then(function(data) { assetList = data.asset_list || {}; render(); })
     .catch(function() { document.getElementById('stats').textContent = 'Failed to load'; });
 }
@@ -140,58 +138,64 @@ function setStatus(msg, ok) {
   var s = document.getElementById('status');
   s.textContent = msg;
   s.className = 'status ' + (ok ? 'ok' : 'err');
-  if (ok) setTimeout(function() { s.textContent = ''; }, 8000);
 }
 
 function applyConfig() {
   var token = document.getElementById('ghToken').value.trim();
   if (token) { try { localStorage.setItem('gh_pat', token); } catch(e) {} }
   if (!token) { setStatus('Enter GitHub PAT first', false); return; }
+  
   var btn = document.getElementById('applyBtn');
   btn.textContent = 'Applying...'; btn.disabled = true;
   document.body.style.pointerEvents = 'none';
   document.body.style.opacity = '0.6';
   
-  setStatus('Applying... 0s (pushed, waiting for pipeline)', true);
-  var elapsed = 0;
-  var timer = setInterval(function() {
-    elapsed++;
-    if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (pipeline running)', true);
-    else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (pipeline running)', true);
-    else if (elapsed < 120) setStatus('Applying... ' + elapsed + 's (syncing)', true);
-    else { clearInterval(timer); unfreeze(); }
-  }, 1000);
-  setTimeout(function() { clearInterval(timer); unfreeze(); }, 130000);
+  var cfg = buildConfig();
+  var target = Object.keys(cfg.assets).length;
+  setStatus('Pushing config...', true);
   
   var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
   var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
-  var cfg = buildConfig();
   
   fetch(api, { headers: headers, cache: 'no-store' })
-    .then(function(r) {
-      // Trigger pipeline via image pixel (no CORS)
-      new Image().src = 'http://54.254.254.195:8765/trigger?t=' + Date.now(); if (!r.ok) throw new Error('Fetch fail: ' + r.status); return r.json(); })
+    .then(function(r) { if (!r.ok) throw new Error('Fetch: ' + r.status); return r.json(); })
     .then(function(file) {
       var full = JSON.parse(atob(file.content));
       full.assets = cfg.assets;
-      var body = JSON.stringify({
-        message: 'manager update',
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(full, null, 2)))),
-        sha: file.sha
+      return fetch(api, {
+        method: 'PUT', headers: headers,
+        body: JSON.stringify({ message: 'manager', content: btoa(unescape(encodeURIComponent(JSON.stringify(full, null, 2)))), sha: file.sha })
       });
-      return fetch(api, { method: 'PUT', headers: headers, body: body });
     })
-    .then(function(r) {
-      // Trigger pipeline via image pixel (no CORS)
+    .then(function() {
+      setStatus('Config pushed. Running pipeline...', true);
       new Image().src = 'http://54.254.254.195:8765/trigger?t=' + Date.now();
-      if (!r.ok) throw new Error('Push fail: ' + r.status);
-      console.log('Config pushed to GitHub');
+      
+      // Poll for sync
+      var tries = 0;
+      var poll = setInterval(function() {
+        tries++;
+        fetch(RAW_URL + '?poll=' + Date.now())
+          .then(function(r) { return r.json(); })
+          .then(function(d) {
+            var count = Object.keys(d.asset_list || {}).length;
+            setStatus('Syncing... ' + count + '/' + target + ' assets (' + tries*3 + 's)', true);
+            if (count === target && tries > 1) {
+              clearInterval(poll);
+              setStatus('Applied! ' + count + ' assets synced.', true);
+              setTimeout(unfreeze, 1000);
+            }
+          })
+          .catch(function() {});
+        if (tries > 40) { clearInterval(poll); setStatus('Done. Refresh to check.', true); setTimeout(unfreeze, 1000); }
+      }, 3000);
     })
     .catch(function(e) {
-      console.error('Apply error:', e);
       setStatus('Error: ' + e.message, false);
+      setTimeout(unfreeze, 2000);
     });
 }
+
 function unfreeze() {
   document.body.style.pointerEvents = '';
   document.body.style.opacity = '1';
