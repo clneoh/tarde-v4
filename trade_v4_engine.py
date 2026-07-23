@@ -1210,7 +1210,7 @@ def run_pipeline(cfg, tv=None):
     # Filter assets from shared master list
     shared_assets = {}
     try:
-        with open("shared.json") as f:
+        with open("shared/shared.json") as f:
             shared = json.load(f)
         al = shared.get("asset_list", {})
         for k, v in al.items():
