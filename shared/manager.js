@@ -146,13 +146,12 @@ function applyConfig() {
   if (!token) { setStatus('Enter GitHub PAT first', false); return; }
   
   var btn = document.getElementById('applyBtn');
-  btn.textContent = 'Applying...'; btn.disabled = true;
+  btn.textContent = 'Pushing...'; btn.disabled = true;
   document.body.style.pointerEvents = 'none';
   document.body.style.opacity = '0.6';
   
   var cfg = buildConfig();
-  var target = Object.keys(cfg.assets).length;
-  setStatus('Pushing config...', true);
+  setStatus('Pushing config to GitHub...', true);
   
   var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
   var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
@@ -168,27 +167,13 @@ function applyConfig() {
       });
     })
     .then(function() {
-      setStatus('Config pushed. Running pipeline...', true);
-      new Image().src = 'http://54.254.254.195:8765/trigger?t=' + Date.now();
-      
-      // Poll for sync
-      var tries = 0;
-      var poll = setInterval(function() {
-        tries++;
-        fetch(RAW_URL + '?poll=' + Date.now())
-          .then(function(r) { return r.json(); })
-          .then(function(d) {
-            var count = Object.keys(d.asset_list || {}).length;
-            setStatus('Syncing... ' + count + '/' + target + ' assets (' + tries*3 + 's)', true);
-            if (count === target && tries > 1) {
-              clearInterval(poll);
-              setStatus('Applied! ' + count + ' assets synced.', true);
-              setTimeout(unfreeze, 1000);
-            }
-          })
-          .catch(function() {});
-        if (tries > 40) { clearInterval(poll); setStatus('Done. Refresh to check.', true); setTimeout(unfreeze, 1000); }
-      }, 3000);
+      setStatus('Pushed! Dashboard updates in 2 min.', true);
+      var countdown = 120;
+      var timer = setInterval(function() {
+        countdown--;
+        if (countdown <= 0) { clearInterval(timer); unfreeze(); }
+        else if (countdown % 10 === 0) { setStatus('Pushed! Refresh in ' + countdown + 's...', true); }
+      }, 1000);
     })
     .catch(function(e) {
       setStatus('Error: ' + e.message, false);
