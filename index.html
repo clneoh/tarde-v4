@@ -484,7 +484,7 @@ function renderJournal(journal, positions, s) {
     <div class="sr"><span class="asset">Stocks</span><span>$${initStocks}</span><span>${stockAllocPct*100}%</span><span>$${currentAllocStock.toFixed(0)}</span><span>${stockTickers}</span><span>$${initStocks/stockTickers}</span><span>${stockTrades}</span><span>${stockTrades>0?(stockWins/stockTrades*100).toFixed(0):'—'}%</span><span class="${clr(stockRealised)}">${fmt(stockRealised)}</span></div>
     <div class="sr total-row">
       <span class="asset" style="font-size:15px;color:#fff">Total</span>
-      <span style="color:#aaa">$${capital.toLocaleString()}</span>
+      <span style="color:#aaa">$${INIT_CAPITAL.toLocaleString()}</span>
       <span style="color:#aaa">100%</span>
       <span style="color:#aaa">$${(currentAllocXau+currentAllocStock).toFixed(0)}</span>
       <span>${goldTickers+stockTickers}</span>
