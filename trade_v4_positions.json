@@ -1,6 +1,5 @@
 {
   "open": [],
-  "pending": [],
   "closed": [
     {
       "asset": "XAUUSD",
@@ -14,13 +13,11 @@
       "rr": 2.0,
       "created_at": "2026-07-22T01:04:23.148613+00:00",
       "regime": "NEUTRAL",
-      "bars_waiting": 0,
-      "unrealised_r": 1.87,
-      "current_price": 4125.59,
       "exit": 4126.58,
       "exit_reason": "TP",
       "pnl_r": 2.0,
       "pnl_pct": 0.38,
+      "pnl_r_dollar": 40.0,
       "closed_at": "2026-07-22T10:48:29.024127+08:00"
     },
     {
@@ -35,20 +32,18 @@
       "rr": 2.0,
       "created_at": "2026-07-22T10:48:29.024195+08:00",
       "regime": "NEUTRAL",
-      "bars_waiting": 4,
-      "unrealised_r": 0.26,
-      "current_price": 4130.81,
       "exit": 4117.39,
       "exit_reason": "SL",
       "pnl_r": -1.0,
       "pnl_pct": -0.26,
+      "pnl_r_dollar": -20.0,
       "closed_at": "2026-07-22T14:32:19.649855+08:00"
     },
     {
       "asset": "XAUUSD",
       "direction": "long",
       "setup": "structure_break",
-      "score": 28.799999999999997,
+      "score": 28.8,
       "entry": 4142.86,
       "sl": 4132.22,
       "tp": 4164.15,
@@ -58,16 +53,12 @@
       "capital_at_entry": 10000,
       "created_at": "2026-07-22T21:41:45.885323+08:00",
       "regime": "NEUTRAL",
-      "bars_waiting": 0,
-      "unrealised_r": 0.64,
-      "current_price": 4149.62,
       "exit": 4132.22,
       "exit_reason": "SL",
       "pnl_r": -1.0,
       "pnl_pct": -0.26,
-      "pnl_r_dollar": -200.0,
-      "capital_after": 9800.0,
-      "closed_at": "2026-07-23T11:07:07.651278+08:00"
+      "pnl_r_dollar": -20.0,
+      "closed_at": "2026-07-23T10:55:52+08:00"
     }
   ]
 }

@@ -440,7 +440,7 @@ function renderJournal(journal, positions, s) {
       h += `<tr class="open-row"><td>${ts}</td><td style="color:#22d3ee">OPEN</td><td style="font-weight:600">${e.asset}</td><td style="color:#888">${e.setup||''} ${e.dir}</td><td>$${(e.entry||0).toFixed(2)}</td><td style="color:#888">SL $${(e.sl||0).toFixed(1)}</td><td style="color:#888">R=$${rPerAsset.toFixed(0)}</td></tr>`;
     } else if (e.type === 'close') {
       const clr = (e.pnl_r||0)>=0?'#00e676':'#ff5252';
-      const actualDollar = e.pnl_r_dollar || ((e.pnl_r||0) * rPerAsset);
+      const actualDollar = (e.pnl_r||0) * rPerAsset;
       const pnlPct = (e.pnl_pct||0);
       const capAfter = e.capital_after ? ' → $'+e.capital_after.toLocaleString('en-US',{maximumFractionDigits:0}) : '';
       h += `<tr class="closed-row"><td>${ts}</td><td style="color:${clr}">${e.reason==='TP'?'<span style="background:#003315;border:1px solid #00e676;color:#00e676;padding:2px 6px;border-radius:3px;font-weight:700">✅ TP</span>':'<span style="background:#310015;border:1px solid #ff5252;color:#ff5252;padding:2px 6px;border-radius:3px;font-weight:700">❌ SL</span>'}</td><td style="font-weight:600">${e.asset}</td><td style="color:#888">${e.setup||''} ${e.dir}</td><td>$${(e.entry||0).toFixed(2)}</td><td>$${(e.exit||0).toFixed(2)}</td><td style="color:${clr};font-weight:700">${actualDollar>=0?'+':''}$${Math.abs(actualDollar).toFixed(0)} (${(e.pnl_r||0)>=0?'+':''}${e.pnl_r}R, ${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%)${capAfter}</td></tr>`;
