@@ -527,7 +527,7 @@ function renderJournal(journal, positions, s) {
 
 
 // === PAM TAB (JS-built, no HTML restructuring) ===
-document.addEventListener('DOMContentLoaded', function(){
+(function(){
   const PAM_URL = '/tarde-v4/pam/pam_state.json';
   const TH = 55;
   let currentTab = 'v4';
@@ -535,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function(){
   // Build tab bar
   const tabs = document.createElement('div');
   tabs.className = 'tabs';
-  tabs.innerHTML = '<div class="tab active" id="tbV4">Trade V4</div><div class="tab" id="tbPAM">PAM</div>';
+  tabs.innerHTML = '<div class="tab active" id="tbV4" onclick="switchTab(\'v4\')">Trade V4</div><div class="tab" id="tbPAM" onclick="switchTab(\'pam\')">PAM</div>';
   const prices = document.getElementById('prices');
   prices.parentNode.insertBefore(tabs, prices);
 
@@ -615,7 +615,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   fetchPAM();
-});
+})();
 
 
 render();
