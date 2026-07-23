@@ -21,35 +21,6 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 .verdict.go{background:#003315;color:#00e676;border:1px solid #00e67633}
 .verdict.caution{background:#1a1a10;color:#ffd740;border:1px solid #ffd74033}
 
-
-/* TABS */
-.tabs{display:flex;gap:0;margin:2px 0 0 0}
-.tab{padding:8px 24px;font-size:13px;font-weight:600;border:2px solid #404080;border-bottom:2px solid #0c0c24;border-radius:8px 8px 0 0;cursor:pointer;background:#06061a;color:#6060a0;letter-spacing:0.5px;transition:all 0.2s}
-.tab.active{background:#0c0c24;color:#ffd740;border-color:#ffd74040 #404080 #0c0c24}
-.tab:hover:not(.active){color:#9090c0;border-color:#6060a0}
-#pamContent{flex:1;min-height:0}
-#pamContent .main{height:100%}
-/* PAM tab specific */
-.pam-asset-row{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-bottom:1px solid #12122a;font-size:14px}
-.pam-asset-row .aname{font-weight:700;color:#ffd740;min-width:80px}
-.pam-asset-row .aprice{font-size:14px;color:#e0e0f0}
-.pam-asset-row .atag{font-size:11px;padding:2px 8px;border-radius:3px}
-.atag.fire{background:#003315;color:#00e676;border:1px solid #00e676}
-.atag.monitor{background:#151530;color:#8080c0}
-.atag.closed{background:#101020;color:#404060}
-.pam-signal-card{background:#0e0e20;border-radius:4px;padding:8px 10px;margin:4px 0;border-left:3px solid #404080;cursor:pointer}
-.pam-signal-card:hover{border-left-color:#ffd740}
-.pam-signal-card.fire{border-left-color:#00e676}
-.pam-signal-card .ps-hdr{display:flex;justify-content:space-between;align-items:center;font-size:14px}
-.pam-signal-card .ps-bar{height:5px;background:#111130;border-radius:2px;margin:5px 0;position:relative}
-.pam-signal-card .ps-bar-f{height:5px;border-radius:2px;min-width:2%}
-.pam-signal-card .ps-thresh{position:absolute;top:-1px;height:7px;width:2px;background:#ffd740;opacity:0.6}
-.pam-signal-card .ps-crit{font-size:12px;color:#707090;padding:1px 0;display:flex;align-items:center;gap:4px}
-.pam-signal-card .ps-crit .pcbar{width:50px;height:3px;background:#111130;border-radius:1px}
-.pam-signal-card .ps-crit .pcbar-f{height:3px;border-radius:1px;min-width:2px}
-.pam-no-signals{color:#555;text-align:center;padding:20px;font-size:13px}
-
-
 /* PRICES */
 .prices{display:flex;gap:10px;background:#0c0c24;border:2px solid #404080;border-radius:8px;padding:8px 16px;font-size:14px;overflow-x:auto}
 .prices span{margin-right:14px;white-space:nowrap}
@@ -158,17 +129,9 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
 </div>
 
 <!-- PRICES -->
-
-<!-- TAB BAR -->
-<div class="tabs">
-  <div class="tab active" id="tabV4" onclick="switchTab('v4')">📊 Trade V4</div>
-  <div class="tab" id="tabPAM" onclick="switchTab('pam')">📈 PAM</div>
-</div>
-
 <div class="prices" id="prices"></div>
 
 <!-- MAIN -->
-<div id="v4Content">
 <div class="main">
   <!-- LEFT -->
   <div class="left">
@@ -207,35 +170,6 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
       <div class="summary" id="summaryBar"></div>
     </div>
 </div>
-</div>
-</div>
-
-<!-- PAM CONTENT -->
-<div id="pamContent" style="display:none">
-  <div class="main">
-    <div class="left">
-      <div class="panel">
-        <h3>🌍 REGIME</h3>
-        <div class="regime-big neutral" id="pamRegimeTxt">--</div>
-        <div class="regime-reasons" id="pamRegimeReasons"></div>
-        <div id="pamCorrWarn" style="font-size:11px;color:#ffd740;margin-top:4px"></div>
-      </div>
-      <div class="panel" style="flex:1;overflow-y:auto;min-height:0">
-        <h3>🎯 SIGNALS</h3>
-        <div id="pamSetupList"></div>
-      </div>
-    </div>
-    <div class="right">
-      <div class="panel" style="flex:1;overflow-y:auto;min-height:0">
-        <h3>📊 PRICE STRIP</h3>
-        <div id="pamPriceStrip"></div>
-        <div id="pamBonusStrip" style="font-size:12px;color:#ffd740;margin-top:8px"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 
 <div class="footer">Trade V4 · XAU+AAPL+META+GOOGL+MSFT · 15m</div>
 
@@ -562,92 +496,6 @@ function renderJournal(journal, positions, s) {
     <div class="sr" style="font-weight:400;color:#666;font-size:12px;border:none"><span class="asset"></span><span></span><span></span><span></span><span></span><span></span><span></span><span>${totalWins} won · ${openPos.length} active</span></div>
   `;
 }
-
-
-const PAM_URL = '/tarde-v4/pam/pam_state.json';
-const PAM_THRESHOLD = 55;
-let currentTab = 'v4';
-
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('v4Content').style.display = tab === 'v4' ? 'block' : 'none';
-  document.getElementById('pamContent').style.display = tab === 'pam' ? 'flex' : 'none';
-  document.getElementById('tabV4').className = 'tab' + (tab === 'v4' ? ' active' : '');
-  document.getElementById('tabPAM').className = 'tab' + (tab === 'pam' ? ' active' : '');
-  if (tab === 'pam') fetchPAM();
-}
-
-async function fetchPAM() {
-  try {
-    const r = await fetch(PAM_URL, {cache:'no-store'});
-    if (!r.ok) return;
-    const data = await r.json();
-    renderPAM(data);
-  } catch(e) { }
-}
-
-function renderPAM(data) {
-  if (!data) return;
-  const regime = data.regime || 'NEUTRAL';
-  const rt = document.getElementById('pamRegimeTxt');
-  rt.textContent = regime;
-  rt.className = 'regime-big ' + regime.toLowerCase().replace(' ','-');
-  const corr = data.correlation || {};
-  const reasons = (corr.warnings || []).slice(0, 2);
-  document.getElementById('pamRegimeReasons').innerHTML = reasons.map(function(r){return '\u2022 ' + r}).join('<br>');
-  document.getElementById('pamCorrWarn').innerHTML = '';
-  const setups = data.setups || {};
-  let ph = '', sl = '', bonusAll = [];
-  for (const [asset, adata] of Object.entries(setups)) {
-    const price = adata.price?.toFixed(2) || '--';
-    const status = adata.status || 'PASS';
-    const signal = adata.signal;
-    const allSignals = adata.all_signals || [];
-    let tagCls = 'monitor', tagText = 'scan';
-    if (status === 'SIGNAL' && signal) {
-      tagCls = 'fire'; tagText = '\u{1F3AF} ' + signal.setup + ' ' + signal.direction.toUpperCase() + ' ' + signal.score_pct + '%';
-    } else if (status === 'OUTSIDE_HOURS') {
-      tagCls = 'closed'; tagText = '\u{1F534} CLOSED';
-    } else if (status === 'PRE_MARKET') {
-      tagCls = 'monitor'; tagText = '\u{1F7E1} PRE';
-    } else if (status === 'GAP') {
-      tagCls = 'closed'; tagText = '\u26AB GAP';
-    }
-    ph += '<div class="pam-asset-row"><span class="aname">' + asset + '</span><span class="aprice">$' + price + '</span><span class="atag ' + tagCls + '">' + tagText + '</span></div>';
-    if (adata.bonus_details) bonusAll.push(...adata.bonus_details);
-    if (status === 'OUTSIDE_HOURS' || status === 'PRE_MARKET' || status === 'GAP') continue;
-    for (const s of allSignals) {
-      if (s.score <= 0 && allSignals.length > 1) continue;
-      const sp = s.score_pct || 0;
-      const mp = s.max_possible || 1;
-      const uid = 'pam_' + asset + '_' + s.setup + '_' + s.direction;
-      const isFire = signal && signal.setup === s.setup && signal.direction === s.direction;
-      const cardCls = isFire ? 'fire' : '';
-      let barColor = '#404080';
-      if (sp >= PAM_THRESHOLD) barColor = '#00e676';
-      else if (sp >= PAM_THRESHOLD - 10) barColor = '#ffc107';
-      let ch = '';
-      const crits = (s.details || []).filter(function(d) { return d.includes('/'); });
-      for (const c of crits) {
-        const m = c.match(/\[(\d+(?:\.\d+)?)\/(\d+)\]\s*(.+)/);
-        if (!m) continue;
-        const scored = parseFloat(m[1]), max = parseFloat(m[2]), name = m[3];
-        const cp = Math.max(2, (scored / max) * 100);
-        const active = scored > 0;
-        const ccolor = active ? '#00e676' : '#303040';
-        ch += '<div class="ps-crit"><span style="width:8px;color:' + (active?'#00e676':'#444') + '">' + (active?'+':' ') + '</span><span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + name + '</span><span class="pcbar"><div class="pcbar-f" style="width:' + cp + '%;background:' + ccolor + '"></div></span><span style="font-size:11px;color:#606080;width:32px;text-align:right">' + scored + '/' + max + '</span></div>';
-      }
-      sl += '<div class="pam-signal-card ' + cardCls + '" onclick="var ce=document.getElementById(\'' + uid + '\');ce.style.display=ce.style.display===\'none\'?\'block\':\'none\'"><div class="ps-hdr"><div><span style="font-weight:600;color:#ffd740">' + asset + '</span> <span style="font-size:12px;color:#8080c0">\u00b7 ' + s.setup + '</span> <span style="font-size:12px;color:#888">' + s.direction.toUpperCase() + '</span></div><div style="text-align:right"><div style="font-size:20px;font-weight:700;color:' + barColor + '">' + sp.toFixed(0) + '<span style="font-size:12px">%</span></div><div style="font-size:11px;color:#606080">(' + s.score.toFixed(0) + '/' + mp + ')</div></div></div><div class="ps-bar"><div class="ps-bar-f" style="width:' + Math.min(100, sp) + '%;background:' + barColor + '"></div><div class="ps-thresh" style="left:' + PAM_THRESHOLD + '%"></div></div><div id="' + uid + '" style="display:none">' + ch + '</div></div>';
-    }
-  }
-  document.getElementById('pamPriceStrip').innerHTML = ph || '<div class="pam-no-signals">No price data</div>';
-  document.getElementById('pamSetupList').innerHTML = sl || '<div class="pam-no-signals">No setups scored</div>';
-  const bonusUnique = [...new Set(bonusAll)];
-  document.getElementById('pamBonusStrip').innerHTML = bonusUnique.length ? '\u2B50 ' + bonusUnique.join(' \u00b7 ') : '';
-}
-
-fetchPAM();
-
 
 render();
 setInterval(render, 15000);
