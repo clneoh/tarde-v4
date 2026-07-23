@@ -1411,13 +1411,7 @@ def _format_compact(result):
         for ce in capital_events[-3:]:
             sign = "+" if ce["pnl_r"] >= 0 else ""
             lines.append(f"   {ce['asset']} {ce['reason']}: {sign}{ce['pnl_r']}R (${ce['dollar']:+,.0f}) → Capital: ${ce['capital']:,.0f}")
-    try:
-        with open("/tmp/trade_v4_tunnel_url.txt") as f:
-            url = f.read().strip()
-        if url:
-            lines.append(f"🖥️ {url}/trade_v4_dashboard.html")
-    except Exception:
-        pass
+    lines.append("🖥️ https://clneoh.github.io/tarde-v4/")
     return "\n".join(lines)
 
 
