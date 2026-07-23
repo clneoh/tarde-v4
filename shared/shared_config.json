@@ -53,18 +53,16 @@
       ],
       "exec_tf": "H1",
       "enabled_v4": true,
-      "enabled_pam": true
+      "enabled_pam": false
     },
     "NFLX": {
       "exchange": "nasdaq",
       "type": "stock",
       "session": "US",
-      "bias_tf": [
-        "D2"
-      ],
-      "exec_tf": "H1",
+      "bias_tf": [],
+      "exec_tf": "",
       "enabled_v4": true,
-      "enabled_pam": false
+      "enabled_pam": true
     }
   },
   "bias_model": {
