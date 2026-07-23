@@ -35,6 +35,13 @@
   },
   "regime": {
     "indicators": ["DXY", "VIX", "SPX", "US10Y", "BTC"],
+    "horizon_matrix": {
+      "W1":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
+      "D1":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
+      "H4":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
+      "H1":  { "risk-on": "free",  "neutral": "free", "risk-off": "free"  },
+      "15m": { "risk-on": "free",  "neutral": "free", "risk-off": "free"  }
+    },
     "horizon_rules": {
       "short": "free",
       "long": "risk-on → LONG bias | risk-off → SHORT bias | neutral → free"

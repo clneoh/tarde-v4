@@ -169,6 +169,7 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
       <div class="regime-reasons" id="regimeReasons"></div>
       <div class="sessions" id="sessionInfo"></div>
       <div id="corrWarn" style="font-size:11px;color:#ffd740;margin-top:4px"></div>
+      <div id="horizonMatrix" style="margin-top:6px"></div>
       <div id="newsEvents" style="font-size:12px;color:#ffd740;margin-top:4px"></div>
     </div>
 
@@ -255,7 +256,26 @@ function renderState(s) {
   rt.className = 'regime-big ' + (regime.regime||'').toLowerCase();
   document.getElementById('regimeReasons').innerHTML = (regime.reasons||[]).map(r => `• ${r}`).join('<br>');
   // News/economic events
-  const newsDiv = document.getElementById('newsEvents');
+  const newsDiv = // Horizon matrix
+  const hm = document.getElementById('horizonMatrix');
+  if (hm && s.horizon_matrix) {
+    const reg = (s.regime || '').toLowerCase().replace(' ','-');
+    const hzns = Object.keys(s.horizon_matrix);
+    let mh = '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:2px"><tr style="color:#6060a0">';
+    mh += '<td style="padding:2px 4px">HZN</td>';
+    for (const h of hzns) mh += '<td style="padding:2px 4px;text-align:center">' + h + '</td>';
+    mh += '</tr><tr>';
+    mh += '<td style="padding:2px 4px;color:#ffd740;font-weight:600">' + (s.regime||'?') + '</td>';
+    for (const h of hzns) {
+      const bias = (s.horizon_matrix[h]||{})[reg] || 'free';
+      const clr = bias === 'LONG' ? '#00e676' : (bias === 'SHORT' ? '#ff5252' : '#8080c0');
+      mh += '<td style="padding:2px 4px;text-align:center;color:' + clr + ';font-weight:600">' + bias + '</td>';
+    }
+    mh += '</tr></table>';
+    hm.innerHTML = mh;
+  }
+  const newsEl = document.getElementById('newsEvents');
+
   if (newsDiv) {
     const news = s.news || [];
     newsDiv.innerHTML = news.map(n => n).join('<br>');
@@ -552,7 +572,7 @@ function renderJournal(journal, positions, s) {
   // Get V4 main and PAM container
   const v4Main = document.querySelector('.main');
   const pamTab = document.getElementById('pamTab');
-  pamTab.innerHTML = '<div class="main"><div class="left"><div class="panel"><h3>REGIME</h3><div class="regime-big neutral" id="pRegime">--</div><div class="regime-reasons" id="pReasons"></div><div id="pCorrWarn" style="font-size:11px;color:#ffd740;margin-top:4px"></div></div><div class="panel" style="flex:1;overflow-y:auto;min-height:0"><h3>SIGNALS</h3><div id="pSetupList"></div></div></div><div class="right"><div class="panel" style="flex:1;overflow-y:auto;min-height:0"><h3>PRICE STRIP</h3><div id="pPriceStrip"></div><div id="pBonusStrip" style="font-size:12px;color:#ffd740;margin-top:8px"></div></div></div></div>';
+  pamTab.innerHTML = '<div class="main"><div class="left"><div class="panel"><h3>REGIME</h3><div class="regime-big neutral" id="pRegime">--</div><div class="regime-reasons" id="pReasons"></div><div id="phorizonMatrix" style="margin-top:6px"></div><div id="pCorrWarn" style="font-size:11px;color:#ffd740;margin-top:4px"></div></div><div class="panel" style="flex:1;overflow-y:auto;min-height:0"><h3>SIGNALS</h3><div id="pSetupList"></div></div></div><div class="right"><div class="panel" style="flex:1;overflow-y:auto;min-height:0"><h3>PRICE STRIP</h3><div id="pPriceStrip"></div><div id="pBonusStrip" style="font-size:12px;color:#ffd740;margin-top:8px"></div></div></div></div>';
 
   window.switchTab = function(tab) {
     currentTab = tab;
@@ -589,6 +609,21 @@ function renderJournal(journal, positions, s) {
     rt.textContent = regime;
     rt.className = 'regime-big ' + regime.toLowerCase().replace(' ','-');
     document.getElementById('pReasons').innerHTML = (d.regimeReasons||(d.correlation||{}).warnings||[]).slice(0,2).map(function(r){return '• '+r}).join('<br>');
+    var hm = document.getElementById('phorizonMatrix');
+    if (hm && d.horizon_matrix) {
+      var reg2 = (d.regime || '').toLowerCase().replace(' ','-');
+      var hzns = Object.keys(d.horizon_matrix);
+      var mh = '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:2px"><tr style="color:#6060a0"><td style="padding:2px 4px">HZN</td>';
+      for (var hi=0; hi<hzns.length; hi++) mh += '<td style="padding:2px 4px;text-align:center">' + hzns[hi] + '</td>';
+      mh += '</tr><tr><td style="padding:2px 4px;color:#ffd740;font-weight:600">' + (d.regime||'?') + '</td>';
+      for (var hj=0; hj<hzns.length; hj++) {
+        var bias = (d.horizon_matrix[hzns[hj]]||{})[reg2] || 'free';
+        var clr = bias === 'LONG' ? '#00e676' : (bias === 'SHORT' ? '#ff5252' : '#8080c0');
+        mh += '<td style="padding:2px 4px;text-align:center;color:' + clr + ';font-weight:600">' + bias + '</td>';
+      }
+      mh += '</tr></table>';
+      hm.innerHTML = mh;
+    }
     var pd = document.getElementById('pCorrWarn');
     pd.innerHTML = (d.news||[]).join('<br>');
     pd.style.color = '#ffd740';

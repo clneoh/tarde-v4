@@ -1284,6 +1284,13 @@ def save_state(state):
         news = enhanced_warning(events_today)
     except Exception:
         pass
+    # Horizon matrix from config
+    horizon_matrix = {}
+    try:
+        cfg = load_config()
+        horizon_matrix = cfg.get("regime", {}).get("horizon_matrix", {})
+    except Exception:
+        pass
     simple = {
         "timestamp": state["summary"]["timestamp"],
         "overall": state["summary"]["overall"],
@@ -1294,6 +1301,7 @@ def save_state(state):
         "positions": state["steps"].get("positions", {"open": [], "closed": []}),
         "compounded_capital": state["steps"].get("capital"),
         "news": news,
+        "horizon_matrix": horizon_matrix,
     }
     with open(STATE_FILE, "w") as f:
         json.dump(simple, f, indent=2, default=str)
