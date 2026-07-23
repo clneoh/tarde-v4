@@ -66,7 +66,9 @@ a{color:#ffd740;font-size:12px}
   <button class="btn btn-add" onclick="addAsset()">+ Add</button>
 </div>
 
-<button class="btn btn-save" onclick="showOutput()">Generate Config JSON</button>
+<input id="ghToken" placeholder="GitHub PAT" style="width:280px" type="password">
+<button class="btn btn-save" onclick="showOutput()">Preview</button>
+<button class="btn btn-save" id="applyBtn" onclick="applyConfig()" style="background:#003315;color:#00e676;border-color:#00e676">Apply Changes</button>
 <a href="/tarde-v4/shared/shared.json" target="_blank" style="margin-left:12px">shared.json →</a>
 <a href="/tarde-v4/" target="_blank" style="margin-left:12px">Dashboard →</a>
 
@@ -199,19 +201,65 @@ function removeAsset(ticker) {
   if (confirm('Remove ' + ticker + '?')) { delete assetList[ticker]; render(); }
 }
 
-function showOutput() {
-  const out = {};
-  for (const [k,v] of Object.entries(assetList)) {
+function buildConfig() {
+  var out = {};
+  var keys = Object.keys(assetList);
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i], v = assetList[k];
     out[k] = {
       exchange: v.exchange, type: v.type, session: v.session,
       bias_tf: v.bias_tf || [], exec_tf: v.exec_tf || '',
       enabled_v4: v.enabled_v4, enabled_pam: v.enabled_pam
     };
   }
+  return { assets: out };
+}
+
+function showOutput() {
+  var cfg = buildConfig();
   document.getElementById('output').style.display = 'block';
   document.getElementById('output').textContent = 
     '// Copy into shared_config.json → "assets":\n' +
-    JSON.stringify({ assets: out }, null, 2);
+    JSON.stringify(cfg, null, 2);
+}
+
+async function applyConfig() {
+  var token = document.getElementById('ghToken').value.trim();
+  if (!token) { alert('Enter GitHub PAT first'); return; }
+  var cfg = buildConfig();
+  var btn = document.getElementById('applyBtn');
+  btn.textContent = 'Applying...'; btn.disabled = true;
+  
+  try {
+    // Get current shared_config.json from repo
+    var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
+    var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
+    var r1 = await fetch(api, { headers: headers, cache: 'no-store' });
+    if (!r1.ok) throw new Error('Fetch failed: ' + r1.status);
+    var file = await r1.json();
+    var config = JSON.parse(atob(file.content));
+    
+    // Merge new assets
+    config.assets = cfg.assets;
+    
+    // Push back
+    var r2 = await fetch(api, {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify({
+        message: 'update asset list from manager',
+        content: btoa(JSON.stringify(config, null, 2)),
+        sha: file.sha
+      })
+    });
+    if (!r2.ok) throw new Error('Push failed: ' + r2.status);
+    btn.textContent = '✓ Applied!';
+    setTimeout(function(){ btn.textContent = 'Apply Changes'; btn.disabled = false; }, 2000);
+  } catch(e) {
+    btn.textContent = 'Apply Changes';
+    btn.disabled = false;
+    alert('Failed: ' + e.message + '\n\nGenerate PAT at: https://github.com/settings/tokens\nScope: repo');
+  }
 }
 
 load();
