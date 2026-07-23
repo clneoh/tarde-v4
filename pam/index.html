@@ -266,7 +266,16 @@ function toggleCard(uid) {
 }
 
 async function refresh() {
-  const state = await fetchJSON(STATE_URL);
+  const [pamState, v4State] = await Promise.all([
+    fetchJSON(STATE_URL),
+    fetchJSON('/tarde-v4/trade_v4_state.json')
+  ]);
+  const state = pamState;
+  // Override regime from V4 (single source of truth)
+  if (v4State) {
+    state.regime = v4State.regime;
+    state.correlation = v4State.steps?.correlation || state.correlation;
+  }
   render(state);
   const now = new Date();
   document.getElementById('refreshBar').textContent =

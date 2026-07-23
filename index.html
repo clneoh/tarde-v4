@@ -565,9 +565,18 @@ function renderJournal(journal, positions, s) {
 
   async function fetchPAM() {
     try {
-      const r = await fetch(PAM_URL, {cache:'no-store'});
-      if (!r.ok) return;
-      renderPAM(await r.json());
+      const [pr, vr] = await Promise.all([
+        fetch(PAM_URL, {cache:'no-store'}),
+        fetch(STATE_URL, {cache:'no-store'})
+      ]);
+      if (!pr.ok) return;
+      const pamData = await pr.json();
+      if (vr.ok) {
+        const v4Data = await vr.json();
+        pamData.regime = v4Data.regime;
+        pamData.correlation = v4Data.steps?.correlation || pamData.correlation;
+      }
+      renderPAM(pamData);
     } catch(e) {}
   }
 
