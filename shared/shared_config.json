@@ -59,10 +59,12 @@
       "exchange": "nasdaq",
       "type": "stock",
       "session": "US",
-      "bias_tf": [],
-      "exec_tf": "",
+      "bias_tf": [
+        "D2"
+      ],
+      "exec_tf": "H1",
       "enabled_v4": true,
-      "enabled_pam": true
+      "enabled_pam": false
     }
   },
   "bias_model": {
