@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T16:30:14.863631+08:00",
+  "timestamp": "2026-07-23T16:42:10.629350+08:00",
   "overall": "GO",
   "regime": "NEUTRAL",
   "signal_active": false,
   "sessions": {
     "stocks": false,
     "gold": true,
-    "gold_time": "16:30 (London)",
+    "gold_time": "16:41 (London)",
     "stocks_display": true
   },
   "steps": {
     "_sessions": {
       "stocks": false,
       "gold": true,
-      "gold_time": "16:30 (London)",
+      "gold_time": "16:41 (London)",
       "stocks_display": true
     },
     "regime": {
@@ -27,14 +27,14 @@
       ],
       "assets": {
         "DXY": {
-          "price": 101.12,
+          "price": 101.17,
           "trend": "UP",
-          "chg_5d": 0.36
+          "chg_5d": 0.41
         },
         "VIX": {
-          "price": 17.54,
+          "price": 17.62,
           "trend": "UP",
-          "chg_5d": -6.5
+          "chg_5d": -6.08
         },
         "SPX": {
           "price": 7498.96,
@@ -47,16 +47,16 @@
           "chg_5d": 2.81
         },
         "BTC": {
-          "price": 65554.03,
+          "price": 65576.94,
           "trend": "UP",
-          "chg_5d": 1.35
+          "chg_5d": 1.38
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.36,
+        "dxy_5d": 0.41,
         "spx_5d": -0.46,
         "stock_chgs": {
           "AAPL": -2.21,
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4091.67,
-          "rsi": 13.0,
-          "atr": 7.62,
-          "ema": 4119.62,
+          "price": 4089.28,
+          "rsi": 12.3,
+          "atr": 7.93,
+          "ema": 4119.52,
           "sw_high": 4130.62,
           "sw_low": 4119.65,
           "in_session": true,
@@ -105,17 +105,17 @@
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "short",
-              "score": 7.5,
+              "score": 6.9,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 25.0,
+              "score_pct": 23.0,
               "passed": false,
               "details": [
-                "+7.5/10 [bias] ema_proximity",
+                "+6.9/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
                 " 0/10  [entry] rsi_range",
-                "Score: 7.5/30 (25%) \u00b7 threshold 55%"
+                "Score: 6.9/30 (23%) \u00b7 threshold 55%"
               ]
             }
           ]
@@ -128,7 +128,7 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (16:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (16:42 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
@@ -198,7 +198,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (16:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (16:42 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
@@ -267,7 +267,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (16:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (16:42 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
@@ -335,7 +335,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (16:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (16:42 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
@@ -499,5 +499,32 @@
   "compounded_capital": 10000,
   "news": [
     "\ud83d\udcc5 Initial Jobless Claims"
-  ]
+  ],
+  "horizon_matrix": {
+    "W1": {
+      "risk-on": "LONG",
+      "neutral": "free",
+      "risk-off": "SHORT"
+    },
+    "D1": {
+      "risk-on": "LONG",
+      "neutral": "free",
+      "risk-off": "SHORT"
+    },
+    "H4": {
+      "risk-on": "LONG",
+      "neutral": "free",
+      "risk-off": "SHORT"
+    },
+    "H1": {
+      "risk-on": "free",
+      "neutral": "free",
+      "risk-off": "free"
+    },
+    "15m": {
+      "risk-on": "free",
+      "neutral": "free",
+      "risk-off": "free"
+    }
+  }
 }
