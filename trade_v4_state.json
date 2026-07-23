@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T23:43:03.622825+08:00",
+  "timestamp": "2026-07-23T23:44:06.486841+08:00",
   "overall": "GO",
   "regime": "RISK-OFF",
   "signal_active": false,
   "sessions": {
     "stocks": true,
     "gold": true,
-    "gold_time": "23:42 (London)",
+    "gold_time": "23:43 (London)",
     "stocks_display": true
   },
   "steps": {
     "_sessions": {
       "stocks": true,
       "gold": true,
-      "gold_time": "23:42 (London)",
+      "gold_time": "23:43 (London)",
       "stocks_display": true
     },
     "regime": {
@@ -32,24 +32,24 @@
           "chg_5d": 0.71
         },
         "VIX": {
-          "price": 19.74,
+          "price": 19.83,
           "trend": "UP",
-          "chg_5d": 5.22
+          "chg_5d": 5.7
         },
         "SPX": {
-          "price": 7383.03,
+          "price": 7386.21,
           "trend": "DOWN",
-          "chg_5d": -1.0
+          "chg_5d": -0.96
         },
         "US10Y": {
           "price": 4.7,
           "trend": "UP",
-          "chg_5d": 3.3
+          "chg_5d": 3.34
         },
         "BTC": {
-          "price": 64894.66,
+          "price": 64880.73,
           "trend": "UP",
-          "chg_5d": 0.33
+          "chg_5d": 0.31
         }
       }
     },
@@ -57,11 +57,11 @@
       "status": "WARN",
       "checks": {
         "dxy_5d": 0.71,
-        "spx_5d": -1.0,
+        "spx_5d": -0.97,
         "stock_chgs": {
-          "AAPL": -3.86,
-          "META": -7.45,
-          "GOOGL": -8.25
+          "AAPL": -3.85,
+          "META": -7.56,
+          "GOOGL": -8.24
         }
       },
       "warnings": [
@@ -73,10 +73,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4051.35,
-          "rsi": 35.4,
+          "price": 4049.99,
+          "rsi": 34.5,
           "atr": 12.5,
-          "ema": 4084.11,
+          "ema": 4084.05,
           "sw_high": 4061.8,
           "sw_low": 4040.18,
           "in_session": true,
@@ -88,44 +88,45 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 20.8,
+              "score": 0,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 52.0,
+              "score_pct": 0.0,
               "passed": false,
               "details": [
-                "+5.5/10 [entry] swing_break",
+                "+4.9/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 "+5.3/10 [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 20.8/40 (52%) \u00b7 threshold 55%"
+                "RSI gate fail: 34.5 < 35",
+                "Score: 0.0/40 (0%) \u00b7 threshold 55%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
-              "direction": "long",
-              "score": 11.4,
+              "direction": "short",
+              "score": 4.5,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 38.0,
+              "score_pct": 15.0,
               "passed": false,
               "details": [
                 " 0/10  [bias] ema_proximity",
-                "+6.0/10 [entry] engulfing",
-                "+5.4/10 [entry] rsi_range",
-                "Score: 11.4/30 (38%) \u00b7 threshold 55%"
+                " 0/10  [entry] engulfing",
+                "+4.5/10 [entry] rsi_range",
+                "Score: 4.5/30 (15%) \u00b7 threshold 55%"
               ]
             }
           ]
         },
         "AAPL": {
-          "price": 320.93,
-          "rsi": 26.6,
+          "price": 320.88,
+          "rsi": 26.5,
           "atr": 2.04,
-          "ema": 324.22,
+          "ema": 324.21,
           "sw_high": 326.89,
           "sw_low": 323.35,
           "in_session": true,
@@ -191,10 +192,10 @@
           ]
         },
         "META": {
-          "price": 597.89,
-          "rsi": 6.4,
-          "atr": 6.7,
-          "ema": 638.66,
+          "price": 597.41,
+          "rsi": 6.3,
+          "atr": 6.72,
+          "ema": 638.64,
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": true,
@@ -242,15 +243,15 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 11.5,
+              "score": 11.6,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 38.333333333333336,
+              "score_pct": 38.666666666666664,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for META",
-                "+0.5/10 [entry] gap_size",
+                "+0.6/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193"
@@ -259,10 +260,10 @@
           ]
         },
         "GOOGL": {
-          "price": 318.21,
-          "rsi": 10.2,
+          "price": 318.08,
+          "rsi": 9.9,
           "atr": 3.89,
-          "ema": 348.92,
+          "ema": 348.91,
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": true,
@@ -310,15 +311,15 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "long",
-              "score": 13.0,
+              "score": 12.9,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 43.333333333333336,
+              "score_pct": 43.0,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for GOOGL",
-                "+1.0/10 [entry] gap_size",
+                "+0.9/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: low data \u2192 stocks\u2191",
@@ -328,10 +329,10 @@
           ]
         },
         "MSFT": {
-          "price": 378.79,
-          "rsi": 16.8,
+          "price": 378.51,
+          "rsi": 16.2,
           "atr": 3.4,
-          "ema": 392.14,
+          "ema": 392.13,
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": true,
@@ -378,20 +379,19 @@
             {
               "setup": "earnings_drift",
               "type": "earnings",
-              "direction": "long",
-              "score": 12.1,
+              "direction": "short",
+              "score": 11.1,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 40.33333333333333,
+              "score_pct": 37.0,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for MSFT",
                 "+0.1/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume",
-                "+1 CALENDAR: Initial Jobless Claims: low data \u2192 stocks\u2191",
-                "+1 FUNDAMENTALS: Target +47% upside \u2192 +1; Strong Buy (1.32759) \u2192 +1"
+                "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193"
               ]
             }
           ]
@@ -451,8 +451,8 @@
           "created_at": "2026-07-23T23:00:26.319422+08:00",
           "regime": "RISK-OFF",
           "bars_waiting": 0,
-          "unrealised_r": -0.47,
-          "current_price": 4051.35
+          "unrealised_r": -0.57,
+          "current_price": 4049.99
         }
       ],
       "closed": [],
@@ -481,8 +481,8 @@
         "created_at": "2026-07-23T23:00:26.319422+08:00",
         "regime": "RISK-OFF",
         "bars_waiting": 0,
-        "unrealised_r": -0.47,
-        "current_price": 4051.35
+        "unrealised_r": -0.57,
+        "current_price": 4049.99
       }
     ],
     "closed": [],
