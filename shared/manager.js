@@ -7,7 +7,9 @@ var assetList = {};
 function load() {
   try { var saved = localStorage.getItem('gh_pat'); if (saved) document.getElementById('ghToken').value = saved; } catch(e) {}
   fetch(SHARED_URL + '?t=' + Date.now(), {cache:'no-store'})
-    .then(function(r) { return r.json(); })
+    .then(function(r) {
+      // Trigger pipeline via image pixel (no CORS)
+      new Image().src = 'http://54.254.254.195:8765/trigger?t=' + Date.now(); return r.json(); })
     .then(function(data) { assetList = data.asset_list || {}; render(); })
     .catch(function() { document.getElementById('stats').textContent = 'Failed to load'; });
 }
@@ -155,17 +157,20 @@ function applyConfig() {
   var timer = setInterval(function() {
     elapsed++;
     if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (pipeline running)', true);
-    else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (almost done)', true);
+    else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (pipeline running)', true);
+    else if (elapsed < 120) setStatus('Applying... ' + elapsed + 's (syncing)', true);
     else { clearInterval(timer); unfreeze(); }
   }, 1000);
-  setTimeout(function() { clearInterval(timer); unfreeze(); }, 65000);
+  setTimeout(function() { clearInterval(timer); unfreeze(); }, 130000);
   
   var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
   var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
   var cfg = buildConfig();
   
   fetch(api, { headers: headers, cache: 'no-store' })
-    .then(function(r) { if (!r.ok) throw new Error('Fetch fail: ' + r.status); return r.json(); })
+    .then(function(r) {
+      // Trigger pipeline via image pixel (no CORS)
+      new Image().src = 'http://54.254.254.195:8765/trigger?t=' + Date.now(); if (!r.ok) throw new Error('Fetch fail: ' + r.status); return r.json(); })
     .then(function(file) {
       var full = JSON.parse(atob(file.content));
       full.assets = cfg.assets;
@@ -177,6 +182,8 @@ function applyConfig() {
       return fetch(api, { method: 'PUT', headers: headers, body: body });
     })
     .then(function(r) {
+      // Trigger pipeline via image pixel (no CORS)
+      new Image().src = 'http://54.254.254.195:8765/trigger?t=' + Date.now();
       if (!r.ok) throw new Error('Push fail: ' + r.status);
       console.log('Config pushed to GitHub');
     })
