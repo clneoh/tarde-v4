@@ -5,6 +5,8 @@ var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 var assetList = {};
 
 function load() {
+  // Auto-fill token from storage
+  try { var saved = localStorage.getItem('gh_pat'); if (saved) document.getElementById('ghToken').value = saved; } catch(e) {}
   fetch(RAW_URL + '?t=' + Date.now())
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -161,7 +163,8 @@ function unfreeze() {
 
 function applyConfig() {
   var token = document.getElementById('ghToken').value.trim();
-  if (!token) { setStatus('Enter GitHub PAT', false); return; }
+  if (token) { try { localStorage.setItem('gh_pat', token); } catch(e) {} }
+  if (!token) { setStatus('Enter GitHub PAT first', false); return; }
   var btn = document.getElementById('applyBtn');
   btn.textContent = 'Applying...'; btn.disabled = true;
   setStatus('Pushing...', true);
