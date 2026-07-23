@@ -8,48 +8,47 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#080816;color:#c8c8e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px;min-width:900px}
 h1{font-size:20px;color:#ffd740;margin-bottom:4px}
-.sub{font-size:12px;color:#606080;margin-bottom:16px}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.sub{font-size:12px;color:#606080;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
 th{text-align:left;padding:6px 8px;color:#6060a0;border-bottom:2px solid #202050;font-size:11px;text-transform:uppercase}
 td{padding:6px 8px;border-bottom:1px solid #12122a;vertical-align:middle}
 tr:hover{background:#0e0e24}
-.toggle{cursor:pointer;font-size:16px;user-select:none}
-.toggle.on{color:#00e676}.toggle.off{color:#404060}
-.btn{padding:6px 16px;border-radius:4px;border:none;cursor:pointer;font-size:13px;font-weight:600;margin-right:8px}
-.btn-add{background:#003315;color:#00e676;border:1px solid #00e676}
-.btn-rm{background:#310015;color:#ff5252;border:1px solid #ff5252;padding:2px 8px;font-size:11px}
-.btn-save{background:#1a1a40;color:#ffd740;border:1px solid #ffd740}
-input,select{background:#0c0c20;border:1px solid #404080;color:#c8c8e0;padding:5px 8px;border-radius:4px;font-size:12px;margin-right:4px}
-input:focus,select:focus{outline:none;border-color:#ffd740}
-.tf-tag{display:inline-block;padding:2px 6px;border-radius:3px;font-size:11px;margin:1px 2px;cursor:pointer}
+.tf-tag{display:inline-block;padding:2px 6px;border-radius:3px;font-size:11px;margin:1px 2px;cursor:pointer;user-select:none}
 .tf-tag.on{background:#003315;color:#00e676;border:1px solid #00e67644}
 .tf-tag.off{background:#151530;color:#404060;border:1px solid #303060}
 .tf-tag.exec{background:#1a1a30;color:#ffd740;border:1px solid #ffd74044;font-weight:700}
+.tf-tag.disabled{opacity:0.25;cursor:not-allowed}
+.toggle{cursor:pointer;font-size:16px;user-select:none}
+.toggle.on{color:#00e676}.toggle.off{color:#404060}
+.btn{padding:6px 16px;border-radius:4px;border:none;cursor:pointer;font-size:13px;font-weight:600;margin-right:6px}
+.btn-add{background:#003315;color:#00e676;border:1px solid #00e676}
+.btn-rm{background:#310015;color:#ff5252;border:1px solid #ff5252;padding:2px 8px;font-size:11px}
+.btn-save{background:#1a1a40;color:#ffd740;border:1px solid #ffd740}
+.btn-apply{background:#003315;color:#00e676;border:1px solid #00e676}
+input,select{background:#0c0c20;border:1px solid #404080;color:#c8c8e0;padding:5px 8px;border-radius:4px;font-size:12px;margin-right:4px}
+input:focus,select:focus{outline:none;border-color:#ffd740}
 .add-row{display:flex;gap:6px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-.legend{font-size:11px;color:#505070;margin-bottom:8px}
-.legend span{margin-right:12px}
 .output{background:#0c0c20;border:1px solid #303060;border-radius:6px;padding:14px;font-family:monospace;font-size:12px;white-space:pre-wrap;max-height:300px;overflow:auto;margin-top:12px}
 .stats{font-size:12px;color:#606080;margin-bottom:8px}
+.status{font-size:12px;margin-left:8px;display:inline-block}
+.status.ok{color:#00e676}.status.err{color:#ff5252}
 a{color:#ffd740;font-size:12px}
+.controls{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
 <h1>Asset Manager</h1>
-<div class="sub">Shared Service · Edit once, V4 & PAM inherit</div>
+<div class="sub">Shared Service — Edit once, V4 &amp; PAM inherit</div>
 
-<div class="legend">
-  <span><span class="tf-tag on">W1</span> = bias TF on</span>
-  <span><span class="tf-tag off">D1</span> = bias TF off</span>
-  <span><span class="tf-tag exec">m15</span> = execution TF</span>
+<div class="controls">
+  <input id="ghToken" placeholder="GitHub PAT (ghp_...)" style="width:300px" type="password">
+  <button class="btn btn-apply" id="applyBtn" onclick="applyConfig()">Apply Changes</button>
+  <button class="btn btn-save" onclick="showPreview()">Preview</button>
+  <span class="status" id="status"></span>
 </div>
 
 <div class="stats" id="stats">Loading...</div>
-
-<div id="biasCard" style="background:#0c0c20;border:1px solid #303060;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:13px;display:none">
-  <span style="color:#ffd740;font-weight:600">Bias Policy:</span> <span id="biasRule"></span><br>
-  <span style="color:#606080;font-size:12px" id="biasDesc"></span>
-</div>
 
 <table>
 <thead>
@@ -61,59 +60,41 @@ a{color:#ffd740;font-size:12px}
 <div class="add-row">
   <input id="newTicker" placeholder="TICKER" style="width:80px" maxlength="10">
   <input id="newExchange" placeholder="Exchange" style="width:120px">
-  <select id="newType"><option value="stock">Stock</option><option value="commodity">Commodity</option><option value="crypto">Crypto</option><option value="forex">Forex</option></select>
+  <select id="newType"><option value="stock">Stock</option><option value="commodity">Commodity</option><option value="crypto">Crypto</option></select>
   <select id="newSession"><option value="US">US</option><option value="24h">24h</option><option value="Asia">Asia</option></select>
   <button class="btn btn-add" onclick="addAsset()">+ Add</button>
 </div>
 
-<input id="ghToken" placeholder="GitHub PAT" style="width:280px" type="password">
-<button class="btn btn-save" onclick="showOutput()">Preview</button>
-<button class="btn btn-save" id="applyBtn" onclick="applyConfig()" style="background:#003315;color:#00e676;border-color:#00e676">Apply Changes</button>
-<a href="/tarde-v4/shared/shared.json" target="_blank" style="margin-left:12px">shared.json →</a>
-<a href="/tarde-v4/" target="_blank" style="margin-left:12px">Dashboard →</a>
-
 <div class="output" id="output" style="display:none"></div>
 
 <script>
-const SHARED_URL = '/tarde-v4/shared/shared.json';
-const ALL_TF = ['M1','W1','D1','D2','H4','H1','m15'];
-const TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
-let assetList = {};
+var SHARED_URL = '/tarde-v4/shared/shared.json';
+var ALL_TF = ['M1','W1','D1','D2','H4','H1','m15'];
+var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
+var assetList = {};
 
-async function load() {
-  try {
-    const r = await fetch(SHARED_URL, {cache:'no-store'});
-    if (!r.ok) throw new Error(r.status);
-    const data = await r.json();
-    assetList = data.asset_list || {};
-    // Show bias model
-    const bm = data.bias_model || {};
-    if (bm.rule) {
-      document.getElementById('biasCard').style.display = 'block';
-      document.getElementById('biasRule').textContent = bm.rule + ' · EMA' + (bm.ema_period||20) + ' · tie → ' + (bm.tie_result||'neutral');
-      document.getElementById('biasDesc').textContent = bm.description || '';
-    }
-    render();
-  } catch(e) {
-    document.getElementById('stats').textContent = 'Failed to load shared.json';
-  }
-}
-
-function countEnabled() {
-  const keys = Object.keys(assetList);
-  return {
-    total: keys.length,
-    v4: keys.filter(k => assetList[k].enabled_v4).length,
-    pam: keys.filter(k => assetList[k].enabled_pam).length
-  };
+function load() {
+  fetch(SHARED_URL, {cache:'no-store'})
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      assetList = data.asset_list || {};
+      render();
+    })
+    .catch(function() {
+      document.getElementById('stats').textContent = 'Failed to load';
+    });
 }
 
 function render() {
-  const c = countEnabled();
-  document.getElementById('stats').innerHTML = c.total + ' assets · V4: ' + c.v4 + ' · PAM: ' + c.pam;
+  var keys = Object.keys(assetList);
+  var v4c = 0, pamc = 0;
+  for (var i = 0; i < keys.length; i++) {
+    if (assetList[keys[i]].enabled_v4) v4c++;
+    if (assetList[keys[i]].enabled_pam) pamc++;
+  }
+  document.getElementById('stats').textContent = keys.length + ' assets · V4: ' + v4c + ' · PAM: ' + pamc;
 
   var html = '';
-  var keys = Object.keys(assetList);
   for (var ki = 0; ki < keys.length; ki++) {
     var ticker = keys[ki];
     var a = assetList[ticker];
@@ -121,25 +102,25 @@ function render() {
     var exec = a.exec_tf || '';
     var execRank = TF_RANK[exec] != null ? TF_RANK[exec] : 99;
 
-    // Bias TF tags
+    // Bias tags
     var biasHTML = '';
     for (var ti = 0; ti < ALL_TF.length; ti++) {
       var tf = ALL_TF[ti];
       var on = bias.indexOf(tf) >= 0;
-      var disabled = (TF_RANK[tf] != null ? TF_RANK[tf] : 99) >= execRank && tf !== exec;
-      var cls = 'tf-tag ' + (on ? 'on' : 'off');
-      var style = disabled ? 'opacity:0.3;cursor:not-allowed' : '';
-      var click = disabled ? '' : ' onclick="toggleBias(\'' + ticker + '\',\'' + tf + '\')"';
-      biasHTML += '<span class="' + cls + '"' + click + ' style="' + style + '">' + tf + '</span>';
+      var tfRank = TF_RANK[tf] != null ? TF_RANK[tf] : 99;
+      var blocked = tfRank >= execRank && tf !== exec;
+      var cls = 'tf-tag ' + (on ? 'on' : 'off') + (blocked ? ' disabled' : '');
+      var click = blocked ? '' : ' onclick="toggleBias(this,\\'' + ticker + '\\',\\'' + tf + '\\')"';
+      biasHTML += '<span class="' + cls + '"' + click + '>' + tf + '</span>';
     }
 
-    // Exec TF tags
+    // Exec tags
     var execHTML = '';
     for (var ei = 0; ei < ALL_TF.length; ei++) {
       var etf = ALL_TF[ei];
       var isExec = exec === etf;
       var ecls = 'tf-tag ' + (isExec ? 'exec' : 'off');
-      execHTML += '<span class="' + ecls + '" onclick="setExec(\'' + ticker + '\',\'' + etf + '\')">' + etf + '</span>';
+      execHTML += '<span class="' + ecls + '" onclick="setExec(this,\\'' + ticker + '\\',\\'' + etf + '\\')">' + etf + '</span>';
     }
 
     html += '<tr>' +
@@ -149,49 +130,50 @@ function render() {
       '<td>' + (a.session||'?') + '</td>' +
       '<td>' + biasHTML + '</td>' +
       '<td>' + execHTML + '</td>' +
-      '<td style="text-align:center"><span class="toggle ' + (a.enabled_v4?'on':'off') + '" onclick="toggle(\'' + ticker + '\',\'enabled_v4\')">' + (a.enabled_v4?'●':'○') + '</span></td>' +
-      '<td style="text-align:center"><span class="toggle ' + (a.enabled_pam?'on':'off') + '" onclick="toggle(\'' + ticker + '\',\'enabled_pam\')">' + (a.enabled_pam?'●':'○') + '</span></td>' +
-      '<td><button class="btn btn-rm" onclick="removeAsset(\'' + ticker + '\')">✕</button></td>' +
+      '<td style="text-align:center"><span class="toggle ' + (a.enabled_v4?'on':'off') + '" onclick="toggleModel(this,\\'' + ticker + '\\',\\'enabled_v4\\')">' + (a.enabled_v4?'●':'○') + '</span></td>' +
+      '<td style="text-align:center"><span class="toggle ' + (a.enabled_pam?'on':'off') + '" onclick="toggleModel(this,\\'' + ticker + '\\',\\'enabled_pam\\')">' + (a.enabled_pam?'●':'○') + '</span></td>' +
+      '<td><button class="btn btn-rm" onclick="removeAsset(\\'' + ticker + '\\')">✕</button></td>' +
     '</tr>';
   }
   document.getElementById('assetTable').innerHTML = html || '<tr><td colspan="9" style="color:#555;text-align:center;padding:20px">No assets</td></tr>';
 }
 
-function toggleBias(ticker, tf) {
-  const a = assetList[ticker];
-  const execRank = TF_RANK[a.exec_tf] ?? 99;
-  const tfRank = TF_RANK[tf] ?? 99;
-  if (tfRank >= execRank) return; // disallow same or lower than exec
-  const bias = a.bias_tf || [];
-  const idx = bias.indexOf(tf);
-  if (idx >= 0) bias.splice(idx, 1); else bias.push(tf);
+function toggleBias(el, ticker, tf) {
+  var a = assetList[ticker];
+  var bias = a.bias_tf || [];
+  var idx = bias.indexOf(tf);
+  if (idx >= 0) { bias.splice(idx, 1); }
+  else { bias.push(tf); }
   a.bias_tf = bias;
   render();
 }
 
-function setExec(ticker, tf) {
-  const a = assetList[ticker];
+function setExec(el, ticker, tf) {
+  var a = assetList[ticker];
   a.exec_tf = a.exec_tf === tf ? '' : tf;
-  // Remove bias TFs that are now same or lower than new exec
+  // Remove bias TFs now below new exec
   if (a.exec_tf) {
-    const execRank = TF_RANK[a.exec_tf] ?? 99;
-    a.bias_tf = (a.bias_tf || []).filter(function(btf) { return (TF_RANK[btf] ?? 99) < execRank; });
+    var execRank = TF_RANK[a.exec_tf] != null ? TF_RANK[a.exec_tf] : 99;
+    a.bias_tf = (a.bias_tf || []).filter(function(btf) { return (TF_RANK[btf] != null ? TF_RANK[btf] : 99) < execRank; });
   }
   render();
 }
 
-function toggle(ticker, field) {
+function toggleModel(el, ticker, field) {
   assetList[ticker][field] = !assetList[ticker][field];
   render();
 }
 
 function addAsset() {
-  const t = document.getElementById('newTicker').value.toUpperCase().trim();
-  const ex = document.getElementById('newExchange').value.trim();
-  const ty = document.getElementById('newType').value;
-  const se = document.getElementById('newSession').value;
+  var t = document.getElementById('newTicker').value.toUpperCase().trim();
   if (!t) return;
-  assetList[t] = { exchange: ex, type: ty, session: se, bias_tf: [], exec_tf: '', enabled_v4: true, enabled_pam: true };
+  assetList[t] = {
+    exchange: document.getElementById('newExchange').value.trim(),
+    type: document.getElementById('newType').value,
+    session: document.getElementById('newSession').value,
+    bias_tf: [], exec_tf: '',
+    enabled_v4: true, enabled_pam: true
+  };
   document.getElementById('newTicker').value = '';
   document.getElementById('newExchange').value = '';
   render();
@@ -206,60 +188,53 @@ function buildConfig() {
   var keys = Object.keys(assetList);
   for (var i = 0; i < keys.length; i++) {
     var k = keys[i], v = assetList[k];
-    out[k] = {
-      exchange: v.exchange, type: v.type, session: v.session,
-      bias_tf: v.bias_tf || [], exec_tf: v.exec_tf || '',
-      enabled_v4: v.enabled_v4, enabled_pam: v.enabled_pam
-    };
+    out[k] = { exchange: v.exchange, type: v.type, session: v.session, bias_tf: v.bias_tf||[], exec_tf: v.exec_tf||'', enabled_v4: v.enabled_v4, enabled_pam: v.enabled_pam };
   }
   return { assets: out };
 }
 
-function showOutput() {
-  var cfg = buildConfig();
+function showPreview() {
   document.getElementById('output').style.display = 'block';
-  document.getElementById('output').textContent = 
-    '// Copy into shared_config.json → "assets":\n' +
-    JSON.stringify(cfg, null, 2);
+  document.getElementById('output').textContent = JSON.stringify(buildConfig(), null, 2);
 }
 
-async function applyConfig() {
+function setStatus(msg, ok) {
+  var s = document.getElementById('status');
+  s.textContent = msg;
+  s.className = 'status ' + (ok ? 'ok' : 'err');
+  if (ok) setTimeout(function() { s.textContent = ''; }, 3000);
+}
+
+function applyConfig() {
   var token = document.getElementById('ghToken').value.trim();
-  if (!token) { alert('Enter GitHub PAT first'); return; }
-  var cfg = buildConfig();
+  if (!token) { setStatus('Enter GitHub PAT', false); return; }
   var btn = document.getElementById('applyBtn');
   btn.textContent = 'Applying...'; btn.disabled = true;
-  
-  try {
-    // Get current shared_config.json from repo
-    var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
-    var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
-    var r1 = await fetch(api, { headers: headers, cache: 'no-store' });
-    if (!r1.ok) throw new Error('Fetch failed: ' + r1.status);
-    var file = await r1.json();
-    var config = JSON.parse(atob(file.content));
-    
-    // Merge new assets
-    config.assets = cfg.assets;
-    
-    // Push back
-    var r2 = await fetch(api, {
-      method: 'PUT',
-      headers: headers,
-      body: JSON.stringify({
-        message: 'update asset list from manager',
-        content: btoa(JSON.stringify(config, null, 2)),
-        sha: file.sha
-      })
+  setStatus('Pushing...', true);
+
+  var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
+  var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
+
+  fetch(api, { headers: headers, cache: 'no-store' })
+    .then(function(r) { if (!r.ok) throw new Error('Fetch: ' + r.status); return r.json(); })
+    .then(function(file) {
+      var config = JSON.parse(atob(file.content));
+      config.assets = buildConfig().assets;
+      return fetch(api, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify({ message: 'update assets from manager', content: btoa(JSON.stringify(config, null, 2)), sha: file.sha })
+      });
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('Push: ' + r.status);
+      btn.textContent = 'Apply Changes'; btn.disabled = false;
+      setStatus('Applied! Shared engine picks up next run.', true);
+    })
+    .catch(function(e) {
+      btn.textContent = 'Apply Changes'; btn.disabled = false;
+      setStatus(e.message, false);
     });
-    if (!r2.ok) throw new Error('Push failed: ' + r2.status);
-    btn.textContent = '✓ Applied!';
-    setTimeout(function(){ btn.textContent = 'Apply Changes'; btn.disabled = false; }, 2000);
-  } catch(e) {
-    btn.textContent = 'Apply Changes';
-    btn.disabled = false;
-    alert('Failed: ' + e.message + '\n\nGenerate PAT at: https://github.com/settings/tokens\nScope: repo');
-  }
 }
 
 load();
