@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T19:00:14.824421+08:00",
+  "timestamp": "2026-07-23T19:15:14.613425+08:00",
   "overall": "GO",
   "regime": "NEUTRAL",
   "signal_active": false,
   "sessions": {
     "stocks": false,
     "gold": true,
-    "gold_time": "19:00 (London)",
+    "gold_time": "19:15 (London)",
     "stocks_display": true
   },
   "steps": {
     "_sessions": {
       "stocks": false,
       "gold": true,
-      "gold_time": "19:00 (London)",
+      "gold_time": "19:15 (London)",
       "stocks_display": true
     },
     "regime": {
@@ -27,14 +27,14 @@
       ],
       "assets": {
         "DXY": {
-          "price": 101.19,
+          "price": 101.18,
           "trend": "UP",
           "chg_5d": 0.43
         },
         "VIX": {
-          "price": 17.56,
+          "price": 17.73,
           "trend": "UP",
-          "chg_5d": -6.4
+          "chg_5d": -5.49
         },
         "SPX": {
           "price": 7498.96,
@@ -44,19 +44,19 @@
         "US10Y": {
           "price": 4.67,
           "trend": "UP",
-          "chg_5d": 2.68
+          "chg_5d": 2.73
         },
         "BTC": {
-          "price": 65708.56,
+          "price": 65673.99,
           "trend": "UP",
-          "chg_5d": 1.59
+          "chg_5d": 1.53
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.44,
+        "dxy_5d": 0.43,
         "spx_5d": -0.46,
         "stock_chgs": {
           "AAPL": -2.21,
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4093.62,
-          "rsi": 44.4,
+          "price": 4088.68,
+          "rsi": 36.5,
           "atr": 5.87,
-          "ema": 4110.51,
+          "ema": 4109.44,
           "sw_high": 4099.63,
           "sw_low": 4086.18,
           "in_session": true,
@@ -87,35 +87,35 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 13.6,
+              "score": 11.2,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 34.0,
+              "score_pct": 27.999999999999996,
               "passed": false,
               "details": [
-                "+3.6/10 [entry] swing_break",
+                "+1.2/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 13.6/40 (34%) \u00b7 threshold 55%"
+                "Score: 11.2/40 (28%) \u00b7 threshold 55%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "short",
-              "score": 13.799999999999999,
+              "score": 13.6,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 46.0,
+              "score_pct": 45.33333333333333,
               "passed": false,
               "details": [
-                "+8.2/10 [bias] ema_proximity",
+                "+7.1/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+5.6/10 [entry] rsi_range",
-                "Score: 13.8/30 (46%) \u00b7 threshold 55%"
+                "+6.5/10 [entry] rsi_range",
+                "Score: 13.6/30 (45%) \u00b7 threshold 55%"
               ]
             }
           ]
@@ -128,7 +128,7 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (19:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (19:15 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
@@ -198,7 +198,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (19:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (19:15 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
@@ -267,7 +267,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (19:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (19:15 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
@@ -335,7 +335,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (19:00 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (19:15 ET, session 21:30-04:00)",
           "status": "PRE_MARKET",
           "signal": null,
           "all_signals": [
