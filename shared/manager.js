@@ -5,15 +5,11 @@ var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 var assetList = {};
 
 function load() {
-  fetch(RAW_URL + '?t=' + Date.now())
+  try { var saved = localStorage.getItem('gh_pat'); if (saved) document.getElementById('ghToken').value = saved; } catch(e) {}
+  fetch(SHARED_URL + '?t=' + Date.now(), {cache:'no-store'})
     .then(function(r) { return r.json(); })
-    .then(function(data) {
-      assetList = data.asset_list || {};
-      render();
-    })
-    .catch(function() {
-      document.getElementById('stats').textContent = 'Failed to load';
-    });
+    .then(function(data) { assetList = data.asset_list || {}; render(); })
+    .catch(function() { document.getElementById('stats').textContent = 'Failed to load'; });
 }
 
 function render() {
@@ -36,10 +32,10 @@ function render() {
     var biasHTML = '';
     for (var ti = 0; ti < ALL_TF.length; ti++) {
       var tf = ALL_TF[ti];
-      if (tf === exec) continue; // skip exec TF in bias column
+      if (tf === exec) continue;
       var on = bias.indexOf(tf) >= 0;
       var tfRank = TF_RANK[tf] != null ? TF_RANK[tf] : 99;
-      var blocked = tfRank >= execRank; // same or lower than exec
+      var blocked = tfRank >= execRank;
       var cls = 'tf-tag ' + (on ? 'on' : 'off') + (blocked ? ' disabled' : '');
       var dattr = blocked ? '' : ' data-action="bias" data-ticker="' + ticker + '" data-tf="' + tf + '"';
       biasHTML += '<span class="' + cls + '"' + dattr + '>' + tf + '</span>';
@@ -142,68 +138,60 @@ function setStatus(msg, ok) {
   var s = document.getElementById('status');
   s.textContent = msg;
   s.className = 'status ' + (ok ? 'ok' : 'err');
-  if (ok) setTimeout(function() { s.textContent = ''; }, 3000);
+  if (ok) setTimeout(function() { s.textContent = ''; }, 8000);
+}
+
+function applyConfig() {
+  var token = document.getElementById('ghToken').value.trim();
+  if (token) { try { localStorage.setItem('gh_pat', token); } catch(e) {} }
+  if (!token) { setStatus('Enter GitHub PAT first', false); return; }
+  
+  var btn = document.getElementById('applyBtn');
+  btn.textContent = 'Applying...'; btn.disabled = true;
+  document.body.style.pointerEvents = 'none';
+  document.body.style.opacity = '0.6';
+  
+  setStatus('Applying... 0s', true);
+  var elapsed = 0;
+  var timer = setInterval(function() {
+    elapsed++;
+    if (elapsed < 15) setStatus('Applying... ' + elapsed + 's', true);
+    else if (elapsed < 45) setStatus('Applying... ' + elapsed + 's (syncing)', true);
+    else if (elapsed < 65) setStatus('Applying... ' + elapsed + 's (done)', true);
+    else { clearInterval(timer); unfreeze(); }
+  }, 1000);
+  setTimeout(function() { clearInterval(timer); unfreeze(); }, 70000);
+  
+  // Form POST bypasses CORS
+  var cfg = buildConfig();
+  var f = document.createElement('form');
+  f.method = 'POST';
+  f.action = 'http://54.254.254.195:8765/push';
+  f.target = 'pushFrame'; if(!document.getElementById('pushFrame')){var ifr=document.createElement('iframe');ifr.id='pushFrame';ifr.name='pushFrame';ifr.style.display='none';document.body.appendChild(ifr);}
+  f.style.display = 'none';
+  
+  var i1 = document.createElement('textarea');
+  i1.name = 'assets'; i1.value = JSON.stringify(cfg.assets);
+  f.appendChild(i1);
+  
+  var i2 = document.createElement('input');
+  i2.name = 'token'; i2.value = token;
+  f.appendChild(i2);
+  
+  document.body.appendChild(f);
+  f.submit();
+  setTimeout(function() { document.body.removeChild(f); }, 100);
 }
 
 function unfreeze() {
-  // Reload fresh data after pipeline
-  fetch(RAW_URL + '?t=' + Date.now())
-    .then(function(r){ return r.json(); })
-    .then(function(d){ assetList = d.asset_list || {}; render(); })
-    .catch(function(){});
-
   document.body.style.pointerEvents = '';
   document.body.style.opacity = '1';
   document.getElementById('applyBtn').textContent = 'Apply Changes';
   document.getElementById('applyBtn').disabled = false;
-}
-
-
-function applyConfig() {
-  var token = document.getElementById('ghToken').value.trim();
-  if (!token) { setStatus('Enter GitHub PAT', false); return; }
-  var btn = document.getElementById('applyBtn');
-  btn.textContent = 'Applying...'; btn.disabled = true;
-  setStatus('Pushing...', true);
-
-  var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
-  var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
-
-  fetch(api, { headers: headers, cache: 'no-store' })
-    .then(function(r) { if (!r.ok) throw new Error('Fetch: ' + r.status); return r.json(); })
-    .then(function(file) {
-      var config = JSON.parse(atob(file.content));
-      config.assets = buildConfig().assets;
-      return fetch(api, {
-        method: 'PUT',
-        headers: headers,
-        body: JSON.stringify({ message: 'update assets from manager', content: btoa(unescape(encodeURIComponent(JSON.stringify(config, null, 2)))), sha: file.sha })
-      });
-    })
-    .then(function(r) {
-      if (!r.ok) throw new Error('Push: ' + r.status);
-      btn.textContent = 'Apply Changes'; btn.disabled = false;
-      // Freeze entire page
-        document.body.style.pointerEvents = 'none';
-        document.body.style.opacity = '0.6';
-        
-        setStatus('Applying... 0s', true);
-        fetch('http://54.254.254.195:8765/trigger', {mode:'no-cors'}).catch(function(){});
-        var elapsed = 0;
-        var timer = setInterval(function() {
-          elapsed++;
-          if (elapsed < 10) setStatus('Applying... ' + elapsed + 's', true);
-          else if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (fetching data)', true);
-          else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (almost done)', true);
-          else { clearInterval(timer); unfreeze(); }
-        }, 1000);
-        setTimeout(function() { clearInterval(timer); unfreeze(); }, 65000);
-        _applied = true;
-    })
-    .catch(function(e) {
-      btn.textContent = 'Apply Changes'; btn.disabled = false;
-      setStatus(e.message, false);
-    });
+  fetch(RAW_URL + '?t=' + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(d){ assetList = d.asset_list || {}; render(); })
+    .catch(function(){});
 }
 
 load();
