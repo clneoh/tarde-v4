@@ -605,6 +605,7 @@ function renderJournal(journal, positions, s) {
         pamData.correlation = v4Data.steps?.correlation || pamData.correlation;
         pamData.regimeReasons = (v4Data.steps?.regime?.reasons || []);
         pamData.news = v4Data.news || pamData.news || [];
+        pamData.horizon_matrix = v4Data.horizon_matrix || pamData.horizon_matrix || {};
       }
       renderPAM(pamData);
     } catch(e) {}
