@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "description": "Shared Service — single source of truth for V4 and PAM. Regime, matrix, news, correlation, asset list.",
+  "schedule": "every 15m, offset -2 min before V4 engine",
+  "assets": {
+    "XAUUSD": { "exchange": "OANDA", "type": "commodity", "session": "24h", "bias_tf": ["W1","D1","H4"], "exec_tf": "m15", "enabled_v4": true, "enabled_pam": true },
+    "AAPL":   { "exchange": "NASDAQ", "type": "stock", "session": "US", "bias_tf": ["W1","D1","D2"], "exec_tf": "H1", "enabled_v4": true, "enabled_pam": true },
+    "META":   { "exchange": "NASDAQ", "type": "stock", "session": "US", "bias_tf": ["W1","D1","D2"], "exec_tf": "H1", "enabled_v4": true, "enabled_pam": true },
+    "GOOGL":  { "exchange": "NASDAQ", "type": "stock", "session": "US", "bias_tf": ["W1","D1","D2"], "exec_tf": "H1", "enabled_v4": true, "enabled_pam": true },
+    "MSFT":   { "exchange": "NASDAQ", "type": "stock", "session": "US", "bias_tf": ["W1","D1","D2"], "exec_tf": "H1", "enabled_v4": true, "enabled_pam": true }
+  },
+  "bias_model": {
+    "rule": "majority_vote",
+    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie → neutral.",
+    "ema_period": 20,
+    "tie_result": "neutral",
+    "fetch_policy": "only_fetch_required",
+    "fetch_note": "Engines read bias_tf + exec_tf per asset. Do NOT fetch data for TFs not listed for that asset.",
+    "user_note": "Add/remove TFs per asset in 'assets' section"
+  },
+  "modules": {
+    "regime": {
+      "enabled": true,
+      "indicators": ["DXY", "VIX", "SPX", "US10Y", "BTC"],
+      "horizon_matrix": {
+        "M1":  { "risk-on": "free",  "neutral": "free", "risk-off": "free"  },
+        "W1":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
+        "D1":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
+        "D2":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
+        "H4":  { "risk-on": "LONG",  "neutral": "free", "risk-off": "SHORT" },
+        "H1":  { "risk-on": "free",  "neutral": "free", "risk-off": "free"  },
+        "m15": { "risk-on": "free",  "neutral": "free", "risk-off": "free"  }
+      }
+    },
+    "correlation": {
+      "enabled": true,
+      "checks": {
+        "xau_vs_dxy":    { "lookback_days": 5 },
+        "stocks_vs_spx": { "lookback_days": 5 },
+        "gold_vs_stocks": { "lookback_days": 20 }
+      }
+    },
+    "news": {
+      "enabled": true,
+      "source": "trade_v4_fedwatch"
+    }
+  },
+  "tv_map": {
+    "XAUUSD": ["OANDA", "XAUUSD"],
+    "DXY":    ["TVC", "DXY"],
+    "VIX":    ["TVC", "VIX"],
+    "SPX":    ["SP", "SPX"],
+    "US10Y":  ["TVC", "US10Y"],
+    "BTC":    ["COINBASE", "BTCUSD"]
+  }
+}
