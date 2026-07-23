@@ -606,6 +606,7 @@ function renderJournal(journal, positions, s) {
         pamData.regimeReasons = (v4Data.steps?.regime?.reasons || []);
         pamData.news = v4Data.news || pamData.news || [];
         pamData.horizon_matrix = v4Data.horizon_matrix || pamData.horizon_matrix || {};
+        pamData.regimeAssets = (v4Data.steps?.regime?.assets) || {};
       }
       renderPAM(pamData);
     } catch(e) {}
