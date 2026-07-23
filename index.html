@@ -257,7 +257,7 @@ function renderState(s) {
   rt.className = 'regime-big ' + (regime.regime||'').toLowerCase();
   document.getElementById('regimeReasons').innerHTML = (regime.reasons||[]).map(r => `• ${r}`).join('<br>');
   // News/economic events
-  const newsDiv = // Horizon matrix
+  const newsDiv = document.getElementById('newsEvents');
   const hm = document.getElementById('horizonMatrix');
   if (hm && s.horizon_matrix) {
     const curReg = (s.regime || '').toLowerCase().replace(' ','-');
