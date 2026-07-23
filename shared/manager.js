@@ -3,10 +3,8 @@ var ALL_TF = ['M1','W1','D1','D2','H4','H1','m15'];
 var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 var assetList = {};
 
-var _applied = false;
 function load() {
-  if (_applied) return; // don't overwrite after Apply
-  fetch(SHARED_URL, {cache:'no-store'})
+  fetch(SHARED_URL + '?t=' + Date.now(), {cache:'no-store'})
     .then(function(r) { return r.json(); })
     .then(function(data) {
       assetList = data.asset_list || {};
