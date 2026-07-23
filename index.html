@@ -617,6 +617,25 @@ function renderJournal(journal, positions, s) {
     rt.textContent = regime;
     rt.className = 'regime-big ' + regime.toLowerCase().replace(' ','-');
     document.getElementById('pReasons').innerHTML = (d.regimeReasons||(d.correlation||{}).warnings||[]).slice(0,2).map(function(r){return '• '+r}).join('<br>');
+    var hm = document.getElementById('phorizonMatrix');
+    if (hm && d.horizon_matrix) {
+      var cr = (d.regime||'').toLowerCase().replace(' ','-');
+      var hk = Object.keys(d.horizon_matrix);
+      var rs = ['risk-on','neutral','risk-off'], lb = {'risk-on':'RISK-ON','neutral':'NEUTRAL','risk-off':'RISK-OFF'};
+      var mh = '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:4px"><tr style="color:#6060a0"><td></td>';
+      for (var i=0;i<hk.length;i++) mh += '<td style="text-align:center">'+hk[i]+'</td>';
+      mh += '</tr>';
+      for (var ri=0;ri<rs.length;ri++) {
+        var r=rs[ri], ic=r===cr, bc=r==='risk-on'?'#003315':(r==='risk-off'?'#310015':'#151530');
+        mh += '<tr style="background:'+bc+';'+(ic?'border-left:3px solid #ffd740;':'')+'"><td style="color:'+(ic?'#ffd740':'#8080c0')+';font-weight:'+(ic?'700':'400')+'">'+lb[r]+'</td>';
+        for (var j=0;j<hk.length;j++) {
+          var b=(d.horizon_matrix[hk[j]]||{})[r]||'free';
+          mh += '<td style="text-align:center;color:'+(b==='LONG'?'#00e676':b==='SHORT'?'#ff5252':'#6060a0')+';font-weight:600;font-size:12px">'+b+'</td>';
+        }
+        mh += '</tr>';
+      }
+      mh += '</table>'; hm.innerHTML = mh;
+    }
     var pd = document.getElementById('pCorrWarn');
     pd.innerHTML = (d.news||[]).join('<br>');
     pd.style.color = '#ffd740';
