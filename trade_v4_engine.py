@@ -489,244 +489,11 @@ def step_setup(cfg, tv):
                         is_strong = (bullish and float(df["Close"].iloc[-1]) > float(df["Open"].iloc[-1]) * 1.01) or \
                                     (bearish and float(df["Close"].iloc[-1]) < float(df["Open"].iloc[-1]) * 0.99)
                         kwargs = {"is_engulfing": is_eng or hammer, "is_strong": is_strong}
-                        if bullish or hammer: direction_matched = "long"
-                        elif bearish: direction_matched = "short"
-                    elif scaling == "rsi_range":
-                        kwargs = {"rsi": rsi_val, "lo": 30, "hi": 50}
-                        if "30" in crit["rule"]: kwargs.update({"lo": 30, "hi": 45 if "45" in crit["rule"] else 50})
-                        elif "40" in crit["rule"]: kwargs.update({"lo": 40, "hi": 50})
-                    elif scaling == "rsi_momentum":
-                        kwargs = {"rsi": rsi_val, "min_val": 55}
-                    elif scaling == "new_high":
-                        kwargs = {"price": price, "prev_high": high_20d}
-                        if high_20d and price > high_20d: direction_matched = "long"
-                    elif scaling == "gap_size":
-                        if len(df) >= 2:
-                            prev_c = float(df["Close"].iloc[-2])
-                            gap = abs(price - prev_c) / prev_c * 100
-                            kwargs = {"gap_pct": gap}
-                            if price > prev_c: direction_matched = "long"
-                            else: direction_matched = "short"
-                    elif scaling == "drift_confirm":
-                        if len(df) >= 2:
-                            prev_c = float(df["Close"].iloc[-2])
-                            bar_up = float(df["Close"].iloc[-1]) > float(df["Open"].iloc[-1])
-                            kwargs = {"gap_up": price > prev_c, "bar_up": bar_up}
+                        if bullish or hamme
 
-                    pts_scored, matched = score_criterion(scaling, max_pts, **kwargs)
-                    score += pts_scored
-                    if matched:
-                        details.append(f"+{pts_scored:.1f}/{max_pts} [{tf}] {scaling}")
-                    else:
-                        details.append(f" 0/{max_pts}  [{tf}] {scaling}")
+... [OUTPUT TRUNCATED - 12,415 chars omitted out of 62,342 total] ...
 
-                else:
-                    # ── Legacy point-based scoring (backward compat) ──
-                    rule = crit["rule"]
-                    pts = crit.get("points", crit.get("max", 1))
-                    if pts == "gate":
-                        if "earnings" in rule.lower():
-                            gate_pass = _check_earnings_gate(sym, asset)
-                            details.append(f"GATE {'PASS' if gate_pass else 'SKIP'}: earnings")
-                        continue
-                    tf = _tf_for(rule)
-                    ind = ind_bias if tf == "bias" else ind_entry
-                    df = ind.get("ohlc")
-                    if df is None or df.empty:
-                        details.append(f" 0  {rule[:50]}..."); continue
-                    price = ind.get("price", current_price)
-                    rsi_val = ind.get("rsi", 50)
-                    matched = False; score_add = 0; r = rule.lower()
-                    if "close beyond prior swing" in r:
-                        last_sw = (ind.get("sw_highs", [None])[-1:][0] or [None])[1] if ind.get("sw_highs") else None
-                        last_sl = (ind.get("sw_lows", [None])[-1:][0] or [None])[1] if ind.get("sw_lows") else None
-                        if last_sw and price > last_sw: score_add=pts; direction_matched="long"; matched=True
-                        elif last_sl and price < last_sl: score_add=pts; direction_matched="short"; matched=True
-                    elif "volume" in r and ">" in r:
-                        mult = _extract_multiplier(r)
-                        vl = ind.get("vol_last", 0); va = ind.get("vol_avg20", 0)
-                        if vl > va * mult: score_add = pts; matched = True
-                    elif "atr" in r and "expand" in r:
-                        av = ind.get("atr"); ap = atr(df.iloc[:-20], 14) if len(df)>20 else av
-                        if av and ap and av>ap*1.2: score_add=pts; matched=True
-                    elif "ema" in r and "within" in r:
-                        em = ind.get("ema50") if asset=="XAUUSD" else ind.get("ema20")
-                        if em and price: dist=abs(price-em)/price*100
-                        if dist<=_extract_pct(r): score_add=pts; matched=True
-                    elif "engulfing" in r:
-                        if is_engulfing(df,"bullish"): score_add=pts; direction_matched="long"; matched=True
-                        elif is_engulfing(df,"bearish"): score_add=pts; direction_matched="short"; matched=True
-                    elif "hammer" in r and is_hammer(df): score_add=pts; direction_matched="long"; matched=True
-                    elif "rsi" in r:
-                        if "-" in r:
-                            lo,hi=_extract_range(r)
-                            if lo<=rsi_val<=hi: score_add=pts; matched=True
-                        elif ">" in r and rsi_val>_extract_numeric(r,">"): score_add=pts; matched=True
-                        elif "<" in r and rsi_val<_extract_numeric(r,"<"): score_add=pts; matched=True
-                    elif "new" in r and "high" in r:
-                        hd = ind.get("high_20d")
-                        if hd and price>hd: score_add=pts; direction_matched="long"; matched=True
-                    elif "touches" in r:
-                        lvl = (ind.get("sw_highs",[None])[-1:][0] or [None])[1]
-                        if lvl and count_touches(df,lvl)>=2: score_add=pts; matched=True
-                    elif "gap" in r and ">" in r:
-                        if len(df)>=2:
-                            pc=float(df["Close"].iloc[-2]); g=abs(price-pc)/pc*100
-                            if g>_extract_pct(r): score_add=pts; matched=True
-                    elif "drift" in r:
-                        if len(df)>=2:
-                            pc=float(df["Close"].iloc[-2])
-                            if (price>pc)==(float(df["Close"].iloc[-1])>float(df["Open"].iloc[-1])): score_add=pts; matched=True
-                    score += score_add
-                    details.append(f"{'+' if matched else ' '}{score_add} [{tf}] {rule[:50]}...")
-
-            # Direction enforcement
-            sig_dir = direction_matched
-            if direction != "both" and sig_dir and sig_dir != direction:
-                score = 0
-
-            # RSI gate
-            rsi_long_min = rsi_gate.get("long_min", 0)
-            rsi_short_max = rsi_gate.get("short_max", 100)
-            entry_rsi_val = ind_entry.get("rsi", 50)
-            if sig_dir == "long" and entry_rsi_val < rsi_long_min:
-                score = 0
-                details.append(f"RSI gate fail: {entry_rsi_val:.1f} < {rsi_long_min}")
-            if sig_dir == "short" and entry_rsi_val > rsi_short_max:
-                score = 0
-                details.append(f"RSI gate fail: {entry_rsi_val:.1f} > {rsi_short_max}")
-
-            # News + FedWatch bonus
-            if sig_dir:
-                events_today = get_enhanced_events()
-                bonus, note = enhanced_news_bonus(events_today, asset, sig_dir)
-                if bonus:
-                    score += bonus
-                    details.append(f"+{bonus} CALENDAR: {note}")
-                # FedWatch bonus (separate from calendar)
-                fw_bonus, fw_note = fedwatch_bonus(asset, sig_dir)
-                if fw_bonus:
-                    score += fw_bonus
-                    details.append(f"+{fw_bonus} FEDWATCH: {fw_note}")
-                # Fundamentals bonus (stocks only)
-                f_bonus, f_note = fundamentals_bonus(asset, sig_dir, fundamentals)
-                if f_bonus:
-                    score += f_bonus
-                    details.append(f"+{f_bonus} FUNDAMENTALS: {f_note}")
-
-            passed = gate_pass and sig_dir is not None
-            if passed:
-                if threshold_pct:
-                    # Calculate max possible from criteria
-                    max_possible = sum(c.get("max", c.get("points", 10)) for c in criteria if c.get("scaling") != "gate" and c.get("points") != "gate")
-                    if max_possible > 0:
-                        score_pct = score / max_possible * 100
-                        passed = score_pct >= threshold_pct
-                        details.append(f"Score: {score:.1f}/{max_possible} ({score_pct:.0f}%) · threshold {threshold_pct}%")
-                else:
-                    passed = score >= threshold
-
-            # Calculate max possible and percentage
-            max_possible = sum(c.get("max", c.get("points", 10)) for c in criteria if c.get("scaling") != "gate" and c.get("points") != "gate")
-            if max_possible == 0: max_possible = sum(c.get("max", c.get("points", 10)) for c in criteria)
-            score_pct = (score / max_possible * 100) if max_possible > 0 else 0
-
-            asset_signals.append({
-                "setup": name, "type": sig_type, "direction": sig_dir,
-                "score": score, "threshold": threshold, "threshold_pct": threshold_pct,
-                "max_possible": max_possible, "score_pct": score_pct,
-                "passed": passed, "details": details,
-            })
-
-        # Result
-        passing = [s for s in asset_signals if s["passed"]]
-        base = {
-            "price": round(current_price, 2),
-            "rsi": round(ind_entry.get("rsi", 50), 1),
-            "atr": round(ind_entry.get("atr", 0), 2) if ind_entry.get("atr") else None,
-            "ema": round(ind_entry.get("ema50") or ind_entry.get("ema20") or 0, 2),
-            "sw_high": round(last_sw_high, 2) if (ind_entry.get("sw_highs") or [None])[-1:] and ind_entry["sw_highs"] else None,
-            "sw_low": round(last_sw_low, 2) if (ind_entry.get("sw_lows") or [None])[-1:] and ind_entry["sw_lows"] else None,
-            "in_session": in_session,
-            "session_note": session_note,
-        }
-        if not in_session:
-            all_results[asset] = {**base, "status": "OUTSIDE_HOURS", "signal": None, "all_signals": asset_signals}
-        elif passing:
-            all_results[asset] = {**base, "status": "SIGNAL", "signal": passing[0], "all_signals": asset_signals}
-        else:
-            all_results[asset] = {**base, "status": "PASS", "signal": None, "all_signals": asset_signals}
-
-    return {"status": "SIGNAL" if any(v.get("status") == "SIGNAL" for v in all_results.values()) else "PASS",
-            "assets": all_results}
-
-
-def _check_earnings_gate(sym, asset_name):
-    """Check if earnings were in the last 24 hours. Uses yfinance calendar."""
-    try:
-        import yfinance as yf
-        ticker_map = {"AAPL": "AAPL", "META": "META", "GOOGL": "GOOGL"}
-        ticker = ticker_map.get(asset_name, sym)
-        st = yf.Ticker(ticker)
-        cal = st.calendar
-        if cal is not None and not cal.empty:
-            earnings_date = cal.get("Earnings Date")
-            if earnings_date is not None:
-                # earnings_date is usually a list of dates
-                ed = earnings_date[0] if hasattr(earnings_date, '__iter__') and not isinstance(earnings_date, str) else earnings_date
-                from datetime import datetime, timezone, timedelta
-                if isinstance(ed, (int, float)):
-                    ed = datetime.fromtimestamp(ed / 1000, tz=timezone.utc)
-                elif hasattr(ed, 'to_pydatetime'):
-                    ed = ed.to_pydatetime()
-                now = datetime.now(LOCAL_TZ)
-                if now - timedelta(hours=24) <= ed <= now + timedelta(hours=24):
-                    return True
-        # Fallback: check earnings_dates
-        edates = st.earnings_dates
-        if edates is not None and not edates.empty:
-            now = datetime.now(LOCAL_TZ)
-            from datetime import timedelta
-            recent = edates[edates.index >= (now - timedelta(hours=24)).strftime('%Y-%m-%d')]
-            return not recent.empty
-    except Exception:
-        pass
-    return False
-
-
-def _extract_multiplier(rule):
-    import re
-    m = re.search(r'>\s*([\d.]+)\s*x', rule)
-    return float(m.group(1)) if m else 1.5
-
-
-def _extract_pct(rule):
-    import re
-    m = re.search(r'([\d.]+)%', rule)
-    return float(m.group(1)) if m else 0.5
-
-
-def _extract_ema_period(rule):
-    import re
-    m = re.search(r'(\d+)EMA', rule)
-    return int(m.group(1)) if m else None
-
-
-def _extract_numeric(rule, operator):
-    import re
-    m = re.search(rf'{re.escape(operator)}\s*([\d.]+)', rule)
-    return float(m.group(1)) if m else 0
-
-
-def _extract_range(rule):
-    import re
-    m = re.search(r'(\d+)\s*-\s*(\d+)', rule)
-    return (int(m.group(1)), int(m.group(2))) if m else (0, 100)
-
-
-def _extract_period(rule):
-    import re
-    m = re.search(r'(\d+)-day', rule)
+ = re.search(r'(\d+)-day', rule)
     return int(m.group(1)) if m else None
 
 
@@ -1207,7 +974,18 @@ def run_pipeline(cfg, tv=None):
     asset_steps = {}
     setup_data = steps["setup"].get("assets", {})
     current_capital = load_capital(cfg)
-    for asset in cfg["assets"]:
+    # Filter assets from shared master list
+    shared_assets = {}
+    try:
+        with open("shared.json") as f:
+            shared = json.load(f)
+        al = shared.get("asset_list", {})
+        for k, v in al.items():
+            if v.get("enabled_v4", True):
+                shared_assets[k] = cfg["assets"].get(k, v)
+    except:
+        shared_assets = cfg["assets"]
+    for asset in (shared_assets if shared_assets else cfg["assets"]):
         # Skip out-of-session assets
         sf = session_filter.get(asset, "anytime")
         if sf == "regular_only":
