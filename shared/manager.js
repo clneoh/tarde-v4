@@ -5,8 +5,6 @@ var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 var assetList = {};
 
 function load() {
-  // Auto-fill token from storage
-  try { var saved = localStorage.getItem('gh_pat'); if (saved) document.getElementById('ghToken').value = saved; } catch(e) {}
   fetch(RAW_URL + '?t=' + Date.now())
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -129,46 +127,83 @@ function buildConfig() {
   var out = {};
   var keys = Object.keys(assetList);
   for (var i = 0; i < keys.length; i++) {
-    var k = keys[
-function applyConfig() {
-  var token = document.getElementById('ghToken').value.trim();
-  if (token) { try { localStorage.setItem('gh_pat', token); } catch(e) {} }
-  if (!token) { setStatus('Enter GitHub PAT first', false); return; }
-  var btn = document.getElementById('applyBtn');
-  btn.textContent = 'Applying...'; btn.disabled = true;
+    var k = keys[i], v = assetList[k];
+    out[k] = { exchange: v.exchange, type: v.type, session: v.session, bias_tf: v.bias_tf||[], exec_tf: v.exec_tf||'', enabled_v4: v.enabled_v4, enabled_pam: v.enabled_pam };
+  }
+  return { assets: out };
+}
 
-  document.body.style.pointerEvents = 'none';
-  document.body.style.opacity = '0.6';
+function showPreview() {
+  document.getElementById('output').style.display = 'block';
+  document.getElementById('output').textContent = JSON.stringify(buildConfig(), null, 2);
+}
 
-  setStatus('Applying... 0s', true);
-  var elapsed = 0;
-  var timer = setInterval(function() {
-    elapsed++;
-    if (elapsed < 10) setStatus('Applying... ' + elapsed + 's', true);
-    else if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (syncing)', true);
-    else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (almost done)', true);
-    else { clearInterval(timer); unfreeze(); }
-  }, 1000);
-  setTimeout(function() { clearInterval(timer); unfreeze(); }, 65000);
-
-  var cfg = buildConfig();
-  fetch('http://54.254.254.195:8765/push', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ assets: cfg.assets, token: token })
-  }).then(function(r) { return r.json(); })
-    .catch(function(e) { console.error('Push failed:', e); });
+function setStatus(msg, ok) {
+  var s = document.getElementById('status');
+  s.textContent = msg;
+  s.className = 'status ' + (ok ? 'ok' : 'err');
+  if (ok) setTimeout(function() { s.textContent = ''; }, 3000);
 }
 
 function unfreeze() {
-  document.body.style.pointerEvents = '';
-  document.body.style.opacity = '1';
-  document.getElementById('applyBtn').textContent = 'Apply Changes';
-  document.getElementById('applyBtn').disabled = false;
+  // Reload fresh data after pipeline
   fetch(RAW_URL + '?t=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(d){ assetList = d.asset_list || {}; render(); })
     .catch(function(){});
+
+  document.body.style.pointerEvents = '';
+  document.body.style.opacity = '1';
+  document.getElementById('applyBtn').textContent = 'Apply Changes';
+  document.getElementById('applyBtn').disabled = false;
+}
+
+
+function applyConfig() {
+  var token = document.getElementById('ghToken').value.trim();
+  if (!token) { setStatus('Enter GitHub PAT', false); return; }
+  var btn = document.getElementById('applyBtn');
+  btn.textContent = 'Applying...'; btn.disabled = true;
+  setStatus('Pushing...', true);
+
+  var api = 'https://api.github.com/repos/clneoh/tarde-v4/contents/shared/shared_config.json';
+  var headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
+
+  fetch(api, { headers: headers, cache: 'no-store' })
+    .then(function(r) { if (!r.ok) throw new Error('Fetch: ' + r.status); return r.json(); })
+    .then(function(file) {
+      var config = JSON.parse(atob(file.content));
+      config.assets = buildConfig().assets;
+      return fetch(api, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify({ message: 'update assets from manager', content: btoa(unescape(encodeURIComponent(JSON.stringify(config, null, 2)))), sha: file.sha })
+      });
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('Push: ' + r.status);
+      btn.textContent = 'Apply Changes'; btn.disabled = false;
+      // Freeze entire page
+        document.body.style.pointerEvents = 'none';
+        document.body.style.opacity = '0.6';
+        
+        setStatus('Applying... 0s', true);
+        fetch('http://54.254.254.195:8765/trigger', {mode:'no-cors'}).catch(function(){});
+        var elapsed = 0;
+        var timer = setInterval(function() {
+          elapsed++;
+          if (elapsed < 10) setStatus('Applying... ' + elapsed + 's', true);
+          else if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (fetching data)', true);
+          else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (almost done)', true);
+          else { clearInterval(timer); unfreeze(); }
+        }, 1000);
+        setTimeout(function() { clearInterval(timer); unfreeze(); }, 65000);
+        _applied = true;
+    })
+    .catch(function(e) {
+      btn.textContent = 'Apply Changes'; btn.disabled = false;
+      setStatus(e.message, false);
+    });
 }
 
 load();
