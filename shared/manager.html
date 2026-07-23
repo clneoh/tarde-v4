@@ -108,41 +108,49 @@ function countEnabled() {
 
 function render() {
   const c = countEnabled();
-  document.getElementById('stats').innerHTML = `${c.total} assets · V4: ${c.v4} · PAM: ${c.pam}`;
+  document.getElementById('stats').innerHTML = c.total + ' assets · V4: ' + c.v4 + ' · PAM: ' + c.pam;
 
-  let html = '';
-  for (const ticker of Object.keys(assetList)) {
-    const a = assetList[ticker];
-    const bias = a.bias_tf || [];
-    const exec = a.exec_tf || '';
+  var html = '';
+  var keys = Object.keys(assetList);
+  for (var ki = 0; ki < keys.length; ki++) {
+    var ticker = keys[ki];
+    var a = assetList[ticker];
+    var bias = a.bias_tf || [];
+    var exec = a.exec_tf || '';
+    var execRank = TF_RANK[exec] != null ? TF_RANK[exec] : 99;
 
     // Bias TF tags
-    let biasHTML = '';
-    const execRank = TF_RANK[a.exec_tf] ?? 99;
-    for (const tf of ALL_TF) {
-      const on = bias.includes(tf);
-      const disabled = (TF_RANK[tf] ?? 99) >= execRank && tf !== a.exec_tf;
-      biasHTML += '<span class="tf-tag ' + (on?'on':'off') + '" onclick="' + (disabled?'':"toggleBias('" + ticker + "','" + tf + "')") + '" style="' + (disabled?'opacity:0.3;cursor:not-allowed':'') + '">' + tf + '</span>';
+    var biasHTML = '';
+    for (var ti = 0; ti < ALL_TF.length; ti++) {
+      var tf = ALL_TF[ti];
+      var on = bias.indexOf(tf) >= 0;
+      var disabled = (TF_RANK[tf] != null ? TF_RANK[tf] : 99) >= execRank && tf !== exec;
+      var cls = 'tf-tag ' + (on ? 'on' : 'off');
+      var style = disabled ? 'opacity:0.3;cursor:not-allowed' : '';
+      var click = disabled ? '' : ' onclick="toggleBias(\'' + ticker + '\',\'' + tf + '\')"';
+      biasHTML += '<span class="' + cls + '"' + click + ' style="' + style + '">' + tf + '</span>';
     }
 
     // Exec TF tags
-    let execHTML = '';
-    for (const tf of ALL_TF) {
-      const isExec = exec === tf;
-      execHTML += `<span class="tf-tag ${isExec?'exec':'off'}" onclick="setExec('${ticker}','${tf}')">${tf}</span>`;
+    var execHTML = '';
+    for (var ei = 0; ei < ALL_TF.length; ei++) {
+      var etf = ALL_TF[ei];
+      var isExec = exec === etf;
+      var ecls = 'tf-tag ' + (isExec ? 'exec' : 'off');
+      execHTML += '<span class="' + ecls + '" onclick="setExec(\'' + ticker + '\',\'' + etf + '\')">' + etf + '</span>';
     }
 
-    html += `<tr>
-      <td style="font-weight:700;color:#ffd740;white-space:nowrap">${ticker}</td>
-      <td>${a.exchange||'?'}</td>
-      <td>${a.type||'?'}</td>
-      <td>${a.session||'?'}</td>
-      <td>${biasHTML}</td>
-      <td>${execHTML}</td>
-      <td style="text-align:center"><span class="toggle ${a.enabled_v4?'on':'off'}" onclick="toggle('${ticker}','enabled_v4')">${a.enabled_v4?'●':'○'}</span></td>
-      <td style="text-align:center"><span class="toggle ${a.enabled_pam?'on':'off'}" onclick="toggle('${ticker}','enabled_pam')">${a.enabled_pam?'●':'○'}</span></td>
-      <td><button class="btn btn-rm" onclick="removeAsset('${ticker}')">✕</button></td>
-    </tr>`;
+    html += '<tr>' +
+      '<td style="font-weight:700;color:#ffd740;white-space:nowrap">' + ticker + '</td>' +
+      '<td>' + (a.exchange||'?') + '</td>' +
+      '<td>' + (a.type||'?') + '</td>' +
+      '<td>' + (a.session||'?') + '</td>' +
+      '<td>' + biasHTML + '</td>' +
+      '<td>' + execHTML + '</td>' +
+      '<td style="text-align:center"><span class="toggle ' + (a.enabled_v4?'on':'off') + '" onclick="toggle(\'' + ticker + '\',\'enabled_v4\')">' + (a.enabled_v4?'●':'○') + '</span></td>' +
+      '<td style="text-align:center"><span class="toggle ' + (a.enabled_pam?'on':'off') + '" onclick="toggle(\'' + ticker + '\',\'enabled_pam\')">' + (a.enabled_pam?'●':'○') + '</span></td>' +
+      '<td><button class="btn btn-rm" onclick="removeAsset(\'' + ticker + '\')">✕</button></td>' +
+    '</tr>';
   }
   document.getElementById('assetTable').innerHTML = html || '<tr><td colspan="9" style="color:#555;text-align:center;padding:20px">No assets</td></tr>';
 }
