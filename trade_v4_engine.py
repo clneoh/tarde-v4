@@ -1277,6 +1277,13 @@ def run_pipeline(cfg, tv=None):
 
 def save_state(state):
     # Simplify for JSON
+    # Fetch news warnings for dashboard
+    news = []
+    try:
+        events_today = get_enhanced_events()
+        news = enhanced_warning(events_today)
+    except Exception:
+        pass
     simple = {
         "timestamp": state["summary"]["timestamp"],
         "overall": state["summary"]["overall"],
@@ -1286,6 +1293,7 @@ def save_state(state):
         "steps": state["steps"],
         "positions": state["steps"].get("positions", {"open": [], "closed": []}),
         "compounded_capital": state["steps"].get("capital"),
+        "news": news,
     }
     with open(STATE_FILE, "w") as f:
         json.dump(simple, f, indent=2, default=str)

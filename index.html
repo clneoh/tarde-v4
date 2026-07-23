@@ -169,6 +169,7 @@ h1{font-size:20px;font-weight:700;letter-spacing:-.5px}
       <div class="regime-reasons" id="regimeReasons"></div>
       <div class="sessions" id="sessionInfo"></div>
       <div id="corrWarn" style="font-size:11px;color:#ffd740;margin-top:4px"></div>
+      <div id="newsEvents" style="font-size:12px;color:#ffd740;margin-top:4px"></div>
     </div>
 
     <div class="panel" style="flex:1;overflow-y:auto;min-height:0">
@@ -253,6 +254,13 @@ function renderState(s) {
   rt.textContent = regime.regime || '?';
   rt.className = 'regime-big ' + (regime.regime||'').toLowerCase();
   document.getElementById('regimeReasons').innerHTML = (regime.reasons||[]).map(r => `• ${r}`).join('<br>');
+  // News/economic events
+  const newsDiv = document.getElementById('newsEvents');
+  if (newsDiv) {
+    const news = s.news || [];
+    newsDiv.innerHTML = news.map(n => n).join('<br>');
+    newsDiv.style.display = news.length ? '' : 'none';
+  }
 
   // Sessions
   const g = sessions.gold ? '🟢' : '⚫';
