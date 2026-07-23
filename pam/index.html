@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PAM — Portfolio Analysis Monitor</title>
+<title>PAM — Price Action Manipulation</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -85,7 +85,7 @@ h3 { font-size: 14px; color: #8080c0; text-transform: uppercase; letter-spacing:
 </head>
 <body>
 
-<h1>📊 PAM — Portfolio Analysis Monitor</h1>
+<h1>📊 PAM — Price Action Manipulation</h1>
 
 <div class="header">
   <div>
@@ -114,7 +114,7 @@ h3 { font-size: 14px; color: #8080c0; text-transform: uppercase; letter-spacing:
 <div class="refresh-bar" id="refreshBar">loading...</div>
 
 <script>
-const STATE_URL = '/pam/pam_state.json';
+const STATE_URL = '/tarde-v4/pam/pam_state.json';
 const THRESHOLD = 55; // from config scoring.threshold_pct
 
 async function fetchJSON(url) {
