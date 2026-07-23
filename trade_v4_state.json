@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T10:55:52.490330+08:00",
+  "timestamp": "2026-07-23T11:04:23.402190+08:00",
   "overall": "GO",
   "regime": "RISK-ON",
   "signal_active": false,
   "sessions": {
     "stocks": false,
     "gold": true,
-    "gold_time": "10:55 (Tokyo)",
+    "gold_time": "11:04 (Tokyo)",
     "stocks_display": false
   },
   "steps": {
     "_sessions": {
       "stocks": false,
       "gold": true,
-      "gold_time": "10:55 (Tokyo)",
+      "gold_time": "11:04 (Tokyo)",
       "stocks_display": false
     },
     "regime": {
@@ -47,9 +47,9 @@
           "chg_5d": 2.42
         },
         "BTC": {
-          "price": 65757.5,
+          "price": 65745.42,
           "trend": "UP",
-          "chg_5d": 1.66
+          "chg_5d": 1.64
         }
       }
     },
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4125.8,
-          "rsi": 54.4,
-          "atr": 8.47,
-          "ema": 4128.97,
+          "price": 4127.07,
+          "rsi": 52.5,
+          "atr": 8.31,
+          "ema": 4128.99,
           "sw_high": 4141.27,
           "sw_low": 4112.31,
           "in_session": true,
@@ -87,18 +87,18 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 21.6,
+              "score": 21.8,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 40,
-              "score_pct": 54.0,
+              "score_pct": 54.50000000000001,
               "passed": false,
               "details": [
-                "+6.6/10 [entry] swing_break",
+                "+7.2/10 [entry] swing_break",
                 " 0/10  [entry] volume",
-                "+5.0/10 [entry] atr_expand",
+                "+4.6/10 [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 21.6/40 (54%) \u00b7 threshold 60%"
+                "Score: 21.8/40 (55%) \u00b7 threshold 60%"
               ]
             },
             {
@@ -128,7 +128,7 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (10:55 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:04 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -198,7 +198,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (10:55 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:04 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -267,7 +267,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (10:55 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:04 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -335,7 +335,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (10:55 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:04 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
