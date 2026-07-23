@@ -3,7 +3,9 @@ var ALL_TF = ['M1','W1','D1','D2','H4','H1','m15'];
 var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 var assetList = {};
 
+var _applied = false;
 function load() {
+  if (_applied) return; // don't overwrite after Apply
   fetch(SHARED_URL, {cache:'no-store'})
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -168,7 +170,8 @@ function applyConfig() {
     .then(function(r) {
       if (!r.ok) throw new Error('Push: ' + r.status);
       btn.textContent = 'Apply Changes'; btn.disabled = false;
-      setStatus('Applied!', true);
+      setStatus('Applied! V4/PAM pick up next cron run.', true);
+        _applied = true;
     })
     .catch(function(e) {
       btn.textContent = 'Apply Changes'; btn.disabled = false;
