@@ -177,7 +177,7 @@ function applyConfig() {
       return fetch(api, {
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify({ message: 'update assets from manager', content: btoa(JSON.stringify(config, null, 2)), sha: file.sha })
+        body: JSON.stringify({ message: 'update assets from manager', content: btoa(unescape(encodeURIComponent(JSON.stringify(config, null, 2)))), sha: file.sha })
       });
     })
     .then(function(r) {
