@@ -145,9 +145,8 @@ function setStatus(msg, ok) {
 }
 
 function unfreeze() {
-  document.getElementById('assetTable').style.pointerEvents = '';
-  document.getElementById('assetTable').style.opacity = '1';
-  document.getElementById('applyBtn').style.pointerEvents = '';
+  document.body.style.pointerEvents = '';
+  document.body.style.opacity = '1';
   document.getElementById('applyBtn').textContent = 'Apply Changes';
   document.getElementById('applyBtn').disabled = false;
 }
@@ -177,10 +176,9 @@ function applyConfig() {
     .then(function(r) {
       if (!r.ok) throw new Error('Push: ' + r.status);
       btn.textContent = 'Apply Changes'; btn.disabled = false;
-      // Freeze UI
-        document.getElementById('assetTable').style.pointerEvents = 'none';
-        document.getElementById('assetTable').style.opacity = '0.5';
-        document.getElementById('applyBtn').style.pointerEvents = 'none';
+      // Freeze entire page
+        document.body.style.pointerEvents = 'none';
+        document.body.style.opacity = '0.6';
         
         setStatus('Applying... 0s', true);
         fetch('http://54.254.254.195:8765/trigger', {mode:'no-cors'}).catch(function(){});
