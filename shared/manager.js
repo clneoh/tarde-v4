@@ -35,9 +35,10 @@ function render() {
     var biasHTML = '';
     for (var ti = 0; ti < ALL_TF.length; ti++) {
       var tf = ALL_TF[ti];
+      if (tf === exec) continue; // skip exec TF in bias column
       var on = bias.indexOf(tf) >= 0;
       var tfRank = TF_RANK[tf] != null ? TF_RANK[tf] : 99;
-      var blocked = tfRank >= execRank && tf !== exec;
+      var blocked = tfRank >= execRank; // same or lower than exec
       var cls = 'tf-tag ' + (on ? 'on' : 'off') + (blocked ? ' disabled' : '');
       var dattr = blocked ? '' : ' data-action="bias" data-ticker="' + ticker + '" data-tf="' + tf + '"';
       biasHTML += '<span class="' + cls + '"' + dattr + '>' + tf + '</span>';
