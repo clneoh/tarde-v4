@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T07:45:14.554444+08:00",
+  "timestamp": "2026-07-23T08:00:56.613210+08:00",
   "overall": "GO",
   "regime": "NEUTRAL",
   "signal_active": false,
   "sessions": {
     "stocks": false,
     "gold": true,
-    "gold_time": "07:45 (Tokyo)",
+    "gold_time": "08:00 (Tokyo)",
     "stocks_display": false
   },
   "steps": {
     "_sessions": {
       "stocks": false,
       "gold": true,
-      "gold_time": "07:45 (Tokyo)",
+      "gold_time": "08:00 (Tokyo)",
       "stocks_display": false
     },
     "regime": {
@@ -27,7 +27,7 @@
       ],
       "assets": {
         "DXY": {
-          "price": 101.12,
+          "price": 101.11,
           "trend": "UP",
           "chg_5d": 0.36
         },
@@ -47,9 +47,9 @@
           "chg_5d": 2.24
         },
         "BTC": {
-          "price": 65957.02,
+          "price": 66083.95,
           "trend": "UP",
-          "chg_5d": 1.79
+          "chg_5d": 2.17
         }
       }
     },
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4123.28,
-          "rsi": 36.7,
-          "atr": 5.9,
-          "ema": 4130.76,
+          "price": 4133.51,
+          "rsi": 49.5,
+          "atr": 6.55,
+          "ema": 4131.25,
           "sw_high": 4137.92,
           "sw_low": 4116.73,
           "in_session": true,
@@ -87,35 +87,35 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 13.2,
+              "score": 18.2,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 40,
-              "score_pct": 32.99999999999999,
+              "score_pct": 45.49999999999999,
               "passed": false,
               "details": [
-                "+3.2/10 [entry] swing_break",
+                "+8.2/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 13.2/40 (33%) \u00b7 threshold 60%"
+                "Score: 18.2/40 (45%) \u00b7 threshold 60%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "long",
-              "score": 9.9,
+              "score": 3.2,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 30,
-              "score_pct": 33.0,
+              "score_pct": 10.666666666666668,
               "passed": false,
               "details": [
-                "+3.2/10 [bias] ema_proximity",
+                "+1.2/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+6.7/10 [entry] rsi_range",
-                "Score: 9.9/30 (33%) \u00b7 threshold 60%"
+                "+2.0/10 [entry] rsi_range",
+                "Score: 3.2/30 (11%) \u00b7 threshold 60%"
               ]
             }
           ]
@@ -128,28 +128,25 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (07:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
             {
               "setup": "dip_to_ema",
               "type": "mean_reversion",
-              "direction": "long",
-              "score": 5.5,
+              "direction": null,
+              "score": 3.5,
               "threshold": 4,
               "threshold_pct": 60,
               "max_possible": 40,
-              "score_pct": 13.750000000000002,
+              "score_pct": 8.75,
               "passed": false,
               "details": [
-                " 0/10  [bias] ema_proximity",
+                " 0  [bias] price proximity to 20EMA daily...",
                 "+3.2/10 [entry] rsi_range",
                 " 0/10  [entry] engulfing",
-                "+0.3/10 [entry] volume",
-                "+1 CALENDAR: Initial Jobless Claims: low data \u2192 stocks\u2191",
-                "+1 FUNDAMENTALS: Buy (2.02128) \u2192 +1",
-                "Score: 5.5/40 (14%) \u00b7 threshold 60%"
+                "+0.3/10 [entry] volume"
               ]
             },
             {
@@ -163,7 +160,7 @@
               "score_pct": 0.75,
               "passed": false,
               "details": [
-                " 0/10  [bias] new_high",
+                " 0  [bias] new 20-day high...",
                 "+0.3/10 [entry] volume",
                 " 0/10  [entry] rsi_momentum",
                 " 0/10  [entry] atr_expand"
@@ -198,7 +195,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (07:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -267,7 +264,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (07:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -335,7 +332,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (07:45 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:00 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
