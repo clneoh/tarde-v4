@@ -51,7 +51,7 @@
   },
   "setups": {
     "XAUUSD": {
-      "scoring_threshold_pct": 60,
+      "scoring_threshold_pct": 55,
       "rsi_gate": { "long_min": 35, "short_max": 65 },
       "signals": [
         {
@@ -74,7 +74,7 @@
       ]
     },
     "AAPL": {
-      "scoring_threshold_pct": 60,
+      "scoring_threshold_pct": 55,
       "signals": [
         {
           "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
@@ -106,7 +106,7 @@
       ]
     },
     "META": {
-      "scoring_threshold_pct": 60,
+      "scoring_threshold_pct": 55,
       "signals": [
         { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
           "criteria": [
@@ -135,7 +135,7 @@
       ]
     },
     "GOOGL": {
-      "scoring_threshold_pct": 60,
+      "scoring_threshold_pct": 55,
       "signals": [
         { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
           "criteria": [
@@ -164,7 +164,7 @@
       ]
     },
     "MSFT": {
-      "scoring_threshold_pct": 60,
+      "scoring_threshold_pct": 55,
       "signals": [
         { "name": "dip_to_ema", "type": "mean_reversion", "direction": "long",
           "criteria": [

@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-23T11:30:15.143709+08:00",
+  "timestamp": "2026-07-23T11:45:14.199645+08:00",
   "overall": "GO",
   "regime": "RISK-ON",
   "signal_active": false,
   "sessions": {
     "stocks": false,
     "gold": true,
-    "gold_time": "11:30 (Tokyo)",
+    "gold_time": "11:45 (Tokyo)",
     "stocks_display": false
   },
   "steps": {
     "_sessions": {
       "stocks": false,
       "gold": true,
-      "gold_time": "11:30 (Tokyo)",
+      "gold_time": "11:45 (Tokyo)",
       "stocks_display": false
     },
     "regime": {
@@ -27,9 +27,9 @@
       ],
       "assets": {
         "DXY": {
-          "price": 100.98,
+          "price": 100.97,
           "trend": "DOWN",
-          "chg_5d": 0.23
+          "chg_5d": 0.22
         },
         "VIX": {
           "price": 16.64,
@@ -47,16 +47,16 @@
           "chg_5d": 2.46
         },
         "BTC": {
-          "price": 65596.31,
+          "price": 65656.99,
           "trend": "UP",
-          "chg_5d": 1.41
+          "chg_5d": 1.51
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.23,
+        "dxy_5d": 0.22,
         "spx_5d": -0.46,
         "stock_chgs": {
           "AAPL": -2.21,
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4129.34,
-          "rsi": 52.4,
-          "atr": 7.61,
-          "ema": 4129.07,
+          "price": 4128.52,
+          "rsi": 49.2,
+          "atr": 7.33,
+          "ema": 4129.03,
           "sw_high": 4141.27,
           "sw_low": 4112.31,
           "in_session": true,
@@ -87,35 +87,35 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 20.700000000000003,
+              "score": 19.9,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 51.75000000000001,
+              "score_pct": 49.74999999999999,
               "passed": false,
               "details": [
-                "+8.3/10 [entry] swing_break",
+                "+7.9/10 [entry] swing_break",
                 " 0/10  [entry] volume",
-                "+2.4/10 [entry] atr_expand",
+                "+2.0/10 [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 20.7/40 (52%) \u00b7 threshold 60%"
+                "Score: 19.9/40 (50%) \u00b7 threshold 55%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "long",
-              "score": 3.0,
+              "score": 5.2,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 10.0,
+              "score_pct": 17.333333333333336,
               "passed": false,
               "details": [
-                "+3.0/10 [bias] ema_proximity",
+                "+3.2/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                " 0/10  [entry] rsi_range",
-                "Score: 3.0/30 (10%) \u00b7 threshold 60%"
+                "+2.0/10 [entry] rsi_range",
+                "Score: 5.2/30 (17%) \u00b7 threshold 55%"
               ]
             }
           ]
@@ -128,7 +128,7 @@
           "sw_high": 328.93,
           "sw_low": 323.35,
           "in_session": false,
-          "session_note": "Outside regular hours (11:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -138,7 +138,7 @@
               "direction": "long",
               "score": 5.5,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 13.750000000000002,
               "passed": false,
@@ -149,7 +149,7 @@
                 "+0.3/10 [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: low data \u2192 stocks\u2191",
                 "+1 FUNDAMENTALS: Buy (2.02128) \u2192 +1",
-                "Score: 5.5/40 (14%) \u00b7 threshold 60%"
+                "Score: 5.5/40 (14%) \u00b7 threshold 55%"
               ]
             },
             {
@@ -158,7 +158,7 @@
               "direction": null,
               "score": 0.3,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 0.75,
               "passed": false,
@@ -175,7 +175,7 @@
               "direction": "long",
               "score": 13.200000000000001,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 30,
               "score_pct": 44.00000000000001,
               "passed": false,
@@ -198,7 +198,7 @@
           "sw_high": 655.76,
           "sw_low": 643.2,
           "in_session": false,
-          "session_note": "Outside regular hours (11:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -208,7 +208,7 @@
               "direction": "long",
               "score": 14.600000000000001,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 36.50000000000001,
               "passed": false,
@@ -219,7 +219,7 @@
                 "+2.8/10 [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: low data \u2192 stocks\u2191",
                 "+1 FUNDAMENTALS: Target +32% upside \u2192 +1; Strong Buy (1.34921) \u2192 +1",
-                "Score: 14.6/40 (37%) \u00b7 threshold 60%"
+                "Score: 14.6/40 (37%) \u00b7 threshold 55%"
               ]
             },
             {
@@ -228,7 +228,7 @@
               "direction": null,
               "score": 2.8,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 6.999999999999999,
               "passed": false,
@@ -245,7 +245,7 @@
               "direction": "short",
               "score": 3.8,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 30,
               "score_pct": 12.666666666666664,
               "passed": false,
@@ -267,7 +267,7 @@
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": false,
-          "session_note": "Outside regular hours (11:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -277,7 +277,7 @@
               "direction": "short",
               "score": 1,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 2.5,
               "passed": false,
@@ -287,7 +287,7 @@
                 " 0/10  [entry] engulfing",
                 "+5.9/10 [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193",
-                "Score: 1.0/40 (2%) \u00b7 threshold 60%"
+                "Score: 1.0/40 (2%) \u00b7 threshold 55%"
               ]
             },
             {
@@ -296,7 +296,7 @@
               "direction": null,
               "score": 5.9,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 14.750000000000002,
               "passed": false,
@@ -313,7 +313,7 @@
               "direction": "short",
               "score": 18.700000000000003,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 30,
               "score_pct": 62.33333333333334,
               "passed": false,
@@ -335,7 +335,7 @@
           "sw_high": 401.0,
           "sw_low": 396.33,
           "in_session": false,
-          "session_note": "Outside regular hours (11:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (11:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -345,7 +345,7 @@
               "direction": "short",
               "score": 1,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 2.5,
               "passed": false,
@@ -355,7 +355,7 @@
                 " 0/10  [entry] engulfing",
                 "+0.6/10 [entry] volume",
                 "+1 CALENDAR: Initial Jobless Claims: high data \u2192 stocks\u2193",
-                "Score: 1.0/40 (2%) \u00b7 threshold 60%"
+                "Score: 1.0/40 (2%) \u00b7 threshold 55%"
               ]
             },
             {
@@ -364,7 +364,7 @@
               "direction": null,
               "score": 0.6,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 40,
               "score_pct": 1.5,
               "passed": false,
@@ -381,7 +381,7 @@
               "direction": "long",
               "score": 13.1,
               "threshold": 4,
-              "threshold_pct": 60,
+              "threshold_pct": 55,
               "max_possible": 30,
               "score_pct": 43.666666666666664,
               "passed": false,
