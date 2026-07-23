@@ -144,6 +144,15 @@ function setStatus(msg, ok) {
   if (ok) setTimeout(function() { s.textContent = ''; }, 3000);
 }
 
+function unfreeze() {
+  document.getElementById('assetTable').style.pointerEvents = '';
+  document.getElementById('assetTable').style.opacity = '1';
+  document.getElementById('applyBtn').style.pointerEvents = '';
+  document.getElementById('applyBtn').textContent = 'Apply Changes';
+  document.getElementById('applyBtn').disabled = false;
+}
+
+
 function applyConfig() {
   var token = document.getElementById('ghToken').value.trim();
   if (!token) { setStatus('Enter GitHub PAT', false); return; }
@@ -168,7 +177,12 @@ function applyConfig() {
     .then(function(r) {
       if (!r.ok) throw new Error('Push: ' + r.status);
       btn.textContent = 'Apply Changes'; btn.disabled = false;
-      setStatus('Applying... 0s', true);
+      // Freeze UI
+        document.getElementById('assetTable').style.pointerEvents = 'none';
+        document.getElementById('assetTable').style.opacity = '0.5';
+        document.getElementById('applyBtn').style.pointerEvents = 'none';
+        
+        setStatus('Applying... 0s', true);
         fetch('http://54.254.254.195:8765/trigger', {mode:'no-cors'}).catch(function(){});
         var elapsed = 0;
         var timer = setInterval(function() {
@@ -176,9 +190,9 @@ function applyConfig() {
           if (elapsed < 10) setStatus('Applying... ' + elapsed + 's', true);
           else if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (fetching data)', true);
           else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (almost done)', true);
-          else { clearInterval(timer); setStatus('Applied! Refresh dashboard.', true); }
+          else { clearInterval(timer); unfreeze(); }
         }, 1000);
-        setTimeout(function() { clearInterval(timer); setStatus('Applied! Refresh dashboard.', true); }, 65000);
+        setTimeout(function() { clearInterval(timer); unfreeze(); }, 65000);
         _applied = true;
     })
     .catch(function(e) {
