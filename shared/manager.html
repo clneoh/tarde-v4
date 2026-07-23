@@ -229,7 +229,8 @@ function applyConfig() {
     .then(function(r) {
       if (!r.ok) throw new Error('Push: ' + r.status);
       btn.textContent = 'Apply Changes'; btn.disabled = false;
-      setStatus('Applied! Shared engine picks up next run.', true);
+      setStatus('Applied! Config live on GitHub.', true);
+        document.getElementById('ghToken').value = '';
     })
     .catch(function(e) {
       btn.textContent = 'Apply Changes'; btn.disabled = false;
