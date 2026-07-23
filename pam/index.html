@@ -99,6 +99,7 @@ h3 { font-size: 14px; color: #8080c0; text-transform: uppercase; letter-spacing:
   <h3>🌍 REGIME</h3>
   <div class="regime-reasons" id="regimeReasons"></div>
   <div id="corrWarnings"></div>
+      <div id="newsBar" style="font-size:12px;color:#ffd740"></div>
 </div>
 
 <div class="panel">
@@ -155,7 +156,7 @@ function render(state) {
 
   // Correlation warnings
   const cw = document.getElementById('corrWarnings');
-  cw.innerHTML = '';
+  cw.innerHTML = (state.news||[]).join('<br>');
 
   // Price strip + setup cards
   const setups = state.setups || {};

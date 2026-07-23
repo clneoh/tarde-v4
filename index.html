@@ -578,7 +578,9 @@ function renderJournal(journal, positions, s) {
     rt.textContent = regime;
     rt.className = 'regime-big ' + regime.toLowerCase().replace(' ','-');
     document.getElementById('pReasons').innerHTML = ((d.correlation||{}).warnings||[]).slice(0,2).join('<br>');
-    document.getElementById('pCorrWarn').innerHTML = '';
+    var pd = document.getElementById('pCorrWarn');
+    pd.innerHTML = (d.news||[]).join('<br>');
+    pd.style.color = '#ffd740';
     const setups = d.setups || {};
     let ph='', sl='', ba=[];
     for (const asset in setups) {
