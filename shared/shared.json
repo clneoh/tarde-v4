@@ -1,20 +1,19 @@
 {
-  "timestamp": "2026-07-23T19:28:03.008679+08:00",
+  "timestamp": "2026-07-23T19:43:02.286721+08:00",
   "regime": "NEUTRAL",
-  "score": 4,
+  "score": 2,
   "reasons": [
     "DXY\u2191 (USD strength)",
-    "VIX 18 (low vol)",
     "SPX\u2191 (risk-on)"
   ],
   "assets": {
     "DXY": {
-      "price": 101.2,
-      "chg_5d": 0.5
+      "price": 101.3,
+      "chg_5d": 0.6
     },
     "VIX": {
-      "price": 17.9,
-      "chg_5d": 7.0
+      "price": 18.2,
+      "chg_5d": 8.9
     },
     "SPX": {
       "price": 7499.0,
@@ -22,11 +21,11 @@
     },
     "US10Y": {
       "price": 4.7,
-      "chg_5d": 2.7
+      "chg_5d": 2.9
     },
     "BTC": {
-      "price": 65623.6,
-      "chg_5d": 1.3
+      "price": 65543.5,
+      "chg_5d": 1.2
     }
   },
   "horizon_matrix": {
