@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-23T22:28:02.789045+08:00",
+  "timestamp": "2026-07-23T22:43:02.901559+08:00",
   "regime": "RISK-OFF",
   "score": 4,
   "reasons": [
@@ -16,16 +16,16 @@
       "chg_5d": 14.1
     },
     "SPX": {
-      "price": 7425.6,
-      "chg_5d": -1.4
+      "price": 7415.2,
+      "chg_5d": -1.6
     },
     "US10Y": {
       "price": 4.7,
       "chg_5d": 3.2
     },
     "BTC": {
-      "price": 65110.6,
-      "chg_5d": 0.5
+      "price": 64985.2,
+      "chg_5d": 0.3
     }
   },
   "horizon_matrix": {
