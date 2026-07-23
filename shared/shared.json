@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-24T03:00:03.870006+08:00",
+  "timestamp": "2026-07-24T03:02:02.882314+08:00",
   "regime": "RISK-OFF",
   "score": 4,
   "reasons": [
@@ -13,10 +13,10 @@
     },
     "VIX": {
       "price": 19.4,
-      "chg_5d": 16.3
+      "chg_5d": 16.0
     },
     "SPX": {
-      "price": 7396.9,
+      "price": 7395.6,
       "chg_5d": -1.8
     },
     "US10Y": {
@@ -24,8 +24,8 @@
       "chg_5d": 3.2
     },
     "BTC": {
-      "price": 64823.1,
-      "chg_5d": 0.0
+      "price": 64848.8,
+      "chg_5d": 0.1
     }
   },
   "horizon_matrix": {
@@ -154,17 +154,6 @@
       "exec_tf": "H1",
       "enabled_v4": false,
       "enabled_pam": false
-    },
-    "NVDA": {
-      "exchange": "NASDAQ",
-      "type": "stock",
-      "session": "US",
-      "bias_tf": [
-        "D2"
-      ],
-      "exec_tf": "H1",
-      "enabled_v4": true,
-      "enabled_pam": true
     }
   },
   "bias_model": {
