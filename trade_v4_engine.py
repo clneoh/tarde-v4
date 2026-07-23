@@ -1301,6 +1301,7 @@ def save_state(state):
         "positions": state["steps"].get("positions", {"open": [], "closed": []}),
         "compounded_capital": state["steps"].get("capital"),
         "news": news,
+        "shared_data": cfg.get("shared_data", {}),
         "horizon_matrix": horizon_matrix,
     }
     with open(STATE_FILE, "w") as f:

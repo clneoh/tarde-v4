@@ -601,11 +601,13 @@ function renderJournal(journal, positions, s) {
       const pamData = await pr.json();
       if (vr.ok) {
         const v4Data = await vr.json();
-        pamData.regime = v4Data.regime;
-        pamData.correlation = v4Data.steps?.correlation || pamData.correlation;
+        // Bulk inherit shared fields from V4 (single source of truth)
+        const shared = (v4Data.shared_data?.fields) || ['regime','correlation','horizon_matrix','news'];
+        for (const f of shared) {
+          if (v4Data[f] !== undefined) pamData[f] = v4Data[f];
+        }
+        // Regime-specific sub-fields
         pamData.regimeReasons = (v4Data.steps?.regime?.reasons || []);
-        pamData.news = v4Data.news || pamData.news || [];
-        pamData.horizon_matrix = v4Data.horizon_matrix || pamData.horizon_matrix || {};
         pamData.regimeAssets = (v4Data.steps?.regime?.assets) || {};
       }
       renderPAM(pamData);
