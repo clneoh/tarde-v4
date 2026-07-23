@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-07-24T04:00:17.738512+08:00",
+  "timestamp": "2026-07-24T04:15:14.089726+08:00",
   "overall": "GO",
   "regime": "RISK-OFF",
   "signal_active": false,
   "sessions": {
-    "stocks": true,
+    "stocks": false,
     "gold": true,
-    "gold_time": "04:00 (NY)",
-    "stocks_display": true
+    "gold_time": "04:15 (NY)",
+    "stocks_display": false
   },
   "steps": {
     "_sessions": {
-      "stocks": true,
+      "stocks": false,
       "gold": true,
-      "gold_time": "04:00 (NY)",
-      "stocks_display": true
+      "gold_time": "04:15 (NY)",
+      "stocks_display": false
     },
     "regime": {
       "status": "PASS",
@@ -27,19 +27,19 @@
       ],
       "assets": {
         "DXY": {
-          "price": 101.44,
+          "price": 101.43,
           "trend": "UP",
-          "chg_5d": 0.68
+          "chg_5d": 0.67
         },
         "VIX": {
-          "price": 18.98,
+          "price": 18.69,
           "trend": "UP",
-          "chg_5d": 1.17
+          "chg_5d": -0.37
         },
         "SPX": {
-          "price": 7383.5,
+          "price": 7408.29,
           "trend": "DOWN",
-          "chg_5d": -0.99
+          "chg_5d": -0.66
         },
         "US10Y": {
           "price": 4.7,
@@ -47,9 +47,9 @@
           "chg_5d": 3.3
         },
         "BTC": {
-          "price": 64766.08,
+          "price": 64987.58,
           "trend": "UP",
-          "chg_5d": 0.13
+          "chg_5d": 0.47
         }
       }
     },
@@ -57,11 +57,11 @@
       "status": "WARN",
       "checks": {
         "dxy_5d": 0.67,
-        "spx_5d": -0.93,
+        "spx_5d": -0.66,
         "stock_chgs": {
-          "AAPL": -3.61,
-          "META": -6.2,
-          "GOOGL": -8.4
+          "AAPL": -3.62,
+          "META": -6.18,
+          "GOOGL": -8.39
         }
       },
       "warnings": [
@@ -73,10 +73,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4050.44,
-          "rsi": 50.7,
-          "atr": 4.67,
-          "ema": 4065.0,
+          "price": 4049.68,
+          "rsi": 46.8,
+          "atr": 4.6,
+          "ema": 4064.37,
           "sw_high": 4054.58,
           "sw_low": 4040.74,
           "in_session": true,
@@ -88,35 +88,35 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 14.8,
+              "score": 14.4,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 37.0,
+              "score_pct": 36.0,
               "passed": false,
               "details": [
-                "+4.8/10 [entry] swing_break",
+                "+4.4/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 14.8/40 (37%) \u00b7 threshold 55%"
+                "Score: 14.4/40 (36%) \u00b7 threshold 55%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "short",
-              "score": 1.4,
+              "score": 4.4,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 4.666666666666666,
+              "score_pct": 14.666666666666666,
               "passed": false,
               "details": [
-                "+1.4/10 [bias] ema_proximity",
+                "+1.2/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                " 0/10  [entry] rsi_range",
-                "Score: 1.4/30 (5%) \u00b7 threshold 55%"
+                "+3.2/10 [entry] rsi_range",
+                "Score: 4.4/30 (15%) \u00b7 threshold 55%"
               ]
             }
           ]
@@ -128,9 +128,9 @@
           "ema": 323.69,
           "sw_high": 326.89,
           "sw_low": 319.36,
-          "in_session": true,
-          "session_note": "",
-          "status": "PASS",
+          "in_session": false,
+          "session_note": "Outside regular hours (04:15 ET, session 21:30-04:00)",
+          "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
             {
@@ -196,9 +196,9 @@
           "ema": 634.1,
           "sw_high": 655.76,
           "sw_low": 597.17,
-          "in_session": true,
-          "session_note": "",
-          "status": "PASS",
+          "in_session": false,
+          "session_note": "Outside regular hours (04:15 ET, session 21:30-04:00)",
+          "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
             {
@@ -262,9 +262,9 @@
           "ema": 344.57,
           "sw_high": 349.9,
           "sw_low": 314.9,
-          "in_session": true,
-          "session_note": "",
-          "status": "PASS",
+          "in_session": false,
+          "session_note": "Outside regular hours (04:15 ET, session 21:30-04:00)",
+          "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
             {
@@ -328,9 +328,9 @@
           "ema": 390.61,
           "sw_high": 391.73,
           "sw_low": 377.39,
-          "in_session": true,
-          "session_note": "",
-          "status": "PASS",
+          "in_session": false,
+          "session_note": "Outside regular hours (04:15 ET, session 21:30-04:00)",
+          "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
             {
@@ -409,9 +409,7 @@
       },
       "AAPL": {
         "instrument": {
-          "status": "PASS",
-          "primary": "Cash Equity",
-          "note": "Long=buy, Short=sell (margin+borrow)"
+          "status": "OUTSIDE_HOURS"
         },
         "size": {
           "status": "SKIP"
@@ -425,9 +423,7 @@
       },
       "GOOGL": {
         "instrument": {
-          "status": "PASS",
-          "primary": "Cash Equity",
-          "note": "Long=buy, Short=sell (margin+borrow)"
+          "status": "OUTSIDE_HOURS"
         },
         "size": {
           "status": "SKIP"
