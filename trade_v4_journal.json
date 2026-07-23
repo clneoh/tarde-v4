@@ -39,6 +39,14 @@
       "events": [
         "\ud83d\udcdd XAUUSD long LIMIT PLACED @ $4057.78 (waiting for touch) | SL $4044.08 | TP $4085.19"
       ]
+    },
+    {
+      "timestamp": "2026-07-23T15:15:22.146652+00:00",
+      "regime": "RISK-OFF",
+      "signals": [],
+      "events": [
+        "\ud83d\udd35 XAUUSD long FILLED @ $4057.78 (limit touch) | SL $4044.08 | TP $4085.19"
+      ]
     }
   ]
 }
