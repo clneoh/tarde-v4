@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-24T01:15:14.273957+08:00",
+  "timestamp": "2026-07-24T01:16:50.721783+08:00",
   "overall": "GO",
   "regime": "RISK-OFF",
   "signal_active": false,
   "sessions": {
     "stocks": true,
     "gold": true,
-    "gold_time": "01:15 (NY)",
+    "gold_time": "01:16 (NY)",
     "stocks_display": true
   },
   "steps": {
     "_sessions": {
       "stocks": true,
       "gold": true,
-      "gold_time": "01:15 (NY)",
+      "gold_time": "01:16 (NY)",
       "stocks_display": true
     },
     "regime": {
@@ -32,14 +32,14 @@
           "chg_5d": 0.67
         },
         "VIX": {
-          "price": 19.42,
+          "price": 19.3,
           "trend": "UP",
-          "chg_5d": 3.52
+          "chg_5d": 2.88
         },
         "SPX": {
-          "price": 7406.95,
+          "price": 7404.75,
           "trend": "DOWN",
-          "chg_5d": -0.68
+          "chg_5d": -0.71
         },
         "US10Y": {
           "price": 4.7,
@@ -47,25 +47,25 @@
           "chg_5d": 3.3
         },
         "BTC": {
-          "price": 64710.79,
+          "price": 64761.05,
           "trend": "UP",
-          "chg_5d": 0.04
+          "chg_5d": 0.12
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.68,
-        "spx_5d": -0.68,
+        "dxy_5d": 0.67,
+        "spx_5d": -0.72,
         "stock_chgs": {
           "AAPL": -3.92,
-          "META": -6.13,
-          "GOOGL": -7.71
+          "META": -6.1,
+          "GOOGL": -7.7
         }
       },
       "warnings": [
-        "DXY +0.68% but gold also up \u2014 divergence",
+        "DXY +0.67% but gold also up \u2014 divergence",
         "All 3 tech stocks down \u2014 single sector risk"
       ]
     },
@@ -73,10 +73,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4047.32,
-          "rsi": 55.6,
-          "atr": 7.34,
-          "ema": 4075.51,
+          "price": 4049.74,
+          "rsi": 58.5,
+          "atr": 7.52,
+          "ema": 4075.61,
           "sw_high": 4061.8,
           "sw_low": 4042.41,
           "in_session": true,
@@ -88,18 +88,18 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 12.4,
+              "score": 13.6,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 31.0,
+              "score_pct": 34.0,
               "passed": false,
               "details": [
-                "+2.4/10 [entry] swing_break",
+                "+3.6/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 12.4/40 (31%) \u00b7 threshold 55%"
+                "Score: 13.6/40 (34%) \u00b7 threshold 55%"
               ]
             },
             {
@@ -122,8 +122,8 @@
           ]
         },
         "AAPL": {
-          "price": 320.63,
-          "rsi": 29.5,
+          "price": 320.65,
+          "rsi": 29.6,
           "atr": 2.03,
           "ema": 324.05,
           "sw_high": 326.89,
@@ -190,7 +190,7 @@
           ]
         },
         "META": {
-          "price": 606.42,
+          "price": 606.44,
           "rsi": 17.5,
           "atr": 7.16,
           "ema": 637.64,
@@ -257,10 +257,10 @@
           ]
         },
         "GOOGL": {
-          "price": 320.03,
+          "price": 320.08,
           "rsi": 15.8,
           "atr": 4.19,
-          "ema": 347.88,
+          "ema": 347.89,
           "sw_high": 349.9,
           "sw_low": 346.2,
           "in_session": true,
@@ -323,8 +323,8 @@
           ]
         },
         "MSFT": {
-          "price": 381.33,
-          "rsi": 19.8,
+          "price": 381.38,
+          "rsi": 20.0,
           "atr": 3.57,
           "ema": 391.79,
           "sw_high": 391.73,
@@ -455,6 +455,38 @@
         "stop_target": {
           "status": "SKIP"
         }
+      },
+      "TSLA": {
+        "instrument": {
+          "status": "PASS",
+          "primary": "?",
+          "note": ""
+        },
+        "size": {
+          "status": "SKIP"
+        },
+        "entry": {
+          "status": "SKIP"
+        },
+        "stop_target": {
+          "status": "SKIP"
+        }
+      },
+      "SOFI": {
+        "instrument": {
+          "status": "PASS",
+          "primary": "?",
+          "note": ""
+        },
+        "size": {
+          "status": "SKIP"
+        },
+        "entry": {
+          "status": "SKIP"
+        },
+        "stop_target": {
+          "status": "SKIP"
+        }
       }
     },
     "capital": 10000,
@@ -476,8 +508,8 @@
           "created_at": "2026-07-23T23:00:26.319422+08:00",
           "regime": "RISK-OFF",
           "bars_waiting": 0,
-          "unrealised_r": -0.76,
-          "current_price": 4047.32
+          "unrealised_r": -0.59,
+          "current_price": 4049.74
         }
       ],
       "closed": [],
@@ -506,8 +538,8 @@
         "created_at": "2026-07-23T23:00:26.319422+08:00",
         "regime": "RISK-OFF",
         "bars_waiting": 0,
-        "unrealised_r": -0.76,
-        "current_price": 4047.32
+        "unrealised_r": -0.59,
+        "current_price": 4049.74
       }
     ],
     "closed": [],
