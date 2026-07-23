@@ -54,7 +54,7 @@ a{color:#ffd740;font-size:12px}
 <thead>
 <tr><th>Asset</th><th>Exchange</th><th>Type</th><th>Session</th><th>Bias TFs</th><th>Exec TF</th><th style="text-align:center">V4</th><th style="text-align:center">PAM</th><th></th></tr>
 </thead>
-<tbody id="assetTable"></tbody>
+<tbody id="assetTable" onclick="handleClick(event)"></tbody>
 </table>
 
 <div class="add-row">
@@ -72,6 +72,17 @@ var SHARED_URL = '/tarde-v4/shared/shared.json';
 var ALL_TF = ['M1','W1','D1','D2','H4','H1','m15'];
 var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 var assetList = {};
+
+function handleClick(e) {
+  var el = e.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.getAttribute('data-action');
+  var ticker = el.getAttribute('data-ticker');
+  if (action === 'bias') toggleBias(el, ticker, el.getAttribute('data-tf'));
+  else if (action === 'exec') setExec(el, ticker, el.getAttribute('data-tf'));
+  else if (action === 'toggle') toggleModel(el, ticker, el.getAttribute('data-field'));
+  else if (action === 'remove') removeAsset(ticker);
+}
 
 function load() {
   fetch(SHARED_URL, {cache:'no-store'})
@@ -110,8 +121,8 @@ function render() {
       var tfRank = TF_RANK[tf] != null ? TF_RANK[tf] : 99;
       var blocked = tfRank >= execRank && tf !== exec;
       var cls = 'tf-tag ' + (on ? 'on' : 'off') + (blocked ? ' disabled' : '');
-      var click = blocked ? '' : ' onclick="toggleBias(this,\\'' + ticker + '\\',\\'' + tf + '\\')"';
-      biasHTML += '<span class="' + cls + '"' + click + '>' + tf + '</span>';
+      var dattr = blocked ? '' : ' data-action="bias" data-ticker="' + ticker + '" data-tf="' + tf + '"';
+      biasHTML += '<span class="' + cls + '"' + dattr + '>' + tf + '</span>';
     }
 
     // Exec tags
@@ -120,7 +131,7 @@ function render() {
       var etf = ALL_TF[ei];
       var isExec = exec === etf;
       var ecls = 'tf-tag ' + (isExec ? 'exec' : 'off');
-      execHTML += '<span class="' + ecls + '" onclick="setExec(this,\\'' + ticker + '\\',\\'' + etf + '\\')">' + etf + '</span>';
+      execHTML += '<span class="' + ecls + '" data-action="exec" data-ticker="' + ticker + '" data-tf="' + etf + '">' + etf + '</span>';
     }
 
     html += '<tr>' +
@@ -130,9 +141,9 @@ function render() {
       '<td>' + (a.session||'?') + '</td>' +
       '<td>' + biasHTML + '</td>' +
       '<td>' + execHTML + '</td>' +
-      '<td style="text-align:center"><span class="toggle ' + (a.enabled_v4?'on':'off') + '" onclick="toggleModel(this,\\'' + ticker + '\\',\\'enabled_v4\\')">' + (a.enabled_v4?'●':'○') + '</span></td>' +
-      '<td style="text-align:center"><span class="toggle ' + (a.enabled_pam?'on':'off') + '" onclick="toggleModel(this,\\'' + ticker + '\\',\\'enabled_pam\\')">' + (a.enabled_pam?'●':'○') + '</span></td>' +
-      '<td><button class="btn btn-rm" onclick="removeAsset(\\'' + ticker + '\\')">✕</button></td>' +
+      '<td style="text-align:center"><span class="toggle ' + (a.enabled_v4?'on':'off') + '" data-action="toggle" data-ticker="' + ticker + '" data-field="enabled_v4">' + (a.enabled_v4?'●':'○') + '</span></td>' +
+      '<td style="text-align:center"><span class="toggle ' + (a.enabled_pam?'on':'off') + '" data-action="toggle" data-ticker="' + ticker + '" data-field="enabled_pam">' + (a.enabled_pam?'●':'○') + '</span></td>' +
+      '<td><button class="btn btn-rm" data-action="remove" data-ticker="' + ticker + '">✕</button></td>' +
     '</tr>';
   }
   document.getElementById('assetTable').innerHTML = html || '<tr><td colspan="9" style="color:#555;text-align:center;padding:20px">No assets</td></tr>';
@@ -229,8 +240,7 @@ function applyConfig() {
     .then(function(r) {
       if (!r.ok) throw new Error('Push: ' + r.status);
       btn.textContent = 'Apply Changes'; btn.disabled = false;
-      setStatus('Applied! Config live on GitHub.', true);
-        document.getElementById('ghToken').value = '';
+      setStatus('Applied! Shared engine picks up next run.', true);
     })
     .catch(function(e) {
       btn.textContent = 'Apply Changes'; btn.disabled = false;
