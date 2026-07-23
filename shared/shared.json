@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-24T02:06:43.289505+08:00",
+  "timestamp": "2026-07-24T02:07:58.281829+08:00",
   "regime": "RISK-OFF",
   "score": 4,
   "reasons": [
@@ -12,11 +12,11 @@
       "chg_5d": 0.8
     },
     "VIX": {
-      "price": 19.6,
-      "chg_5d": 17.5
+      "price": 19.7,
+      "chg_5d": 17.6
     },
     "SPX": {
-      "price": 7397.7,
+      "price": 7396.8,
       "chg_5d": -1.8
     },
     "US10Y": {
@@ -24,7 +24,7 @@
       "chg_5d": 3.2
     },
     "BTC": {
-      "price": 64675.4,
+      "price": 64680.9,
       "chg_5d": -0.2
     }
   },
@@ -70,14 +70,79 @@
   },
   "news": [],
   "asset_list": {
-    "TEST123": {
-      "exchange": "TEST",
+    "XAUUSD": {
+      "exchange": "OANDA",
+      "type": "commodity",
+      "session": "24h",
+      "bias_tf": [
+        "W1",
+        "D1",
+        "H4"
+      ],
+      "exec_tf": "m15",
+      "enabled_v4": true,
+      "enabled_pam": true
+    },
+    "AAPL": {
+      "exchange": "NASDAQ",
       "type": "stock",
       "session": "US",
-      "bias_tf": [],
+      "bias_tf": [
+        "W1",
+        "D1",
+        "D2"
+      ],
       "exec_tf": "H1",
       "enabled_v4": true,
       "enabled_pam": false
+    },
+    "META": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "bias_tf": [
+        "W1",
+        "D1",
+        "D2"
+      ],
+      "exec_tf": "H1",
+      "enabled_v4": false,
+      "enabled_pam": false
+    },
+    "GOOGL": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "bias_tf": [
+        "W1",
+        "D1",
+        "D2"
+      ],
+      "exec_tf": "H1",
+      "enabled_v4": true,
+      "enabled_pam": false
+    },
+    "NFLX": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "bias_tf": [
+        "D2"
+      ],
+      "exec_tf": "H1",
+      "enabled_v4": true,
+      "enabled_pam": true
+    },
+    "TSLA": {
+      "exchange": "NASDAQ",
+      "type": "stock",
+      "session": "US",
+      "bias_tf": [
+        "D2"
+      ],
+      "exec_tf": "H1",
+      "enabled_v4": true,
+      "enabled_pam": true
     }
   },
   "bias_model": {
