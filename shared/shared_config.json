@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "description": "Shared Service Ã¢ÂÂ single source of truth for V4 and PAM. Regime, matrix, news, correlation, asset list.",
+  "description": "Shared Service ÃÂ¢ÃÂÃÂ single source of truth for V4 and PAM. Regime, matrix, news, correlation, asset list.",
   "schedule": "every 15m, offset -2 min before V4 engine",
   "assets": {
     "XAUUSD": {
@@ -76,20 +76,11 @@
       "exec_tf": "H1",
       "enabled_v4": false,
       "enabled_pam": true
-    },
-    "SOFI": {
-      "exchange": "NASDAQ",
-      "type": "stock",
-      "session": "US",
-      "bias_tf": [],
-      "exec_tf": "",
-      "enabled_v4": false,
-      "enabled_pam": true
     }
   },
   "bias_model": {
     "rule": "majority_vote",
-    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie Ã¢ÂÂ neutral.",
+    "description": "Each bias TF votes LONG/SHORT based on price vs 20EMA. Majority wins. Tie ÃÂ¢ÃÂÃÂ neutral.",
     "ema_period": 20,
     "tie_result": "neutral",
     "fetch_policy": "only_fetch_required",
