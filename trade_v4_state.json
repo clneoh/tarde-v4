@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-24T03:15:15.278681+08:00",
+  "timestamp": "2026-07-24T03:30:20.104338+08:00",
   "overall": "GO",
   "regime": "RISK-OFF",
   "signal_active": false,
   "sessions": {
     "stocks": true,
     "gold": true,
-    "gold_time": "03:15 (NY)",
+    "gold_time": "03:30 (NY)",
     "stocks_display": true
   },
   "steps": {
     "_sessions": {
       "stocks": true,
       "gold": true,
-      "gold_time": "03:15 (NY)",
+      "gold_time": "03:30 (NY)",
       "stocks_display": true
     },
     "regime": {
@@ -22,50 +22,50 @@
       "score": -1,
       "reasons": [
         "DXY\u2191 (USD strength)",
-        "VIX 20 (low vol)",
+        "VIX 19 (low vol)",
         "SPX\u2193 (risk-off)"
       ],
       "assets": {
         "DXY": {
-          "price": 101.45,
+          "price": 101.44,
           "trend": "UP",
-          "chg_5d": 0.69
+          "chg_5d": 0.68
         },
         "VIX": {
-          "price": 19.5,
+          "price": 19.19,
           "trend": "UP",
-          "chg_5d": 3.94
+          "chg_5d": 2.29
         },
         "SPX": {
-          "price": 7392.0,
+          "price": 7393.45,
           "trend": "DOWN",
-          "chg_5d": -0.88
+          "chg_5d": -0.86
         },
         "US10Y": {
           "price": 4.7,
           "trend": "UP",
-          "chg_5d": 3.39
+          "chg_5d": 3.3
         },
         "BTC": {
-          "price": 64744.28,
+          "price": 64849.18,
           "trend": "UP",
-          "chg_5d": 0.1
+          "chg_5d": 0.26
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.69,
-        "spx_5d": -0.88,
+        "dxy_5d": 0.68,
+        "spx_5d": -0.85,
         "stock_chgs": {
-          "AAPL": -3.9,
-          "META": -6.24,
-          "GOOGL": -8.24
+          "AAPL": -4.04,
+          "META": -5.99,
+          "GOOGL": -8.29
         }
       },
       "warnings": [
-        "DXY +0.69% but gold also up \u2014 divergence",
+        "DXY +0.68% but gold also up \u2014 divergence",
         "All 3 tech stocks down \u2014 single sector risk"
       ]
     },
@@ -73,10 +73,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4043.32,
-          "rsi": 36.8,
-          "atr": 4.38,
-          "ema": 4066.87,
+          "price": 4048.34,
+          "rsi": 46.0,
+          "atr": 4.55,
+          "ema": 4066.33,
           "sw_high": 4054.58,
           "sw_low": 4040.74,
           "in_session": true,
@@ -88,44 +88,44 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 11.3,
+              "score": 13.8,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 28.250000000000004,
+              "score_pct": 34.5,
               "passed": false,
               "details": [
-                "+1.3/10 [entry] swing_break",
+                "+3.8/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 11.3/40 (28%) \u00b7 threshold 55%"
+                "Score: 13.8/40 (34%) \u00b7 threshold 55%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "short",
-              "score": 6.8,
+              "score": 4.5,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 22.666666666666664,
+              "score_pct": 15.0,
               "passed": false,
               "details": [
-                " 0/10  [bias] ema_proximity",
+                "+0.5/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+6.8/10 [entry] rsi_range",
-                "Score: 6.8/30 (23%) \u00b7 threshold 55%"
+                "+4.0/10 [entry] rsi_range",
+                "Score: 4.5/30 (15%) \u00b7 threshold 55%"
               ]
             }
           ]
         },
         "AAPL": {
-          "price": 320.78,
-          "rsi": 27.9,
-          "atr": 2.05,
-          "ema": 323.79,
+          "price": 320.34,
+          "rsi": 26.6,
+          "atr": 1.99,
+          "ema": 323.64,
           "sw_high": 326.89,
           "sw_low": 319.36,
           "in_session": true,
@@ -172,28 +172,27 @@
             {
               "setup": "earnings_drift",
               "type": "earnings",
-              "direction": "long",
-              "score": 11.3,
+              "direction": "short",
+              "score": 10,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 37.66666666666667,
+              "score_pct": 33.33333333333333,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for AAPL",
-                "+0.3/10 [entry] gap_size",
+                " 0/10  [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
-                " 0/10  [entry] volume",
-                "+1 FUNDAMENTALS: Buy (2.02128) \u2192 +1"
+                " 0/10  [entry] volume"
               ]
             }
           ]
         },
         "META": {
-          "price": 605.79,
-          "rsi": 12.7,
-          "atr": 7.07,
-          "ema": 635.19,
+          "price": 607.3,
+          "rsi": 16.2,
+          "atr": 6.66,
+          "ema": 634.15,
           "sw_high": 655.76,
           "sw_low": 597.17,
           "in_session": true,
@@ -240,15 +239,15 @@
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 10.1,
+              "score": 10,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 33.666666666666664,
+              "score_pct": 33.33333333333333,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for META",
-                "+0.1/10 [entry] gap_size",
+                " 0/10  [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume"
               ]
@@ -256,10 +255,10 @@
           ]
         },
         "GOOGL": {
-          "price": 318.19,
-          "rsi": 13.7,
-          "atr": 4.25,
-          "ema": 345.67,
+          "price": 317.92,
+          "rsi": 14.4,
+          "atr": 4.06,
+          "ema": 344.58,
           "sw_high": 349.9,
           "sw_low": 314.9,
           "in_session": true,
@@ -289,32 +288,32 @@
               "setup": "momentum_break",
               "type": "momentum",
               "direction": null,
-              "score": 0.4,
+              "score": 1.2,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 1.0,
+              "score_pct": 3.0,
               "passed": false,
               "details": [
                 " 0/10  [bias] new_high",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] rsi_momentum",
-                "+0.4/10 [entry] atr_expand"
+                "+1.2/10 [entry] atr_expand"
               ]
             },
             {
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 10.9,
+              "score": 10.1,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 36.333333333333336,
+              "score_pct": 33.666666666666664,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for GOOGL",
-                "+0.9/10 [entry] gap_size",
+                "+0.1/10 [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume"
               ]
@@ -322,10 +321,10 @@
           ]
         },
         "MSFT": {
-          "price": 380.84,
-          "rsi": 18.3,
-          "atr": 3.55,
-          "ema": 390.98,
+          "price": 380.89,
+          "rsi": 19.7,
+          "atr": 3.38,
+          "ema": 390.59,
           "sw_high": 391.73,
           "sw_low": 377.39,
           "in_session": true,
@@ -355,32 +354,32 @@
               "setup": "momentum_break",
               "type": "momentum",
               "direction": null,
-              "score": 0.4,
+              "score": 0.6,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 1.0,
+              "score_pct": 1.5,
               "passed": false,
               "details": [
                 " 0/10  [bias] new_high",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] rsi_momentum",
-                "+0.4/10 [entry] atr_expand"
+                "+0.6/10 [entry] atr_expand"
               ]
             },
             {
               "setup": "earnings_drift",
               "type": "earnings",
               "direction": "short",
-              "score": 10.4,
+              "score": 10,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 34.66666666666667,
+              "score_pct": 33.33333333333333,
               "passed": false,
               "details": [
                 "GATE SKIP: earnings check for MSFT",
-                "+0.4/10 [entry] gap_size",
+                " 0/10  [entry] gap_size",
                 "+10.0/10 [entry] drift_confirm",
                 " 0/10  [entry] volume"
               ]
