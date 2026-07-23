@@ -168,7 +168,17 @@ function applyConfig() {
     .then(function(r) {
       if (!r.ok) throw new Error('Push: ' + r.status);
       btn.textContent = 'Apply Changes'; btn.disabled = false;
-      setStatus('Applied! V4/PAM pick up next cron run.', true);
+      setStatus('Applying... 0s', true);
+        fetch('http://54.254.254.195:8765/trigger', {mode:'no-cors'}).catch(function(){});
+        var elapsed = 0;
+        var timer = setInterval(function() {
+          elapsed++;
+          if (elapsed < 10) setStatus('Applying... ' + elapsed + 's', true);
+          else if (elapsed < 30) setStatus('Applying... ' + elapsed + 's (fetching data)', true);
+          else if (elapsed < 60) setStatus('Applying... ' + elapsed + 's (almost done)', true);
+          else { clearInterval(timer); setStatus('Applied! Refresh dashboard.', true); }
+        }, 1000);
+        setTimeout(function() { clearInterval(timer); setStatus('Applied! Refresh dashboard.', true); }, 65000);
         _applied = true;
     })
     .catch(function(e) {
