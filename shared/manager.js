@@ -1,10 +1,11 @@
 var SHARED_URL = '/tarde-v4/shared/shared.json';
+var RAW_URL = 'https://raw.githubusercontent.com/clneoh/tarde-v4/main/shared/shared.json';
 var ALL_TF = ['M1','W1','D1','D2','H4','H1','m15'];
 var TF_RANK = {M1:0,W1:1,D1:2,D2:3,H4:4,H1:5,m15:6};
 var assetList = {};
 
 function load() {
-  fetch(SHARED_URL + '?t=' + Date.now(), {cache:'no-store'})
+  fetch(RAW_URL + '?t=' + Date.now())
     .then(function(r) { return r.json(); })
     .then(function(data) {
       assetList = data.asset_list || {};
@@ -146,7 +147,7 @@ function setStatus(msg, ok) {
 
 function unfreeze() {
   // Reload fresh data after pipeline
-  fetch(SHARED_URL + '?t=' + Date.now(), {cache:'no-store'})
+  fetch(RAW_URL + '?t=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(d){ assetList = d.asset_list || {}; render(); })
     .catch(function(){});
