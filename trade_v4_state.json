@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-07-24T08:30:18.184870+08:00",
+  "timestamp": "2026-07-24T08:45:13.908820+08:00",
   "overall": "GO",
   "regime": "RISK-OFF",
   "signal_active": false,
   "sessions": {
     "stocks": false,
     "gold": true,
-    "gold_time": "08:30 (Tokyo)",
+    "gold_time": "08:45 (Tokyo)",
     "stocks_display": false
   },
   "steps": {
     "_sessions": {
       "stocks": false,
       "gold": true,
-      "gold_time": "08:30 (Tokyo)",
+      "gold_time": "08:45 (Tokyo)",
       "stocks_display": false
     },
     "regime": {
@@ -27,9 +27,9 @@
       ],
       "assets": {
         "DXY": {
-          "price": 101.42,
+          "price": 101.45,
           "trend": "UP",
-          "chg_5d": 0.42
+          "chg_5d": 0.45
         },
         "VIX": {
           "price": 18.69,
@@ -44,19 +44,19 @@
         "US10Y": {
           "price": 4.7,
           "trend": "UP",
-          "chg_5d": 2.29
+          "chg_5d": 2.35
         },
         "BTC": {
-          "price": 64831.35,
+          "price": 64800.61,
           "trend": "UP",
-          "chg_5d": -0.59
+          "chg_5d": -0.63
         }
       }
     },
     "correlation": {
       "status": "WARN",
       "checks": {
-        "dxy_5d": 0.42,
+        "dxy_5d": 0.45,
         "spx_5d": -0.66,
         "stock_chgs": {
           "AAPL": -3.62,
@@ -72,10 +72,10 @@
       "status": "PASS",
       "assets": {
         "XAUUSD": {
-          "price": 4047.16,
-          "rsi": 43.2,
-          "atr": 3.08,
-          "ema": 4057.76,
+          "price": 4049.72,
+          "rsi": 48.4,
+          "atr": 3.23,
+          "ema": 4057.53,
           "sw_high": 4050.82,
           "sw_low": 4040.74,
           "in_session": true,
@@ -87,35 +87,35 @@
               "setup": "structure_break",
               "type": "breakout",
               "direction": "long",
-              "score": 13.2,
+              "score": 14.4,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 40,
-              "score_pct": 32.99999999999999,
+              "score_pct": 36.0,
               "passed": false,
               "details": [
-                "+3.2/10 [entry] swing_break",
+                "+4.4/10 [entry] swing_break",
                 " 0/10  [entry] volume",
                 " 0/10  [entry] atr_expand",
                 "+10.0/10 [entry] touches",
-                "Score: 13.2/40 (33%) \u00b7 threshold 55%"
+                "Score: 14.4/40 (36%) \u00b7 threshold 55%"
               ]
             },
             {
               "setup": "ema_bounce",
               "type": "mean_reversion",
               "direction": "short",
-              "score": 8.4,
+              "score": 4.2,
               "threshold": 4,
               "threshold_pct": 55,
               "max_possible": 30,
-              "score_pct": 28.000000000000004,
+              "score_pct": 14.000000000000002,
               "passed": false,
               "details": [
-                "+1.6/10 [bias] ema_proximity",
+                "+2.2/10 [bias] ema_proximity",
                 " 0/10  [entry] engulfing",
-                "+6.8/10 [entry] rsi_range",
-                "Score: 8.4/30 (28%) \u00b7 threshold 55%"
+                "+2.0/10 [entry] rsi_range",
+                "Score: 4.2/30 (14%) \u00b7 threshold 55%"
               ]
             }
           ]
@@ -128,7 +128,7 @@
           "sw_high": 326.89,
           "sw_low": 319.36,
           "in_session": false,
-          "session_note": "Outside regular hours (08:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -196,7 +196,7 @@
           "sw_high": 655.76,
           "sw_low": 597.17,
           "in_session": false,
-          "session_note": "Outside regular hours (08:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -262,7 +262,7 @@
           "sw_high": 349.9,
           "sw_low": 314.9,
           "in_session": false,
-          "session_note": "Outside regular hours (08:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
@@ -328,7 +328,7 @@
           "sw_high": 391.73,
           "sw_low": 377.39,
           "in_session": false,
-          "session_note": "Outside regular hours (08:30 ET, session 21:30-04:00)",
+          "session_note": "Outside regular hours (08:45 ET, session 21:30-04:00)",
           "status": "OUTSIDE_HOURS",
           "signal": null,
           "all_signals": [
